@@ -62,6 +62,9 @@ public final class HitTreeCellRenderer implements TreeCellRenderer {
 	}
 
 	private String printHit(final Hit hit) {
+		if (hit.getJaar() == null) {
+			return "";
+		}
 		return String.format(FMT, hit.getJaar(), hit.getAantalKampen());
 	}
 

@@ -3,7 +3,7 @@ package nl.scouting.hit.sitecreator.model;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class HitKamp {
+public class HitKamp implements Comparable<HitKamp> {
 	private HitPlaats plaats;
 
 	private String naam;
@@ -64,6 +64,11 @@ public class HitKamp {
 	@Override
 	public String toString() {
 		return this.naam;
+	}
+
+	@Override
+	public int compareTo(final HitKamp o) {
+		return this.naam.compareTo(o.getNaam());
 	}
 
 }

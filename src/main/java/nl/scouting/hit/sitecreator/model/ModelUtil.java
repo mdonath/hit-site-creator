@@ -3,7 +3,7 @@ package nl.scouting.hit.sitecreator.model;
 public final class ModelUtil {
 
 	public static final Hit createEmptyStructure() {
-		return new Hit(2012);
+		return new Hit(null);
 	}
 
 	public static final Hit createTestStructure() {

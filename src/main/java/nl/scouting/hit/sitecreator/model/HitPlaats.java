@@ -2,6 +2,7 @@ package nl.scouting.hit.sitecreator.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HitPlaats {
@@ -18,6 +19,7 @@ public class HitPlaats {
 	public void addHitKamp(final HitKamp hitKamp) {
 		this.hitKampen.add(hitKamp);
 		hitKamp.setPlaats(this);
+		Collections.sort(this.hitKampen);
 	}
 
 	public int getAantalKampen() {

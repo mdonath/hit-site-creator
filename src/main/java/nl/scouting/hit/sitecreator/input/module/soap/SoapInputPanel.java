@@ -1,6 +1,7 @@
 package nl.scouting.hit.sitecreator.input.module.soap;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -65,12 +66,12 @@ public class SoapInputPanel extends AbstractInputPanel {
 		// horizontaal gezien heb ik van links naar rechts twee paralelle
 		// groepen. In de eerste groep zitten labels, in de tweede velden
 		layout.setHorizontalGroup(layout.createSequentialGroup() //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.LEADING) //
 						.addComponent(urlLabel) //
 						.addComponent(userLabel) //
 						.addComponent(passwordLabel) //
 				) //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.LEADING) //
 						.addComponent(urlField) //
 						.addComponent(userField) //
 						.addComponent(passwordField) //
@@ -81,19 +82,18 @@ public class SoapInputPanel extends AbstractInputPanel {
 		// groepen. Die groepen zijn de regels met de label|field
 		// combinatie.
 		layout.setVerticalGroup(layout.createSequentialGroup() //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(urlLabel) //
 						.addComponent(urlField) //
 				) //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(userLabel) //
 						.addComponent(userField) //
 				) //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(passwordLabel) //
 						.addComponent(passwordField) //
 				) //
 		);
-
 	}
 }

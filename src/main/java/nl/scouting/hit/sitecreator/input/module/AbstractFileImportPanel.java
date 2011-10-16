@@ -14,26 +14,19 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nl.scouting.hit.sitecreator.components.JFileInput;
 import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
+import nl.scouting.hit.sitecreator.input.InputModule;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 	private static final long serialVersionUID = 1L;
 
+	private InputModule inputModule;
+
 	public AbstractFileImportPanel(final String name,
 			final FileNameExtensionFilter filter) {
 		super();
-		this.setName(name);
+		setName(name);
 		initComponents(filter);
-	}
-
-	public Integer[] createJaarItems(final int huidigeJaar) {
-		final int startJaar = 2010;
-		final int aantal = huidigeJaar - startJaar;
-		final Integer[] items = new Integer[aantal + 2];
-		for (int i = 0; i < items.length; i++) {
-			items[i] = Integer.valueOf(startJaar + i);
-		}
-		return items;
 	}
 
 	public void initComponents(final FileNameExtensionFilter filter) {
@@ -65,15 +58,32 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 		});
 		yearField.setSelectedItem(huidigeJaar);
 
+		final JLabel encodingLabel = new JLabel("Encoding");
+		final String[] encodingItems = new String[] { "UTF-8", "ISO-8859-1" };
+		final JComboBox encodingField = new JComboBox(encodingItems);
+		encodingField.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				final Object[] selected = e.getItemSelectable()
+						.getSelectedObjects();
+				if (selected != null) {
+					firePropertyChange("encoding", null, selected[0]);
+				}
+			}
+		});
+		encodingField.setSelectedItem(encodingItems[0]);
+
 		final GroupLayout layout = UIUtil.createGroupLayout(this);
 		layout.setHorizontalGroup(layout.createSequentialGroup() //
 				.addGroup(layout.createParallelGroup(Alignment.LEADING) //
 						.addComponent(locLabel) //
 						.addComponent(yearLabel) //
+						.addComponent(encodingLabel) //
 				) //
 				.addGroup(layout.createParallelGroup(Alignment.LEADING) //
 						.addComponent(locField) //
 						.addComponent(yearField) //
+						.addComponent(encodingField) //
 				) //
 		);
 		layout.setVerticalGroup(layout.createSequentialGroup() //
@@ -85,7 +95,33 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 						.addComponent(yearLabel) //
 						.addComponent(yearField) //
 				) //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
+						.addComponent(encodingLabel) //
+						.addComponent(encodingField) //
+				) //
 		);
 	}
 
+	public Integer[] createJaarItems(final int huidigeJaar) {
+		final int startJaar = 2010;
+		final int aantal = huidigeJaar - startJaar;
+		final Integer[] items = new Integer[aantal + 2];
+		for (int i = 0; i < items.length; i++) {
+			items[i] = Integer.valueOf(startJaar + i);
+		}
+		return items;
+	}
+
+	@Override
+	public final InputModule getProcessor() {
+		if (this.inputModule == null) {
+			this.inputModule = createInputModule();
+			addPropertyChangeListener("file", this.inputModule);
+			addPropertyChangeListener("jaar", this.inputModule);
+			addPropertyChangeListener("encoding", this.inputModule);
+		}
+		return this.inputModule;
+	}
+
+	protected abstract InputModule createInputModule();
 }
