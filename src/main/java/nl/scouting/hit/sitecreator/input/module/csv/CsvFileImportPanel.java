@@ -8,19 +8,20 @@ import nl.scouting.hit.sitecreator.input.module.AbstractFileImportPanel;
 public class CsvFileImportPanel extends AbstractFileImportPanel {
 	private static final long serialVersionUID = 1L;
 
+	private CsvInputModule inputModule;
+
 	public CsvFileImportPanel() {
 		super("CSV", new FileNameExtensionFilter(
 				"Bestand met alle kampgegevens", "csv", "txt"));
 	}
 
-	private CsvInputModule inputModule;
-
+	@Override
 	public InputModule getProcessor() {
-		if (inputModule == null) {
-			inputModule = new CsvInputModule();
-			addPropertyChangeListener("file", inputModule);
-			addPropertyChangeListener("jaar", inputModule);
+		if (this.inputModule == null) {
+			this.inputModule = new CsvInputModule();
+			addPropertyChangeListener("file", this.inputModule);
+			addPropertyChangeListener("jaar", this.inputModule);
 		}
-		return inputModule;
+		return this.inputModule;
 	}
 }

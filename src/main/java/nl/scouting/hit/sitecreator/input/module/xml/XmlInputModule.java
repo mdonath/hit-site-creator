@@ -12,8 +12,10 @@ public class XmlInputModule implements InputModule {
 	private File file;
 	private Integer jaar;
 
+	@Override
 	public Hit load() {
-		System.out.println("inlezen " + file + " van het jaar " + jaar);
+		System.out.println("inlezen " + this.file + " van het jaar "
+				+ this.jaar);
 		return loadDummy();
 	}
 
@@ -21,12 +23,13 @@ public class XmlInputModule implements InputModule {
 		return ModelUtil.createTestStructure();
 	}
 
-	public void propertyChange(PropertyChangeEvent evt) {
-		String propertyName = evt.getPropertyName();
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		final String propertyName = evt.getPropertyName();
 		if ("file".equals(propertyName)) {
-			file = (File) evt.getNewValue();
+			this.file = (File) evt.getNewValue();
 		} else if ("jaar".equals(propertyName)) {
-			jaar = (Integer) evt.getNewValue();
+			this.jaar = (Integer) evt.getNewValue();
 		}
 	}
 }

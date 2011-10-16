@@ -12,19 +12,21 @@ import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 
 public final class HitTreeModel implements TreeModel {
-	private Hit root;
+	private final Hit root;
 
-	private List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
+	private final List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
 
-	public HitTreeModel(Hit hit) {
-		root = hit;
+	public HitTreeModel(final Hit hit) {
+		this.root = hit;
 	}
 
-	public Object getRoot() {
-		return root;
+	@Override
+	public void addTreeModelListener(final TreeModelListener l) {
+		this.treeModelListeners.add(l);
 	}
 
-	public Object getChild(Object parent, int index) {
+	@Override
+	public Object getChild(final Object parent, final int index) {
 		if (parent instanceof Hit) {
 			return ((Hit) parent).getHitPlaatsen().get(index);
 		} else if (parent instanceof HitPlaats) {
@@ -33,7 +35,8 @@ public final class HitTreeModel implements TreeModel {
 		return null;
 	}
 
-	public int getChildCount(Object parent) {
+	@Override
+	public int getChildCount(final Object parent) {
 		if (parent instanceof Hit) {
 			return ((Hit) parent).getHitPlaatsen().size();
 		} else if (parent instanceof HitPlaats) {
@@ -42,15 +45,8 @@ public final class HitTreeModel implements TreeModel {
 		return 0;
 	}
 
-	public boolean isLeaf(Object node) {
-		return node instanceof HitKamp;
-	}
-
-	public void valueForPathChanged(TreePath path, Object newValue) {
-		// empty
-	}
-
-	public int getIndexOfChild(Object parent, Object child) {
+	@Override
+	public int getIndexOfChild(final Object parent, final Object child) {
 		if (parent instanceof Hit) {
 			return ((Hit) parent).getHitPlaatsen().indexOf(child);
 		} else if (parent instanceof HitPlaats) {
@@ -59,11 +55,23 @@ public final class HitTreeModel implements TreeModel {
 		return -1;
 	}
 
-	public void addTreeModelListener(TreeModelListener l) {
-		treeModelListeners.add(l);
+	@Override
+	public Object getRoot() {
+		return this.root;
 	}
 
-	public void removeTreeModelListener(TreeModelListener l) {
-		treeModelListeners.remove(l);
+	@Override
+	public boolean isLeaf(final Object node) {
+		return node instanceof HitKamp;
+	}
+
+	@Override
+	public void removeTreeModelListener(final TreeModelListener l) {
+		this.treeModelListeners.remove(l);
+	}
+
+	@Override
+	public void valueForPathChanged(final TreePath path, final Object newValue) {
+		// empty
 	}
 }

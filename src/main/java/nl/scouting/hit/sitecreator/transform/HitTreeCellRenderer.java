@@ -21,55 +21,55 @@ public final class HitTreeCellRenderer implements TreeCellRenderer {
 	private final Color backgroundSelectionColor;
 	private final Color backgroundNonSelectionColor;
 
+	private static final String FMT = "%s (%d)";
+
 	public HitTreeCellRenderer() {
-		renderer = new JPanel(new GridLayout(0, 1));
-		titleLabel = new JLabel(" ");
-		renderer.add(titleLabel);
-		backgroundSelectionColor = defaultRenderer
+		this.renderer = new JPanel(new GridLayout(0, 1));
+		this.titleLabel = new JLabel(" ");
+		this.renderer.add(this.titleLabel);
+		this.backgroundSelectionColor = this.defaultRenderer
 				.getBackgroundSelectionColor();
-		backgroundNonSelectionColor = defaultRenderer
+		this.backgroundNonSelectionColor = this.defaultRenderer
 				.getBackgroundNonSelectionColor();
 	}
 
-	public Component getTreeCellRendererComponent(JTree tree, Object value,
-			boolean selected, boolean expanded, boolean leaf, int row,
-			boolean hasFocus) {
+	@Override
+	public Component getTreeCellRendererComponent(final JTree tree,
+			final Object value, final boolean selected, final boolean expanded,
+			final boolean leaf, final int row, final boolean hasFocus) {
 		Component returnValue = null;
 		if (value != null) {
 			if (value instanceof Hit) {
-				titleLabel.setText(printHit((Hit) value));
+				this.titleLabel.setText(printHit((Hit) value));
 			} else if (value instanceof HitPlaats) {
-				titleLabel.setText(printHitPlaats((HitPlaats) value));
+				this.titleLabel.setText(printHitPlaats((HitPlaats) value));
 			} else if (value instanceof HitKamp) {
-				titleLabel.setText(printHitKamp((HitKamp) value));
+				this.titleLabel.setText(printHitKamp((HitKamp) value));
 			}
 			if (selected) {
-				renderer.setBackground(backgroundSelectionColor);
+				this.renderer.setBackground(this.backgroundSelectionColor);
 			} else {
-				renderer.setBackground(backgroundNonSelectionColor);
+				this.renderer.setBackground(this.backgroundNonSelectionColor);
 			}
-			renderer.setEnabled(tree.isEnabled());
-			returnValue = renderer;
+			this.renderer.setEnabled(tree.isEnabled());
+			returnValue = this.renderer;
 		}
 		if (returnValue == null) {
-			returnValue = defaultRenderer.getTreeCellRendererComponent(
+			returnValue = this.defaultRenderer.getTreeCellRendererComponent(
 					tree, value, selected, expanded, leaf, row, hasFocus);
 		}
 		return returnValue;
 	}
 
-	private static final String FMT = "%s (%d)";
-
-	private String printHit(Hit hit) {
+	private String printHit(final Hit hit) {
 		return String.format(FMT, hit.getJaar(), hit.getAantalKampen());
 	}
 
-	private String printHitPlaats(HitPlaats plaats) {
-		return String.format(FMT, plaats.getNaam(),
-				plaats.getAantalKampen());
+	private String printHitKamp(final HitKamp kamp) {
+		return kamp.getNaam();
 	}
 
-	private String printHitKamp(HitKamp kamp) {
-		return kamp.getNaam();
+	private String printHitPlaats(final HitPlaats plaats) {
+		return String.format(FMT, plaats.getNaam(), plaats.getAantalKampen());
 	}
 }

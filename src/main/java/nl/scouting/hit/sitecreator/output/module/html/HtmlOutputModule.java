@@ -10,16 +10,17 @@ public class HtmlOutputModule implements OutputModule {
 
 	private File outDir;
 
-	public void save(Hit hit) {
-		System.out.println("Save de inhoud van " + hit.getJaar() + " naar "
-				+ outDir);
-	}
-
-	public void propertyChange(PropertyChangeEvent evt) {
-		String propertyName = evt.getPropertyName();
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		final String propertyName = evt.getPropertyName();
 		if ("outDir".equals(propertyName)) {
-			outDir = (File) evt.getNewValue();
+			this.outDir = (File) evt.getNewValue();
 		}
 	}
 
+	@Override
+	public void save(final Hit hit) {
+		System.out.println("Save de inhoud van " + hit.getJaar() + " naar "
+				+ this.outDir);
+	}
 }

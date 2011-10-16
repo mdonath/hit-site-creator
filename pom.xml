@@ -16,12 +16,59 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
 					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+<!--
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>1.11</version>
+				<executions>
+					<execution>
+						<id>generate-stubs</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<packageName>nl.scouting.sol.soap.client</packageName>
+							<wsdlDirectory>src/main/resources/nl/scouting/hit/sitecreator/input/module/soap/</wsdlDirectory>
+							<wsdlFiles>
+								<wsdlFile>nl.scouting.dev1.wsdl</wsdlFile>
+							</wsdlFiles>
+							<wsdlLocation>http://dev1.scouting.nl/frontend/sol/sol_dev1.wsdl</wsdlLocation>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+-->
 		</plugins>
 	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.3</version>
+		</dependency>
+<!--
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.1.4</version>
+		</dependency>
+-->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

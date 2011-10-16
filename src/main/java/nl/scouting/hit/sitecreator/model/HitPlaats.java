@@ -10,38 +10,44 @@ public class HitPlaats {
 
 	private List<HitKamp> hitKampen;
 
-	public HitPlaats(String naam, HitKamp... hitKampen) {
+	public HitPlaats(final String naam, final HitKamp... hitKampen) {
 		this.naam = naam;
 		this.hitKampen = new ArrayList<HitKamp>(Arrays.asList(hitKampen));
+	}
+
+	public void addHitKamp(final HitKamp hitKamp) {
+		this.hitKampen.add(hitKamp);
+		hitKamp.setPlaats(this);
 	}
 
 	public int getAantalKampen() {
 		return this.hitKampen.size();
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(naam).append("\n");
-		for (HitKamp hitKamp : hitKampen) {
-			sb.append("- - ").append(hitKamp).append("\n");
-		}
-		return sb.toString();
-	}
-
 	public List<HitKamp> getHitKampen() {
-		return hitKampen;
-	}
-
-	public void setHitKampen(List<HitKamp> hitKampen) {
-		this.hitKampen = hitKampen;
+		return this.hitKampen;
 	}
 
 	public String getNaam() {
-		return naam;
+		return this.naam;
 	}
 
-	public void setNaam(String naam) {
+	public void setHitKampen(final List<HitKamp> hitKampen) {
+		this.hitKampen = hitKampen;
+	}
+
+	public void setNaam(final String naam) {
 		this.naam = naam;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(this.naam).append("\n");
+		for (final HitKamp hitKamp : this.hitKampen) {
+			sb.append("- - ").append(hitKamp).append("\n");
+		}
+		return sb.toString();
 	}
 
 }

@@ -20,36 +20,80 @@ import nl.scouting.hit.sitecreator.output.module.html.HtmlOutputPanel;
 import nl.scouting.hit.sitecreator.output.module.joomla.JoomlaOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public class OutputPanel extends JPanel implements PropertyChangeListener {
+public final class OutputPanel extends JPanel implements PropertyChangeListener {
+
+	public final class SaveAction extends AbstractAction {
+		public class Saver extends SwingWorker<Void, Void> {
+
+			private final OutputModule outputModule;
+			private final Hit hit;
+
+			public Saver(final OutputModule outputModule, final Hit hit) {
+				this.outputModule = outputModule;
+				this.hit = hit;
+			}
+
+			@Override
+			protected Void doInBackground() throws Exception {
+				this.outputModule.save(this.hit);
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				Void hit;
+				try {
+					hit = get();
+				} catch (final Exception ignore) {
+					hit = null;
+				}
+				OutputPanel.this.firePropertyChange("save", null, hit);
+			}
+		}
+
+		private static final long serialVersionUID = 1L;
+
+		public SaveAction() {
+			super("Maak bestanden");
+		}
+
+		@Override
+		public void actionPerformed(final ActionEvent e) {
+			new Saver(OutputPanel.this.currentOutputModule,
+					OutputPanel.this.hit).execute();
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private OutputModule currentOutputModule;
+
 	private Hit hit;
 
 	public OutputPanel() {
-		super(new BorderLayout());
 		initComponents();
 	}
 
-	private void initComponents() {
-		setBorder(new TitledBorder("Output"));
-		add(createTabPanel(), BorderLayout.CENTER);
-		add(createButtonPanel(), BorderLayout.SOUTH);
+	private Component createButtonPanel() {
+		final JPanel result = new JPanel();
+		result.add(new JButton(new SaveAction()));
+		return result;
 	}
 
 	private JTabbedPane createTabPanel() {
-		JTabbedPane tab = UIUtil.createTab( //
+		final JTabbedPane tab = UIUtil.createTab( //
 				new HtmlOutputPanel() //
 				, new JoomlaOutputPanel() //
 				);
 		tab.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent changeEvent) {
-				JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent
+			@Override
+			public void stateChanged(final ChangeEvent changeEvent) {
+				final JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent
 						.getSource();
-				Component selectedComponent = sourceTabbedPane
+				final Component selectedComponent = sourceTabbedPane
 						.getSelectedComponent();
 				if (selectedComponent != null) {
-					currentOutputModule = ((OutputModuleUI) selectedComponent)
+					OutputPanel.this.currentOutputModule = ((OutputModuleUI) selectedComponent)
 							.getProcessor();
 				}
 			}
@@ -59,56 +103,19 @@ public class OutputPanel extends JPanel implements PropertyChangeListener {
 		return tab;
 	}
 
-	private Component createButtonPanel() {
-		JPanel result = new JPanel();
-		result.add(new JButton(new SaveAction()));
-		return result;
+	private void initComponents() {
+		setLayout(new BorderLayout());
+		setBorder(new TitledBorder("Output"));
+		add(createTabPanel(), BorderLayout.CENTER);
+		add(createButtonPanel(), BorderLayout.SOUTH);
 	}
 
-	public class SaveAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public SaveAction() {
-			super("Maak bestanden");
-		}
-
-		public void actionPerformed(ActionEvent e) {
- 			new Saver(currentOutputModule, hit).execute();
-		}
-
-		public class Saver extends SwingWorker<Void, Void> {
-
-			private final OutputModule outputModule;
-			private final Hit hit;
-
-			public Saver(OutputModule outputModule, Hit hit) {
-				this.outputModule = outputModule;
-				this.hit = hit; 
-			}
-
-			@Override
-			protected Void doInBackground() throws Exception {
-				outputModule.save(hit);
-				return null;
-			}
-
-			@Override
-			protected void done() {
-				Void hit;
-				try {
-					hit = get();
-				} catch (Exception ignore) {
-					hit = null;
-				}
-				OutputPanel.this.firePropertyChange("save", null, hit);
-			}
-		}
-	}
-
-	public void propertyChange(PropertyChangeEvent evt) {
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("hit".equals(evt.getPropertyName())) {
-			Hit hit = (Hit) evt.getNewValue();
+			final Hit hit = (Hit) evt.getNewValue();
 			this.hit = hit;
 		}
 	}
+
 }

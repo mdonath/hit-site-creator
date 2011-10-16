@@ -11,21 +11,23 @@ public class JoomlaOutputModule implements OutputModule {
 	private String user;
 	private String password;
 
-	public void save(Hit hit) {
-		System.out.println("Save de inhoud van " + hit.getJaar()
-				+ " naar Joomla op" + url + " met " + user + "@" + password);
+	@Override
+	public void propertyChange(final PropertyChangeEvent evt) {
+		final String propertyName = evt.getPropertyName();
+		if ("url".equals(propertyName)) {
+			this.url = (String) evt.getNewValue();
+		} else if ("user".equals(propertyName)) {
+			this.user = (String) evt.getNewValue();
+		} else if ("password".equals(propertyName)) {
+			this.password = (String) evt.getNewValue();
+		}
 	}
 
-	public void propertyChange(PropertyChangeEvent evt) {
-		String propertyName = evt.getPropertyName();
-		if ("url".equals(propertyName)) {
-			url = (String) evt.getNewValue();
-		} else if ("user".equals(propertyName)) {
-			user = (String) evt.getNewValue();
-		} else if ("password".equals(propertyName)) {
-			password = (String) evt.getNewValue();
-		}
-
+	@Override
+	public void save(final Hit hit) {
+		System.out.println("Save de inhoud van " + hit.getJaar()
+				+ " naar Joomla op" + this.url + " met " + this.user + "@"
+				+ this.password);
 	}
 
 }

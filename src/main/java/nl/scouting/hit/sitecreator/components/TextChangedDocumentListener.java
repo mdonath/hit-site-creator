@@ -7,17 +7,17 @@ import javax.swing.text.Document;
 public abstract class TextChangedDocumentListener extends DocumentAdapter {
 	private final String propertyName;
 
-	public TextChangedDocumentListener(String propertyName) {
+	public TextChangedDocumentListener(final String propertyName) {
 		this.propertyName = propertyName;
 	}
 
 	@Override
-	protected void eventUpdate(DocumentEvent e) {
-		Document document = e.getDocument();
+	protected void eventUpdate(final DocumentEvent e) {
+		final Document document = e.getDocument();
 		try {
-			String text = document.getText(0, document.getLength());
-			textChanged(propertyName, null, text);
-		} catch (BadLocationException e1) {
+			final String text = document.getText(0, document.getLength());
+			textChanged(this.propertyName, null, text);
+		} catch (final BadLocationException e1) {
 			throw new RuntimeException("Ophalen text", e1);
 		}
 	}

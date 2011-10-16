@@ -2,39 +2,71 @@ package nl.scouting.hit.sitecreator.output.module.joomla;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
 import nl.scouting.hit.sitecreator.output.OutputModule;
-import nl.scouting.hit.sitecreator.output.OutputModuleUI;
+import nl.scouting.hit.sitecreator.output.module.AbstractOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public class JoomlaOutputPanel extends JPanel implements OutputModuleUI {
+/**
+ * Panel voor output naar Joomla.
+ * 
+ * @author Martijn Donath
+ */
+public final class JoomlaOutputPanel extends AbstractOutputPanel {
+	private final class TextChangeNotifierListener extends
+			TextChangedDocumentListener {
+
+		private TextChangeNotifierListener(final String propertyName) {
+			super(propertyName);
+		}
+
+		@Override
+		protected void textChanged(final String propertyName,
+				final String oldValue, final String newValue) {
+			// Moet persé in een eigen class, omdat firePropertyChange protected
+			// is
+			firePropertyChange(propertyName, oldValue, newValue);
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
+
+	private JoomlaOutputModule outputModule;
 
 	public JoomlaOutputPanel() {
 		initComponents();
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public OutputModule getProcessor() {
+		if (this.outputModule == null) {
+			this.outputModule = new JoomlaOutputModule();
+			addPropertyChangeListener("save", this.outputModule);
+		}
+		return this.outputModule;
+	}
+
 	private void initComponents() {
 		setName("Joomla");
 
-		JLabel urlLabel = new JLabel("Joomla URL");
-		JTextField urlField = new JTextField();
+		final JLabel urlLabel = new JLabel("Joomla URL");
+		final JTextField urlField = new JTextField();
 		urlField.getDocument().addDocumentListener(
 				new TextChangeNotifierListener("url"));
-		JLabel userLabel = new JLabel("Username");
-		JTextField userField = new JTextField();
+		final JLabel userLabel = new JLabel("Username");
+		final JTextField userField = new JTextField();
 		userField.getDocument().addDocumentListener(
 				new TextChangeNotifierListener("user"));
-		JLabel passwordLabel = new JLabel("Password");
-		JPasswordField passwordField = new JPasswordField();
+		final JLabel passwordLabel = new JLabel("Password");
+		final JPasswordField passwordField = new JPasswordField();
 		passwordField.getDocument().addDocumentListener(
 				new TextChangeNotifierListener("password"));
 
-		GroupLayout layout = UIUtil.createGroupLayout(this);
+		final GroupLayout layout = UIUtil.createGroupLayout(this);
 
 		// horizontaal gezien heb ik van links naar rechts twee paralelle
 		// groepen. In de eerste groep zitten labels, in de tweede velden
@@ -68,30 +100,6 @@ public class JoomlaOutputPanel extends JPanel implements OutputModuleUI {
 						.addComponent(passwordField) //
 				) //
 		);
-
 	}
 
-	private JoomlaOutputModule outputModule;
-
-	public OutputModule getProcessor() {
-		if (outputModule == null) {
-			outputModule = new JoomlaOutputModule();
-			addPropertyChangeListener("save", outputModule);
-		}
-		return outputModule;
-	}
-
-	private final class TextChangeNotifierListener extends
-			TextChangedDocumentListener {
-
-		private TextChangeNotifierListener(String propertyName) {
-			super(propertyName);
-		}
-
-		@Override
-		protected void textChanged(String propertyName, String oldValue,
-				String newValue) {
-			firePropertyChange(propertyName, oldValue, newValue);
-		}
-	}
 }

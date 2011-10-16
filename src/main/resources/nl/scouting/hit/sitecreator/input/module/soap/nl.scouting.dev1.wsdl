@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!-- SOL SOAP remote connection
+    @version 1.0
+    @author Frits Zwegers
+ -->
+<wsdl:definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="https://sol.scouting.nl/" xmlns:ns2="http://xml.apache.org/xml-soap" targetNamespace="https://sol.scouting.nl/">
+    <wsdl:types>
+        <xsd:schema targetNamespace="https://sol.scouting.nl"/>
+    </wsdl:types>
+    <message name="request_header">
+        <!-- The name is unique identifier that was appointed to this client -->
+        <part name="name" type="xsd:string"/>
+        <!-- The signature is used to for security purposes to validate that the request really originated from this client (or was returned from SOL).
+        The signature is constructed as follows (note that (non-fault) responses from SOL always adhere to the doTab variant):
+        For signOn (not-logged-in):  
+            1. Create the following content:
+                <sign><time>time()</time><check>md5(body_text_content)</check></sign>
+                Where time() is a UNIX-timestamp. body_text_content is the text-content of the SOAP-body (so no XML-tags).
+                md5(..) calculates the md5-hash of this signature.
+        For doTab (logged-in):  
+            1. Create the following content:
+                <sign><time>time()</time><sess_id>sess_id</sess_id><check>md5(body_text_content)</check></sign>
+                Where time() is a UNIX-timestamp. body_text_content is the text-content of the SOAP-body (so no XML-tags).
+                md5(..) calculates the md5-hash of this signature.
+                sess_id is the session identifer that was returned after a successfull signOn.      
+            
+        For both:
+            2. Sign this string using openssl signing with the private key of your client. (in PHP this is the openssl_private_encrypt() function.)
+            3. Use base64 encoding so the signed result can be transported over TCP/IP. (in PHP this is the base64_encode() function)
+        -->
+        <part name="signature" type="xsd:string"/>
+    </message>
+    <message name="doTabRequest">
+    <!-- Task Action Button represent the location of the information in SOL. The params mapping includes
+        the parameters for the request. 
+        A params section looks like: 
+            <params xsi:type="ns2:Map"><item><key xsi:type="xsd:string">per_id</key><value xsi:type="xsd:string">1234</value></item></params>
+        -->
+        <part name="task" type="xsd:string"/>
+        <part name="action" type="xsd:string"/>
+        <part name="button" type="xsd:string"/>
+        <part name="params" type="ns2:map"/>
+    </message>
+    <message name="doTabResponse">
+        <!-- A TAB-response adheres to the SOL:SOAP XML language. -->
+        <part name="doTabReturn" type="xsd:string"/>
+    </message>
+    <message name="signOnRequest">
+        <part name="usr_nm" type="xsd:string"/>
+        <part name="usr_pw" type="xsd:string"/>    
+    </message>
+    <message name="signOnResponse">
+        <!-- The signOn response is a mapping which includes the following:
+            - sess_id - session identifier
+            - sess_nm - cookie name of the session in SOL
+            - per_id - person identifier of the logged in user
+            
+            The session id is used in doTab requests, but can also be used for the single-login.
+            This works as follows:
+            1. For non-scouting.nl domains:
+                Link to SOL using: https://sol.scouting.nl/?_SESS_NM=SESS_ID
+                where SESS_NM is the cookie name of the session
+                and SESS_ID is the session identifier
+            2. For scouting.nl domeins:
+                Set your cookie for domain .scouting.nl
+                and set the variable SESS_NM to SESS_ID
+                where SESS_NM is the cookie name of the session
+                and SESS_ID is the session identifier
+            -->
+        <part name="signOnReturn" type="ns2:map"/>
+    </message>
+    <wsdl:message name="logoutRequest"/>
+    <wsdl:message name="logoutReponse">
+        <wsdl:part name="logoutReturn" type="xsd:positiveInteger"/>
+    </wsdl:message>
+    <wsdl:message name="keepaliveRequest">
+
+    </wsdl:message>
+    <wsdl:message name="keepaliveResponse">
+        <wsdl:part name="keepaliveResponse" type="xsd:boolean"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="NewOperationRequest">
+        <wsdl:part name="NewOperationRequest" type="xsd:string"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="NewOperationResponse">
+        <wsdl:part name="NewOperationResponse" type="xsd:string"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="soap_functionsPortType">
+        <wsdl:operation name="doTab">
+            <wsdl:input message="tns:doTabRequest"/>
+            <wsdl:output message="tns:doTabResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="signOn">
+            <wsdl:input message="tns:signOnRequest"/>
+            <wsdl:output message="tns:signOnResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="logout">
+            <wsdl:input message="tns:logoutRequest"/>
+            <wsdl:output message="tns:logoutReponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="keepalive">
+            <wsdl:input message="tns:keepaliveRequest"></wsdl:input>
+            <wsdl:output message="tns:keepaliveResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <binding name="SOLBinding" type="tns:soap_functionsPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="doTab">
+            <soap:operation style="rpc"/>
+            <wsdl:input>
+                <soap:header use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl" message="tns:request_header" part="name"/>
+                <soap:header use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl" message="tns:request_header" part="signature"/>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl" message="tns:request_header" part="name"/>
+                <soap:header use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl" message="tns:request_header" part="signature"/>            
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="signOn">
+            <soap:operation style="rpc"/>
+            <wsdl:input>
+                <soap:header message="tns:request_header" part="name" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:header message="tns:request_header" part="signature" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="tns:request_header" part="name" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:header message="tns:request_header" part="signature" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="logout">
+            <soap:operation soapAction="" style="rpc"/>
+            <soap:operation style="rpc"/>
+            <wsdl:input>
+                <soap:header message="tns:request_header" part="name" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:header message="tns:request_header" part="signature" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl" message="tns:request_header" part="name"/>
+                <soap:header use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl" message="tns:request_header" part="signature"/>            
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="keepalive">
+            <soap:operation soapAction="" style="rpc"/>
+            <soap:operation style="rpc"/>
+            <wsdl:input>
+                <soap:header message="tns:request_header" part="name" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:header message="tns:request_header" part="signature" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="tns:request_header" part="name" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:header message="tns:request_header" part="signature" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://sol.scouting.nl"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </binding>
+    <wsdl:service name="soap_functions">
+        <wsdl:port name="SOLPort" binding="tns:SOLBinding">
+            <soap:address location="https://dev1.scouting.nl/soap.php"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

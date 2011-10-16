@@ -11,28 +11,31 @@ public class HitPlaatsTableModel extends AbstractTableModel {
 
 	private final HitPlaats hitPlaats;
 
-	public HitPlaatsTableModel(HitPlaats hitPlaats) {
+	public HitPlaatsTableModel(final HitPlaats hitPlaats) {
 		this.hitPlaats = hitPlaats;
 	}
 
-	public int getRowCount() {
-		return hitPlaats.getAantalKampen();
-	}
-
+	@Override
 	public int getColumnCount() {
 		return KOLOMMEN.length;
 	}
 
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		switch (columnIndex) {
-		case 0:
-			return hitPlaats.getHitKampen().get(rowIndex).getNaam();
-		}
-		return null;
+	@Override
+	public String getColumnName(final int column) {
+		return KOLOMMEN[column];
 	}
 
 	@Override
-	public String getColumnName(int column) {
-		return KOLOMMEN[column];
+	public int getRowCount() {
+		return this.hitPlaats.getAantalKampen();
+	}
+
+	@Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return this.hitPlaats.getHitKampen().get(rowIndex).getNaam();
+		}
+		return null;
 	}
 }

@@ -10,44 +10,62 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nl.scouting.hit.sitecreator.components.JFileInput;
-import nl.scouting.hit.sitecreator.input.InputModuleUI;
+import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public abstract class AbstractFileImportPanel extends JPanel implements
-		InputModuleUI {
+public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 	private static final long serialVersionUID = 1L;
 
-	public AbstractFileImportPanel(String name, FileNameExtensionFilter filter) {
+	public AbstractFileImportPanel(final String name,
+			final FileNameExtensionFilter filter) {
+		super();
 		this.setName(name);
+		initComponents(filter);
+	}
 
-		JLabel locLabel = new JLabel("Locatie bestand:");
-		JFileInput locField = new JFileInput(20, filter);
+	public Integer[] createJaarItems(final int huidigeJaar) {
+		final int startJaar = 2010;
+		final int aantal = huidigeJaar - startJaar;
+		final Integer[] items = new Integer[aantal + 2];
+		for (int i = 0; i < items.length; i++) {
+			items[i] = Integer.valueOf(startJaar + i);
+		}
+		return items;
+	}
+
+	public void initComponents(final FileNameExtensionFilter filter) {
+
+		final JLabel locLabel = new JLabel("Locatie bestand");
+		final JFileInput locField = new JFileInput(20, filter);
 		locField.addPropertyChangeListener("file",
 				new PropertyChangeListener() {
-					public void propertyChange(PropertyChangeEvent evt) {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
 						firePropertyChange("file", evt.getOldValue(),
 								evt.getNewValue());
 					}
 				});
 
-		JLabel yearLabel = new JLabel("Jaar");
-		JComboBox yearField = new JComboBox(new Integer[] { 2010, 2011, 2012 });
-		yearField.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
-		yearField.addItemListener(new ItemListener() {
+		final JLabel yearLabel = new JLabel("Jaar");
 
-			public void itemStateChanged(ItemEvent e) {
-				Object[] selected = e.getItemSelectable().getSelectedObjects();
+		final int huidigeJaar = Calendar.getInstance().get(Calendar.YEAR);
+		final JComboBox yearField = new JComboBox(createJaarItems(huidigeJaar));
+		yearField.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				final Object[] selected = e.getItemSelectable()
+						.getSelectedObjects();
 				if (selected != null) {
 					firePropertyChange("jaar", null, selected[0]);
 				}
 			}
 		});
+		yearField.setSelectedItem(huidigeJaar);
 
-		GroupLayout layout = UIUtil.createGroupLayout(this);
+		final GroupLayout layout = UIUtil.createGroupLayout(this);
 		layout.setHorizontalGroup(layout.createSequentialGroup() //
 				.addGroup(layout.createParallelGroup(Alignment.LEADING) //
 						.addComponent(locLabel) //

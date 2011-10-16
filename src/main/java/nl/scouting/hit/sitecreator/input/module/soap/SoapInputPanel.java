@@ -2,39 +2,65 @@ package nl.scouting.hit.sitecreator.input.module.soap;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
+import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
 import nl.scouting.hit.sitecreator.input.InputModule;
-import nl.scouting.hit.sitecreator.input.InputModuleUI;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public class SoapInputPanel extends JPanel implements InputModuleUI {
+public class SoapInputPanel extends AbstractInputPanel {
+	private final class TextChangeNotifierListener extends
+			TextChangedDocumentListener {
+
+		private TextChangeNotifierListener(final String propertyName) {
+			super(propertyName);
+		}
+
+		@Override
+		protected void textChanged(final String propertyName,
+				final String oldValue, final String newValue) {
+			firePropertyChange(propertyName, oldValue, newValue);
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
+
+	private SoapInputModule inputModule;
 
 	public SoapInputPanel() {
 		initComponents();
 	}
 
+	@Override
+	public InputModule getProcessor() {
+		if (this.inputModule == null) {
+			this.inputModule = new SoapInputModule();
+			addPropertyChangeListener("url", this.inputModule);
+			addPropertyChangeListener("user", this.inputModule);
+			addPropertyChangeListener("password", this.inputModule);
+		}
+		return this.inputModule;
+	}
+
 	private void initComponents() {
 		setName("Soap");
 
-		JLabel urlLabel = new JLabel("Soap URL");
-		JTextField urlField = new JTextField();
+		final JLabel urlLabel = new JLabel("Soap URL");
+		final JTextField urlField = new JTextField();
 		urlField.getDocument().addDocumentListener(
 				new TextChangeNotifierListener("url"));
-		JLabel userLabel = new JLabel("Username");
-		JTextField userField = new JTextField();
+		final JLabel userLabel = new JLabel("Username");
+		final JTextField userField = new JTextField();
 		userField.getDocument().addDocumentListener(
 				new TextChangeNotifierListener("user"));
-		JLabel passwordLabel = new JLabel("Password");
-		JPasswordField passwordField = new JPasswordField();
+		final JLabel passwordLabel = new JLabel("Password");
+		final JPasswordField passwordField = new JPasswordField();
 		passwordField.getDocument().addDocumentListener(
 				new TextChangeNotifierListener("password"));
 
-		GroupLayout layout = UIUtil.createGroupLayout(this);
+		final GroupLayout layout = UIUtil.createGroupLayout(this);
 
 		// horizontaal gezien heb ik van links naar rechts twee paralelle
 		// groepen. In de eerste groep zitten labels, in de tweede velden
@@ -69,31 +95,5 @@ public class SoapInputPanel extends JPanel implements InputModuleUI {
 				) //
 		);
 
-	}
-
-	private SoapInputModule inputModule;
-
-	public InputModule getProcessor() {
-		if (inputModule == null) {
-			inputModule = new SoapInputModule();
-			addPropertyChangeListener("url", inputModule);
-			addPropertyChangeListener("user", inputModule);
-			addPropertyChangeListener("password", inputModule);
-		}
-		return inputModule;
-	}
-
-	private final class TextChangeNotifierListener extends
-			TextChangedDocumentListener {
-
-		private TextChangeNotifierListener(String propertyName) {
-			super(propertyName);
-		}
-
-		@Override
-		protected void textChanged(String propertyName, String oldValue,
-				String newValue) {
-			firePropertyChange(propertyName, oldValue, newValue);
-		}
 	}
 }

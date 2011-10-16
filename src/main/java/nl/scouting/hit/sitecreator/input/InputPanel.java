@@ -21,6 +21,45 @@ import nl.scouting.hit.sitecreator.model.ModelUtil;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public class InputPanel extends JPanel {
+	public class LoadAction extends AbstractAction {
+		public class Loader extends SwingWorker<Hit, Void> {
+
+			private final InputModule inputModule;
+
+			public Loader(final InputModule inputModule) {
+				this.inputModule = inputModule;
+
+			}
+
+			@Override
+			protected Hit doInBackground() throws Exception {
+				return this.inputModule.load();
+			}
+
+			@Override
+			protected void done() {
+				Hit hit;
+				try {
+					hit = get();
+				} catch (final Exception ignore) {
+					hit = ModelUtil.createEmptyStructure();
+				}
+				InputPanel.this.firePropertyChange("hit", null, hit);
+			}
+		}
+
+		private static final long serialVersionUID = 1L;
+
+		public LoadAction() {
+			super("Laad gegevens");
+		}
+
+		@Override
+		public void actionPerformed(final ActionEvent e) {
+			new Loader(InputPanel.this.currentInputModule).execute();
+		}
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private InputModule currentInputModule;
@@ -30,26 +69,28 @@ public class InputPanel extends JPanel {
 		initComponents();
 	}
 
-	private void initComponents() {
-		setBorder(new TitledBorder("Input"));
-		add(createTabPanel(), BorderLayout.CENTER);
-		add(createButtonPanel(), BorderLayout.SOUTH);
+	private Component createButtonPanel() {
+		final JPanel result = new JPanel();
+		result.add(new JButton(new LoadAction()));
+		return result;
 	}
 
 	private JTabbedPane createTabPanel() {
-		JTabbedPane tab = UIUtil.createTab( //
+		final JTabbedPane tab = UIUtil.createTab( //
 				new CsvFileImportPanel() //
 				, new XmlInputPanel() //
 				, new SoapInputPanel() //
 				);
+
 		tab.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent changeEvent) {
-				JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent
+			@Override
+			public void stateChanged(final ChangeEvent changeEvent) {
+				final JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent
 						.getSource();
-				Component selectedComponent = sourceTabbedPane
+				final Component selectedComponent = sourceTabbedPane
 						.getSelectedComponent();
 				if (selectedComponent != null) {
-					currentInputModule = ((InputModuleUI) selectedComponent)
+					InputPanel.this.currentInputModule = ((InputModuleUI) selectedComponent)
 							.getProcessor();
 				}
 			}
@@ -59,47 +100,9 @@ public class InputPanel extends JPanel {
 		return tab;
 	}
 
-	private Component createButtonPanel() {
-		JPanel result = new JPanel();
-		result.add(new JButton(new LoadAction()));
-		return result;
-	}
-
-	public class LoadAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public LoadAction() {
-			super("Laad gegevens");
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			new Loader(currentInputModule).execute();
-		}
-
-		public class Loader extends SwingWorker<Hit, Void> {
-
-			private final InputModule inputModule;
-
-			public Loader(InputModule inputModule) {
-				this.inputModule = inputModule;
-
-			}
-
-			@Override
-			protected Hit doInBackground() throws Exception {
-				return inputModule.load();
-			}
-
-			@Override
-			protected void done() {
-				Hit hit;
-				try {
-					hit = get();
-				} catch (Exception ignore) {
-					hit = ModelUtil.createEmptyStructure();
-				}
-				InputPanel.this.firePropertyChange("hit", null, hit);
-			}
-		}
+	private void initComponents() {
+		setBorder(new TitledBorder("Input"));
+		add(createTabPanel(), BorderLayout.CENTER);
+		add(createButtonPanel(), BorderLayout.SOUTH);
 	}
 }

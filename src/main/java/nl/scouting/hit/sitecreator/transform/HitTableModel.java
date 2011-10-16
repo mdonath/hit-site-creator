@@ -14,28 +14,36 @@ public class HitTableModel extends AbstractTableModel {
 
 	private static final String[] KOLOM_KOPPEN = { "Plaats", "Kamp" };
 
-	private List<HitKamp> hitKampen;
+	private final List<HitKamp> hitKampen;
 
 	public HitTableModel(final Hit hit) {
-		hitKampen = new ArrayList<HitKamp>();
-		for (HitPlaats plaats : hit.getHitPlaatsen()) {
-			for (HitKamp kamp : plaats.getHitKampen()) {
+		this.hitKampen = new ArrayList<HitKamp>();
+		for (final HitPlaats plaats : hit.getHitPlaatsen()) {
+			for (final HitKamp kamp : plaats.getHitKampen()) {
 				kamp.setPlaats(plaats);
-				hitKampen.add(kamp);
+				this.hitKampen.add(kamp);
 			}
 		}
 	}
 
-	public int getRowCount() {
-		return hitKampen.size();
-	}
-
+	@Override
 	public int getColumnCount() {
 		return KOLOM_KOPPEN.length;
 	}
 
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		HitKamp hitKamp = hitKampen.get(rowIndex);
+	@Override
+	public String getColumnName(final int column) {
+		return KOLOM_KOPPEN[column];
+	}
+
+	@Override
+	public int getRowCount() {
+		return this.hitKampen.size();
+	}
+
+	@Override
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
+		final HitKamp hitKamp = this.hitKampen.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return hitKamp.getPlaats().getNaam();
@@ -43,10 +51,5 @@ public class HitTableModel extends AbstractTableModel {
 			return hitKamp.getNaam();
 		}
 		return null;
-	}
-
-	@Override
-	public String getColumnName(int column) {
-		return KOLOM_KOPPEN[column];
 	}
 }

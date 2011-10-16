@@ -1,17 +1,22 @@
 package nl.scouting.hit.sitecreator.output.module.html;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
-import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
+import nl.scouting.hit.sitecreator.components.JDirectoryInput;
 import nl.scouting.hit.sitecreator.output.OutputModule;
-import nl.scouting.hit.sitecreator.output.OutputModuleUI;
+import nl.scouting.hit.sitecreator.output.module.AbstractOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public class HtmlOutputPanel extends JPanel implements OutputModuleUI {
+public class HtmlOutputPanel extends AbstractOutputPanel {
 	private static final long serialVersionUID = 1L;
+
+	private HtmlOutputModule outputModule;
 
 	public HtmlOutputPanel() {
 		initComponents();
@@ -20,12 +25,30 @@ public class HtmlOutputPanel extends JPanel implements OutputModuleUI {
 	private void initComponents() {
 		setName("Html");
 
-		JLabel outDirLabel = new JLabel("Output directory");
-		JTextField outDirField = new JTextField();
-		outDirField.getDocument().addDocumentListener(
-				new TextChangeNotifierListener("outDir"));
+		final JLabel outDirLabel = new JLabel("Output directory");
+		final JDirectoryInput outDirField = new JDirectoryInput(50,
+				new FileFilter() {
 
-		GroupLayout layout = UIUtil.createGroupLayout(this);
+					@Override
+					public String getDescription() {
+						return "Directory";
+					}
+
+					@Override
+					public boolean accept(final File f) {
+						return f.isDirectory();
+					}
+				});
+		outDirField.addPropertyChangeListener("file",
+				new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						firePropertyChange("outDir", evt.getOldValue(),
+								evt.getNewValue());
+					}
+				});
+
+		final GroupLayout layout = UIUtil.createGroupLayout(this);
 
 		// horizontaal gezien heb ik van links naar rechts twee paralelle
 		// groepen. In de eerste groep zitten labels, in de tweede velden
@@ -47,30 +70,16 @@ public class HtmlOutputPanel extends JPanel implements OutputModuleUI {
 						.addComponent(outDirField) //
 				) //
 		);
-
 	}
 
-	private HtmlOutputModule outputModule;
-
+	/** {@inheritDoc	 */
+	@Override
 	public OutputModule getProcessor() {
-		if (outputModule == null) {
-			outputModule = new HtmlOutputModule();
-			addPropertyChangeListener("save", outputModule);
+		if (this.outputModule == null) {
+			this.outputModule = new HtmlOutputModule();
+			addPropertyChangeListener("save", this.outputModule);
 		}
-		return outputModule;
+		return this.outputModule;
 	}
 
-	private final class TextChangeNotifierListener extends
-			TextChangedDocumentListener {
-
-		private TextChangeNotifierListener(String propertyName) {
-			super(propertyName);
-		}
-
-		@Override
-		protected void textChanged(String propertyName, String oldValue,
-				String newValue) {
-			firePropertyChange(propertyName, oldValue, newValue);
-		}
-	}
 }
