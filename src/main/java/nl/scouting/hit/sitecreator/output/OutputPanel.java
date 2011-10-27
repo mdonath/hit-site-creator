@@ -35,7 +35,7 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 
 			@Override
 			protected Void doInBackground() throws Exception {
-				this.outputModule.save(this.hit);
+				outputModule.save(hit);
 				return null;
 			}
 
@@ -45,6 +45,7 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 				try {
 					hit = get();
 				} catch (final Exception ignore) {
+					ignore.printStackTrace();
 					hit = null;
 				}
 				OutputPanel.this.firePropertyChange("save", null, hit);
@@ -59,8 +60,7 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			new Saver(OutputPanel.this.currentOutputModule,
-					OutputPanel.this.hit).execute();
+			new Saver(currentOutputModule, hit).execute();
 		}
 	}
 
@@ -93,7 +93,7 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 				final Component selectedComponent = sourceTabbedPane
 						.getSelectedComponent();
 				if (selectedComponent != null) {
-					OutputPanel.this.currentOutputModule = ((OutputModuleUI) selectedComponent)
+					currentOutputModule = ((OutputModuleUI) selectedComponent)
 							.getProcessor();
 				}
 			}

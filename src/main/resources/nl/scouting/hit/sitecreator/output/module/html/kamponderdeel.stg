@@ -1,0 +1,156 @@
+hitkamp(hit, kamp) ::= "
+<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
+<html>
+<head>
+        <title>$kamp.naam$</title>
+        <meta http-equiv=\"content-type\" content=\"text/html; charset=\"ISO-8859-1\">
+        <meta name=\"author\" content=\"HIT Scouting $hit.jaar$\">
+        <meta name=\"contact_id\" content=\"MMD-$hit.jaar$\">
+        <meta name=\"section\" content=\"HIT\">
+        <meta name=\"keywords\" content=\"HIT, Scouting Nederland, jongeren, jeugd, avontuur, scouts\">
+        <meta name=\"maintainer\" content=\"Martijn Donath\">
+        <meta name=\"description\" content=\"Informatie over een van de kampen van de HIT $hit.jaar$\">
+        <link rel=\"stylesheet\" href=\"hit.css\" type=\"text/css\">
+</head>
+<body id=\"kamp\" style=\"width:650px;\">
+<!--
+Aangepast en gecontroleerd moeten worden:
+
+TABBLAD BASIS:
+Startdatum (deel)evenement $kamp.startDatumtijd;format=\"dd-MM-yyyy\"$ , begintijd $kamp.startDatumtijd;format=\"HH:mm\"$  
+Einddatum (deel)evenement * $kamp.eindDatumtijd;format=\"dd-MM-yyyy\"$ , eindttijd $kamp.eindDatumtijd;format=\"HH:mm\"$
+Inschrijven vanaf * $hit.inschrijvingStartdatum;format=\"dd MMMM yyyy\"$
+Inschrijven tot en met * $hit.inschrijvingEinddatum;format=\"dd MMMM yyyy\"$
+Inschrijving wijzigen tot $hit.inschrijvingWijzigenTotDatum;format=\"dd MMMM yyyy\"$
+
+TABBLAD DEELNAMECONDITIES
+Minimum/maximum leeftijd $kamp.minimumLeeftijd$ en $kamp.maximumLeeftijd$
+Minimum/maximum deelnemersaantal $kamp.maximumAantalDeelnemers$
+Maximum aantal uit één groep $kamp.maximumAantalUitEenGroep$
+
+TABBLAD FINANCIEEN
+Tot en met deze datum kosteloos annuleren $hit.inschrijvingKosteloosAnnulerenDatum;format=\"dd MMMM yyyy\"$
+Datum waarna annuleren met volledige kosten geldt $hit.inschrijvingGeenRestitutieDatum;format=\"dd MMMM yyyy\"$
+
+TABBLAD SAMENSTELLEN
+deelnamekosten 
+Koptekst * Deelnamekosten HIT $hit.jaar$
+Omschrijving Deelname HIT $hit.jaar$
+Bedrag $kamp.deelnamekosten$
+Inningsdatum $hit.inningsdatum;format=\"dd MMMM yyyy\"$
+
+TABBLAD DOELGROEP
+Titel *  wijzigen (oude HIT-code verwijderen) \"$kamp.plaats.naam$ $kamp.naam$\"
+Tonen vanaf *  ,  Tonen t/m *  $hit.inschrijvingStartdatum;format=\"dd MMMM yyyy\"$  $hit.inschrijvingEinddatum;format=\"dd MMMM yyyy\"$
+    
+   
+-->
+<div id=\"content\">
+<div id=\"PrintKlaar\">
+
+<!-- Titel met deelnemerskosten, leeftijd etc -->
+<table width=\"100%\">
+	<tr>
+		<td rowspan=\"6\" valign=\"top\">
+		        <h1>$kamp.naam$</h1>
+		</td>
+	</tr>
+	<tr>
+	    <td valign=top>Plaats</td>
+	    <td valign=top>:</td>
+	    <td valign=top>$kamp.plaats.naam$</td>
+	</tr>
+	<tr>
+	    <td valign=top>Datum</td>
+	    <td valign=top>:</td>
+	    <td valign=top>$kamp.startDatumtijd;format=\"dd MMMM\"$ t/m $kamp.eindDatumtijd;format=\"dd MMMM\"$</td>
+	</tr>
+	<tr>
+        <td valign=top>Leeftijd</td>
+        <td valign=top>:</td>
+        <td valign=top>$kamp.minimumLeeftijd$ t/m $kamp.maximumLeeftijd$ jaar</td>
+	</tr>
+	<tr>
+        <td valign=top>Groep</td>
+        <td valign=top>:</td>
+        <td valign=top>$kamp.subgroepSamenstelling$</td>
+	</tr>
+	<tr>
+        <td valign=top>Prijs</td>
+        <td valign=top>:</td>
+        <td valign=top>€ $kamp.deelnamekosten$</td>
+	</tr>
+</table>
+<!-- icoontjes met subtitel -->
+<table width=\"100%\" cellpadding=\"0\">
+        <tr>
+                <td>
+                <div align=\"right\">
+                        <img src=\"./iconengroot/$icoon.bestandsnaam$\" alt=\"$icoon.tekst$\" title=\"$icoon.tekst$\"/>
+                </div>
+                </td>
+        </tr>
+        <tr>
+                <td>
+                <div align=\"left\">
+<h2>$kamp.titelTekst$<h2>
+                </div>
+                </td>
+        </tr>
+</table>
+
+<!-- verhaal -->
+$kamp.websiteTekst$ 
+
+<table>
+<td width=190 valign=top>
+<img src=\"$kamp.webadresFoto1$\" width=\"180\" alt=\"Foto 1\"><br><br>
+<img src=\"$kamp.webadresFoto2$\" width=\"180\" alt=\"Foto 2\"><br><br>
+
+<img src=\"$kamp.webadresFoto3$\" width=\"180\" alt=\"Foto 3\">
+
+</td></tr>
+<tr><td colspan=2>
+	<object width=\"670\" height=\"400\">
+		<param name=\"movie\" value=\"$kamp.websiteYoutube$\"></param>
+		<param name=\"allowFullScreen\" value=\"true\"></param>
+		<param name=\"allowscriptaccess\" value=\"always\"></param>
+		<embed src=\"$kamp.websiteYoutube$\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"670\" height=\"400\"></embed>
+	</object>
+
+</td></tr></table>
+
+<table>
+	<tr>
+		<td><img border=\"0\" src=\"./iconengroot/info.gif\" alt=\"Meer informatie? Mail of bel naar de contactpersoon van deze HIT\"></td>
+		<td>Bel bij vragen $kamp.websiteContactpersoon$: $kamp.websiteContactTelefoonnummer$<br>
+			<a href=\"mailto:$kamp.websiteContactEmailadres$\">Mail naar $kamp.websiteContactEmailadres$</a><br>';}
+    	</td>
+    </tr>
+    <tr>
+    	<td><img border=\"0\" src=\"./iconengroot/web.gif\" alt=\"Link naar een website over dit HIT onderdeel\"></td>
+    	<td><a target=\"hitkamp\" href=\"$kamp.websiteAdres$\">$kamp.websiteAdres$</a></td>
+    </tr>
+</table>
+
+<h2>Aanvullende info:</h2>
+<p>
+Er mogen maximaal $kamp.maximumAantalUitEenGroep$ leden uit dezelfde Scoutinggroep meedoen.
+Er kunnen maximaal $kamp.maximumAantalDeelnemers$ deelnemers meedoen aan deze activiteit.
+Totale afstand die tijdens deze HIT gelopen wordt is maximaal $kamp.afgelegdeKilometers$ kilometer.
+Dit HIT-Kamp start op $kamp.startDatumtijd;format=\"dd MMMM\"$ om $kamp.startDatumtijd;format=\"HH:mm\"$ uur en duurt tot en met $kamp.eindDatumtijd;format=\"dd MMMM\"$ $kamp.eindDatumtijd;format=\"HH:mm\"$ uur. 
+</p>
+</div>
+
+<input type=\"BUTTON\" value=\"&lt;\" onclick=\"window.location.href='$kamp.previous.htmlFileNaam$'\" style=\"float: left\">
+<input type=\"BUTTON\" value=\"&gt;\" onclick=\"window.location.href='$kamp.next.htmlFileNaam$'\" style=\"float: left\">
+<input type=\"BUTTON\" value=\"Direct inschrijven\" onclick=\"window.open('https://sol.scouting.nl/frontend/sol/index.php?task=as_registration&action=add&frm_id=$kamp.shantiformuliernummer$')\" style=\"float: right\">
+<input type=\"BUTTON\" value=\"Help\" onclick=\"window.location.href='symbolen.html'\" style=\"float: right\">
+<br>
+
+<p style=\"float: left\">$kamp.deelnemersnummer$ Laatste update $hit.datumNu;format=\"dd MMMM yyyy (HH:mm)\"$</p>
+
+</div>
+</body>
+</html>
+"

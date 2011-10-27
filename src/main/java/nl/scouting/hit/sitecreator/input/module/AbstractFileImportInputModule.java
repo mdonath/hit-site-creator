@@ -9,29 +9,29 @@ public abstract class AbstractFileImportInputModule implements InputModule {
 
 	private File file;
 	private Integer jaar;
-	private String encoding = "UTF-8";
+	private String encoding;
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		final String propertyName = evt.getPropertyName();
 		if ("file".equals(propertyName)) {
-			this.file = (File) evt.getNewValue();
+			file = (File) evt.getNewValue();
 		} else if ("jaar".equals(propertyName)) {
-			this.jaar = (Integer) evt.getNewValue();
+			jaar = (Integer) evt.getNewValue();
 		} else if ("encoding".equals(propertyName)) {
-			this.encoding = (String) evt.getNewValue();
+			encoding = (String) evt.getNewValue();
 		}
 	}
 
 	public File getFile() {
-		return this.file;
+		return file;
 	}
 
 	public Integer getJaar() {
-		return this.jaar;
+		return jaar;
 	}
 
 	public String getEncoding() {
-		return this.encoding;
+		return encoding;
 	}
 }

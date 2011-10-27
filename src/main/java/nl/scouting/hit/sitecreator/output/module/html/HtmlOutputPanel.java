@@ -1,14 +1,18 @@
 package nl.scouting.hit.sitecreator.output.module.html;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.GroupLayout;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
 
 import nl.scouting.hit.sitecreator.components.JDirectoryInput;
+import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 import nl.scouting.hit.sitecreator.output.module.AbstractOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
@@ -19,6 +23,7 @@ public class HtmlOutputPanel extends AbstractOutputPanel {
 	private HtmlOutputModule outputModule;
 
 	public HtmlOutputPanel() {
+		getProcessor();
 		initComponents();
 	}
 
@@ -48,6 +53,16 @@ public class HtmlOutputPanel extends AbstractOutputPanel {
 					}
 				});
 
+		final JLabel encodingLabel = new JLabel("Encoding");
+		final JComboBox encodingField = new JEncodingComboBox(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						firePropertyChange("encoding", null,
+								((JComboBox) e.getSource()).getSelectedItem());
+					}
+				});
+
 		final GroupLayout layout = UIUtil.createGroupLayout(this);
 
 		// horizontaal gezien heb ik van links naar rechts twee paralelle
@@ -55,19 +70,24 @@ public class HtmlOutputPanel extends AbstractOutputPanel {
 		layout.setHorizontalGroup(layout.createSequentialGroup() //
 				.addGroup(layout.createParallelGroup() //
 						.addComponent(outDirLabel) //
+						.addComponent(encodingLabel) //
 				) //
 				.addGroup(layout.createParallelGroup() //
 						.addComponent(outDirField) //
+						.addComponent(encodingField) //
 				) //
 		);
-		// Verticaal gezien heb ik van boven naar beneden gezien drie
-		// paralelle
-		// groepen. Die groepen zijn de regels met de label|field
+		// Verticaal gezien heb ik van boven naar beneden gezien twee
+		// paralelle groepen. Die groepen zijn de regels met de label|field
 		// combinatie.
 		layout.setVerticalGroup(layout.createSequentialGroup() //
 				.addGroup(layout.createParallelGroup() //
 						.addComponent(outDirLabel) //
 						.addComponent(outDirField) //
+				) //
+				.addGroup(layout.createParallelGroup() //
+						.addComponent(encodingLabel) //
+						.addComponent(encodingField) //
 				) //
 		);
 	}
@@ -75,11 +95,13 @@ public class HtmlOutputPanel extends AbstractOutputPanel {
 	/** {@inheritDoc	 */
 	@Override
 	public OutputModule getProcessor() {
-		if (this.outputModule == null) {
-			this.outputModule = new HtmlOutputModule();
-			addPropertyChangeListener("save", this.outputModule);
+		if (outputModule == null) {
+			outputModule = new HtmlOutputModule();
+			addPropertyChangeListener("save", outputModule);
+			addPropertyChangeListener("outDir", outputModule);
+			addPropertyChangeListener("encoding", outputModule);
 		}
-		return this.outputModule;
+		return outputModule;
 	}
 
 }

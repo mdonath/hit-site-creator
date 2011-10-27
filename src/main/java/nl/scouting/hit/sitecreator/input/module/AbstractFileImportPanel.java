@@ -1,5 +1,7 @@
 package nl.scouting.hit.sitecreator.input.module;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
@@ -12,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
 import nl.scouting.hit.sitecreator.components.JFileInput;
 import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
 import nl.scouting.hit.sitecreator.input.InputModule;
@@ -59,19 +62,14 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 		yearField.setSelectedItem(huidigeJaar);
 
 		final JLabel encodingLabel = new JLabel("Encoding");
-		final String[] encodingItems = new String[] { "UTF-8", "ISO-8859-1" };
-		final JComboBox encodingField = new JComboBox(encodingItems);
-		encodingField.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(final ItemEvent e) {
-				final Object[] selected = e.getItemSelectable()
-						.getSelectedObjects();
-				if (selected != null) {
-					firePropertyChange("encoding", null, selected[0]);
-				}
-			}
-		});
-		encodingField.setSelectedItem(encodingItems[0]);
+		final JComboBox encodingField = new JEncodingComboBox(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						firePropertyChange("encoding", null,
+								((JComboBox) e.getSource()).getSelectedItem());
+					}
+				});
 
 		final GroupLayout layout = UIUtil.createGroupLayout(this);
 		layout.setHorizontalGroup(layout.createSequentialGroup() //
@@ -114,13 +112,13 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 
 	@Override
 	public final InputModule getProcessor() {
-		if (this.inputModule == null) {
-			this.inputModule = createInputModule();
-			addPropertyChangeListener("file", this.inputModule);
-			addPropertyChangeListener("jaar", this.inputModule);
-			addPropertyChangeListener("encoding", this.inputModule);
+		if (inputModule == null) {
+			inputModule = createInputModule();
+			addPropertyChangeListener("file", inputModule);
+			addPropertyChangeListener("jaar", inputModule);
+			addPropertyChangeListener("encoding", inputModule);
 		}
-		return this.inputModule;
+		return inputModule;
 	}
 
 	protected abstract InputModule createInputModule();

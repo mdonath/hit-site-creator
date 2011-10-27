@@ -1,7 +1,6 @@
 package nl.scouting.hit.sitecreator.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,27 +10,33 @@ public class HitPlaats {
 
 	private List<HitKamp> hitKampen;
 
+	private Hit hit;
+
 	public HitPlaats(final String naam, final HitKamp... hitKampen) {
 		this.naam = naam;
-		this.hitKampen = new ArrayList<HitKamp>(Arrays.asList(hitKampen));
+
+		this.hitKampen = new ArrayList<HitKamp>();
+		for (final HitKamp hitKamp : hitKampen) {
+			addHitKamp(hitKamp);
+		}
 	}
 
 	public void addHitKamp(final HitKamp hitKamp) {
-		this.hitKampen.add(hitKamp);
+		hitKampen.add(hitKamp);
 		hitKamp.setPlaats(this);
-		Collections.sort(this.hitKampen);
+		Collections.sort(hitKampen);
 	}
 
 	public int getAantalKampen() {
-		return this.hitKampen.size();
+		return hitKampen.size();
 	}
 
 	public List<HitKamp> getHitKampen() {
-		return this.hitKampen;
+		return hitKampen;
 	}
 
 	public String getNaam() {
-		return this.naam;
+		return naam;
 	}
 
 	public void setHitKampen(final List<HitKamp> hitKampen) {
@@ -45,11 +50,19 @@ public class HitPlaats {
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		sb.append(this.naam).append("\n");
-		for (final HitKamp hitKamp : this.hitKampen) {
+		sb.append(naam).append("\n");
+		for (final HitKamp hitKamp : hitKampen) {
 			sb.append("- - ").append(hitKamp).append("\n");
 		}
 		return sb.toString();
+	}
+
+	public Hit getHit() {
+		return hit;
+	}
+
+	public void setHit(Hit hit) {
+		this.hit = hit;
 	}
 
 }
