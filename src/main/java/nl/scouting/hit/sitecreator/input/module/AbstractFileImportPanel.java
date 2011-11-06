@@ -6,6 +6,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.Calendar;
 
 import javax.swing.GroupLayout;
@@ -14,6 +15,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import nl.scouting.hit.sitecreator.Application;
+import nl.scouting.hit.sitecreator.ConfigKey;
+import nl.scouting.hit.sitecreator.ConfigKey.FileConfigKey;
+import nl.scouting.hit.sitecreator.ConfigKey.IntegerConfigKey;
+import nl.scouting.hit.sitecreator.ConfigKey.StringConfigKey;
 import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
 import nl.scouting.hit.sitecreator.components.JFileInput;
 import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
@@ -25,9 +31,18 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 
 	private InputModule inputModule;
 
-	public AbstractFileImportPanel(final String name,
-			final FileNameExtensionFilter filter) {
+	private final Application application;
+
+	public static final ConfigKey<File> CONFIG_CSV = new FileConfigKey("csv");
+	public static final ConfigKey<Integer> CONFIG_JAAR = new IntegerConfigKey(
+			"jaar");
+	public static final ConfigKey<String> CONFIG_ENCODING = new StringConfigKey(
+			"enc");
+
+	public AbstractFileImportPanel(final Application application,
+			final String name, final FileNameExtensionFilter filter) {
 		super();
+		this.application = application;
 		setName(name);
 		initComponents(filter);
 	}
@@ -44,7 +59,10 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 								evt.getNewValue());
 					}
 				});
-
+		if (application.getConfigurationValue(CONFIG_CSV) != null) {
+			locField.setFile(application.getConfigurationValue(CONFIG_CSV));
+		}
+		// ------------------
 		final JLabel yearLabel = new JLabel("Jaar");
 
 		final int huidigeJaar = Calendar.getInstance().get(Calendar.YEAR);
@@ -59,8 +77,13 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 				}
 			}
 		});
-		yearField.setSelectedItem(huidigeJaar);
-
+		if (application.getConfigurationValue(CONFIG_JAAR) == null) {
+			yearField.setSelectedItem(huidigeJaar);
+		} else {
+			yearField.setSelectedItem(application
+					.getConfigurationValue(CONFIG_JAAR));
+		}
+		// ------------------
 		final JLabel encodingLabel = new JLabel("Encoding");
 		final JComboBox encodingField = new JEncodingComboBox(
 				new ActionListener() {
@@ -70,7 +93,11 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 								((JComboBox) e.getSource()).getSelectedItem());
 					}
 				});
-
+		if (application.getConfigurationValue(CONFIG_ENCODING) != null) {
+			encodingField.setSelectedItem(application
+					.getConfigurationValue(CONFIG_ENCODING));
+		}
+		// ------------------
 		final GroupLayout layout = UIUtil.createGroupLayout(this);
 		layout.setHorizontalGroup(layout.createSequentialGroup() //
 				.addGroup(layout.createParallelGroup(Alignment.LEADING) //

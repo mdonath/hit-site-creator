@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
 import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
 import nl.scouting.hit.sitecreator.input.InputModule;
@@ -30,19 +31,19 @@ public class SoapInputPanel extends AbstractInputPanel {
 
 	private SoapInputModule inputModule;
 
-	public SoapInputPanel() {
+	public SoapInputPanel(final Application application) {
 		initComponents();
 	}
 
 	@Override
 	public InputModule getProcessor() {
-		if (this.inputModule == null) {
-			this.inputModule = new SoapInputModule();
-			addPropertyChangeListener("url", this.inputModule);
-			addPropertyChangeListener("user", this.inputModule);
-			addPropertyChangeListener("password", this.inputModule);
+		if (inputModule == null) {
+			inputModule = new SoapInputModule();
+			addPropertyChangeListener("url", inputModule);
+			addPropertyChangeListener("user", inputModule);
+			addPropertyChangeListener("password", inputModule);
 		}
-		return this.inputModule;
+		return inputModule;
 	}
 
 	private void initComponents() {

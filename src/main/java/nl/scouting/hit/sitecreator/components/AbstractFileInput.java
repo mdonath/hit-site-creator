@@ -36,22 +36,25 @@ public class AbstractFileInput extends JPanel {
 		this.filter = filter;
 		this.fileSelectionMode = fileSelectionMode;
 
-		add(this.text = validatingFileField, BorderLayout.CENTER);
-		add(this.button = new JButton(new BladerAction()), BorderLayout.EAST);
+		add(text = validatingFileField, BorderLayout.CENTER);
+		add(button = new JButton(new BladerAction()), BorderLayout.EAST);
 
-		this.text.setColumns(columns);
-		this.text.addPropertyChangeListener("file",
-				new PropertyChangeListener() {
-					@Override
-					public void propertyChange(final PropertyChangeEvent evt) {
-						firePropertyChange(evt.getPropertyName(),
-								evt.getOldValue(), evt.getNewValue());
-					}
-				});
+		text.setColumns(columns);
+		text.addPropertyChangeListener("file", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				firePropertyChange(evt.getPropertyName(), evt.getOldValue(),
+						evt.getNewValue());
+			}
+		});
 	}
 
 	public final File getFile() {
-		return this.text.getFile();
+		return text.getFile();
+	}
+
+	public final void setFile(final File file) {
+		text.setFile(file);
 	}
 
 	private class BladerAction extends AbstractAction {
@@ -64,13 +67,12 @@ public class AbstractFileInput extends JPanel {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = new JFileChooser();
-			chooser.setFileFilter(AbstractFileInput.this.filter);
-			chooser.setFileSelectionMode(AbstractFileInput.this.fileSelectionMode);
+			chooser.setFileFilter(filter);
+			chooser.setFileSelectionMode(fileSelectionMode);
 
-			if (JFileChooser.APPROVE_OPTION == chooser
-					.showOpenDialog(AbstractFileInput.this.button)) {
+			if (JFileChooser.APPROVE_OPTION == chooser.showOpenDialog(button)) {
 				final File newFile = chooser.getSelectedFile();
-				AbstractFileInput.this.text.setFile(newFile);
+				text.setFile(newFile);
 			}
 		}
 	}

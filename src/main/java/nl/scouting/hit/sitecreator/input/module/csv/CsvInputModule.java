@@ -18,11 +18,11 @@ import nl.scouting.hit.sitecreator.model.HitPlaats;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import au.com.bytecode.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
+import au.com.bytecode.opencsv.bean.MappingStrategy;
 
 public class CsvInputModule extends AbstractFileImportInputModule {
 
-	public HeaderColumnNameTranslateMappingStrategy<HitKamp> getStrategy()
-			throws FactoryException {
+	public MappingStrategy<HitKamp> getStrategy() throws FactoryException {
 		final HeaderColumnNameTranslateMappingStrategy<HitKamp> strat = new HeaderColumnNameTranslateMappingStrategy<HitKamp>();
 		strat.setType(HitKamp.class);
 
@@ -42,8 +42,10 @@ public class CsvInputModule extends AbstractFileImportInputModule {
 
 	protected Hit loadCsv() throws InputModuleException {
 		try {
-			final CSVReader reader = new CSVReader(new InputStreamReader(
-					new FileInputStream(getFile()), getEncoding()));
+			final CSVReader reader = new CSVReader( //
+					new InputStreamReader( //
+							new FileInputStream(getFile()) //
+							, getEncoding()));
 			final CsvToBean<HitKamp> csv = new CsvToBean<HitKamp>();
 			final List<HitKamp> list = csv.parse(getStrategy(), reader);
 

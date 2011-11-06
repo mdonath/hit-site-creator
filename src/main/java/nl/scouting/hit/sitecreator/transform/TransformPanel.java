@@ -29,56 +29,49 @@ public final class TransformPanel extends JPanel implements
 		initComponents();
 	}
 
-	public JComponent createTable() {
-		return new JScrollPane(this.table = new JHitTable(new HitTableModel(
-				ModelUtil.createEmptyStructure())));
-	}
-
-	public JHitTree createTree() {
-		return this.tree = new JHitTree(new HitTreeModel(
-				ModelUtil.createEmptyStructure()));
-	}
-
 	private void initComponents() {
 		setLayout(new BorderLayout());
 		setBorder(new TitledBorder("Transform"));
 
-		add(new JSplitPane( //
+		final JSplitPane split = new JSplitPane( //
 				JSplitPane.HORIZONTAL_SPLIT, //
 				createTree(), //
 				createTable() //
-		), BorderLayout.CENTER);
+		);
+		split.setDividerLocation(150);
+		add(split, BorderLayout.CENTER);
 
-		this.tree.addTreeSelectionListener(new TreeSelectionListener() {
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			@Override
 			public void valueChanged(final TreeSelectionEvent e) {
-				final Object obj = TransformPanel.this.tree
-						.getLastSelectedPathComponent();
+				final Object obj = tree.getLastSelectedPathComponent();
 				if (obj instanceof Hit) {
-					TransformPanel.this.table.setModel(new HitTableModel(
-							(Hit) obj));
+					table.setModel(new HitTableModel((Hit) obj));
 				} else if (obj instanceof HitPlaats) {
-					TransformPanel.this.table.setModel(new HitPlaatsTableModel(
-							(HitPlaats) obj));
+					table.setModel(new HitPlaatsTableModel((HitPlaats) obj));
 				} else if (obj instanceof HitKamp) {
-					final HitKamp sel = (HitKamp) obj;
-					TransformPanel.this.table.setModel(new HitPlaatsTableModel(
-							sel.getPlaats()));
-					final int index = sel.getPlaats().getHitKampen()
-							.indexOf(sel);
-					TransformPanel.this.table.getSelectionModel()
-							.setSelectionInterval(index, index);
+					table.setModel(new HitKampTableModel((HitKamp) obj));
 				}
 			}
 		});
+	}
+
+	private JComponent createTable() {
+		return new JScrollPane(table = new JHitTable(new HitTableModel(
+				ModelUtil.createEmptyStructure())));
+	}
+
+	private JComponent createTree() {
+		return new JScrollPane(tree = new JHitTree(new HitTreeModel(
+				ModelUtil.createEmptyStructure())));
 	}
 
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("hit".equals(evt.getPropertyName())) {
 			final Hit hit = (Hit) evt.getNewValue();
-			this.tree.setModel(new HitTreeModel(hit));
-			this.table.setModel(new HitTableModel(hit));
+			tree.setModel(new HitTreeModel(hit));
+			table.setModel(new HitTableModel(hit));
 		}
 	}
 }

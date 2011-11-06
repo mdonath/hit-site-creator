@@ -11,6 +11,18 @@ public abstract class AbstractFileImportInputModule implements InputModule {
 	private Integer jaar;
 	private String encoding;
 
+	public void setFile(final File file) {
+		this.file = file;
+	}
+
+	public void setJaar(final Integer jaar) {
+		this.jaar = jaar;
+	}
+
+	public void setEncoding(final String encoding) {
+		this.encoding = encoding;
+	}
+
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		final String propertyName = evt.getPropertyName();

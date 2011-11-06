@@ -1,80 +1,19 @@
 package nl.scouting.hit.sitecreator.input.module.csv;
 
-import java.beans.PropertyEditorManager;
-import java.beans.PropertyEditorSupport;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ColumnMapperHelper2012 implements ColumnMapperHelper {
-
-	public static class IntegerPropertyEditor extends PropertyEditorSupport {
-		public static void register() {
-			PropertyEditorManager.registerEditor(Integer.class,
-					IntegerPropertyEditor.class);
-		}
-
-		public static void unregister() {
-			PropertyEditorManager.registerEditor(Integer.class, null);
-		}
-
-		@Override
-		public String getAsText() {
-			final Integer integer = (Integer) getValue();
-			return integer.toString();
-		}
-
-		@Override
-		public void setAsText(final String text)
-				throws IllegalArgumentException {
-			if ((text == null) || "".equals(text)) {
-				setValue(null);
-			} else {
-				setValue(Integer.valueOf(text));
-			}
-		}
-
-	}
-
-	public static class UrlPropertyEditor extends PropertyEditorSupport {
-		public static void register() {
-			PropertyEditorManager.registerEditor(URL.class,
-					UrlPropertyEditor.class);
-		}
-
-		public static void unregister() {
-			PropertyEditorManager.registerEditor(URL.class, null);
-		}
-
-		@Override
-		public String getAsText() {
-			final URL url = (URL) getValue();
-			return url.toString();
-		}
-
-		@Override
-		public void setAsText(final String text)
-				throws IllegalArgumentException {
-			try {
-
-				String checked = text;
-				if (!checked.startsWith("http")) {
-					checked = "http://" + checked;
-				}
-				final URL url = new URL(checked);
-				setValue(url);
-			} catch (final MalformedURLException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}
-	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Map<String, String> getColumnMapping() {
 		IntegerPropertyEditor.register();
 		UrlPropertyEditor.register();
+		BooleanNonEmptyStringPropertyEditor.register();
+		LocalDatePropertyEditor.register();
+		LocalTimePropertyEditor.register();
+
 		final Map<String, String> columnMapping = new HashMap<String, String>();
 
 		// deelnemersnummer
@@ -123,13 +62,8 @@ public class ColumnMapperHelper2012 implements ColumnMapperHelper {
 		// HIT-Kamp naam
 		columnMapping.put("HIT-Kamp naam", "naam");
 		// HIT-Kamp Contactpersoon
-		columnMapping.put("HIT-Kamp Contactpersoon", "websiteContactpersoon");
 		// HIT-Kamp Contactpersoon Emailadres
-		columnMapping.put("HIT-Kamp Contactpersoon Emailadres",
-				"websiteContactEmailadres");
 		// HIT-Kamp Contactpersoon Telefoonnummer
-		columnMapping.put("HIT-Kamp Contactpersoon Telefoonnummer",
-				"websiteContactTelefoonnummer");
 		// HIT-Kamp doelstelling
 		// HIT-Kamp Activiteitengebieden: Uitdagende Scoutingtechnieken
 		// HIT-Kamp Activiteitengebieden: Expressie
@@ -143,10 +77,16 @@ public class ColumnMapperHelper2012 implements ColumnMapperHelper {
 		columnMapping.put("HIT-Kamp titeltekst", "titeltekst");
 		// HIT-Kamp Couranttekst
 		columnMapping.put("HIT-Kamp Couranttekst", "courantTekst");
+
 		// HIT-Kamp Startdatum
+		columnMapping.put("HIT-Kamp Startdatum", "startDatum");
 		// HIT-Kamp Starttijd
+		columnMapping.put("HIT-Kamp Starttijd", "startTijd");
 		// HIT-Kamp Einddatum
+		columnMapping.put("HIT-Kamp Einddatum", "eindDatum");
 		// HIT-Kamp Eindtijd
+		columnMapping.put("HIT-Kamp Eindtijd", "eindTijd");
+
 		// Deelnamekosten
 		columnMapping.put("Deelnamekosten", "deelnamekosten");
 		// Leeftijd minimaal
@@ -226,19 +166,39 @@ public class ColumnMapperHelper2012 implements ColumnMapperHelper {
 		// Webadres naar foto3 of naar 1 Youtube filmpje
 		columnMapping.put("Webadres naar foto3 of naar 1 Youtube filmpje",
 				"webadresFoto3");
+
 		// HIT-Kamp Websitecontacttelefoonnummer
 		columnMapping.put("HIT-Kamp Websitecontacttelefoonnummer",
-				"websiteTekst");
+				"websiteContactTelefoonnummer");
 
 		// HIT-Kamp Websitecontactemailadres
+		columnMapping.put("HIT-Kamp Websitecontactemailadres",
+				"websiteContactEmailadres");
 		// HIT-Kamp websitecontactpersoon
+		columnMapping.put("HIT-Kamp websitecontactpersoon",
+				"websiteContactpersoon");
 		// Minimaal aantal deelnemers
+		columnMapping.put("Minimaal aantal deelnemers",
+				"minimumAantalDeelnemers");
+
 		// Maximum aantal deelnemers
+		columnMapping.put("Maximum aantal deelnemers",
+				"maximumAantalDeelnemers");
 		// Overschrijding aantal deelnemers
+		columnMapping.put("Overschrijding aantal deelnemers",
+				"overschrijdingAantalDeelnemers");
+
 		// Maximum aantal subgroepjes
+		columnMapping.put("Maximum aantal subgroepjes",
+				"maximumAantalSubgroepjes");
+
 		// Maximum aantal uit 1 Scoutinggroep
+		columnMapping.put("Maximum aantal uit 1 Scoutinggroep",
+				"maximumAantalUitEenGroep");
 		// Akkoord HIT-kamp
+		columnMapping.put("Akkoord HIT-kamp", "akkoordHitKamp");
 		// Akkoord HIT-plaats
+		columnMapping.put("Akkoord HIT-plaats", "akkoordHitPlaats");
 		return columnMapping;
 	}
 }

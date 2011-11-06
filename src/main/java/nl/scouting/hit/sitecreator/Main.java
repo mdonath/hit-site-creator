@@ -9,12 +9,14 @@ import javax.swing.SwingUtilities;
  */
 public class Main {
 
-	public static void main(final String[] args) {
+	public static void main(final String[] arguments) {
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public final void run() {
-				new Application().setVisible(true);
+				new ApplicationImpl(arguments).setVisible(true);
 			}
 		});
 	}
+
 }

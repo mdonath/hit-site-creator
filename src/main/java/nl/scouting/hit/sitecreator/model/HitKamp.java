@@ -1,54 +1,79 @@
 package nl.scouting.hit.sitecreator.model;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+
 public class HitKamp implements Comparable<HitKamp> {
-	private HitPlaats plaats;
+
+	//
+	// Kamp onderdeel gegevens
+	//
+	private Integer deelnemersnummer;
 
 	private String naam;
 	private String plaatsNaam;
+	private HitPlaats plaats;
 
+	// TODO: vullen
+	private LocalDate startDatum;
+	private LocalTime startTijd;
+	private LocalDateTime startDatumtijd;// = new Date();
+
+	private LocalDate eindDatum;
+	private LocalTime eindTijd;
+	private LocalDateTime eindDatumtijd;// = new Date();
+
+	private Integer deelnamekosten;// = 43; // in euro's.
+
+	private Boolean akkoordHitKamp;
+	private Boolean akkoordHitPlaats;
+
+	//
+	// Deelnemer eigenschappen
+	//
+	private Integer minimumLeeftijd;// = 8
+	private Integer maximumLeeftijd;// = 88;
+
+	private Integer minimumAantalDeelnemers;// = 40;
+	private Integer maximumAantalDeelnemers;// = 40;
+	private Integer maximumAantalUitEenGroep;// = 5;
+	private Integer overschrijdingAantalDeelnemers;
+
+	private String subgroepSamenstelling;// = "1-4";
+	private String maximumAantalSubgroepjes;
+
+	//
+	// Alleen voor de Website
+	//
 	private String icoontje;
 	private final Set<String> icoontjes;
 
-	// TODO: vullen
-	private Date startDatumtijd = new Date();
-	private Date eindDatumtijd = new Date();
-	private Integer minimumLeeftijd = 8, maximumLeeftijd = 88;
-	private Integer maximumAantalDeelnemers = 40;
-	private Integer maximumAantalUitEenGroep = 5;
-	private Integer deelnamekosten = 43; // in euro's.
-	private String subgroepSamenstelling = "1-4";
+	private String titelTekst;// = "TitelTekst";
+	private String courantTekst;// = "CourantTekst";
+	private String websiteTekst;// = "WebsiteTekst";
+	private URL webadresFoto1;// =
+								// asURL("http://hit.scouting.nl/stories/mook-1.jpg");
+	private URL webadresFoto2;// =
+								// asURL("http://hit.scouting.nl/stories/mook-2.jpg");
+	private URL webadresFoto3;// =
+								// asURL("http://hit.scouting.nl/stories/mook-3.jpg");
+	private URL websiteYoutube;// =
+								// asURL("http://www.youtube.com/webadresYoutube");
+	private String websiteContactpersoon;// = "C. Ontactpersoon";
+	private String websiteContactTelefoonnummer;// = "000-0000000";
+	private String websiteContactEmailadres;// =
+											// "c.ontactpersoon@email.adres.nl";
+	private URL websiteAdres;// = asURL("http://dit.is.ons.kamp.adres.nl");
 
-	private String titelTekst = "TitelTekst";
-	private String courantTekst = "CourantTekst";
-	private String websiteTekst = "WebsiteTekst";
-	private URL webadresFoto1 = asURL("http://hit.scouting.nl/stories/mook-1.jpg");
-	private URL webadresFoto2 = asURL("http://hit.scouting.nl/stories/mook-2.jpg");
-	private URL webadresFoto3 = asURL("http://hit.scouting.nl/stories/mook-3.jpg");
-	private URL websiteYoutube = asURL("http://www.youtube.com/webadresYoutube");
-	private String websiteContactpersoon = "C. Ontactpersoon";
-	private String websiteContactTelefoonnummer = "000-0000000";
-	private String websiteContactEmailadres = "c.ontactpersoon@email.adres.nl";
-	private URL websiteAdres = asURL("http://dit.is.ons.kamp.adres.nl");
-
-	private Integer afgelegdeKilometers = 10;
+	private Integer afgelegdeKilometers;// = 10;
 
 	private HitKamp previous;
 	private HitKamp next;
-	private Integer deelnemersnummer;
-
-	private static URL asURL(final String url) {
-		try {
-			return new URL(url);
-		} catch (final MalformedURLException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	public HitKamp() {
 		super();
@@ -137,19 +162,19 @@ public class HitKamp implements Comparable<HitKamp> {
 		this.plaatsNaam = plaatsNaam;
 	}
 
-	public Date getStartDatumtijd() {
+	public LocalDateTime getStartDatumtijd() {
 		return startDatumtijd;
 	}
 
-	public void setStartDatumtijd(final Date startDatumtijd) {
+	public void setStartDatumtijd(final LocalDateTime startDatumtijd) {
 		this.startDatumtijd = startDatumtijd;
 	}
 
-	public Date getEindDatumtijd() {
+	public LocalDateTime getEindDatumtijd() {
 		return eindDatumtijd;
 	}
 
-	public void setEindDatumtijd(final Date eindDatumtijd) {
+	public void setEindDatumtijd(final LocalDateTime eindDatumtijd) {
 		this.eindDatumtijd = eindDatumtijd;
 	}
 
@@ -306,6 +331,88 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	public void setCourantTekst(final String courantTekst) {
 		this.courantTekst = courantTekst;
+	}
+
+	public Integer getMinimumAantalDeelnemers() {
+		return minimumAantalDeelnemers;
+	}
+
+	public void setMinimumAantalDeelnemers(final Integer minimumAantalDeelnemers) {
+		this.minimumAantalDeelnemers = minimumAantalDeelnemers;
+	}
+
+	public Integer getOverschrijdingAantalDeelnemers() {
+		return overschrijdingAantalDeelnemers;
+	}
+
+	public void setOverschrijdingAantalDeelnemers(
+			final Integer overschrijdingAantalDeelnemers) {
+		this.overschrijdingAantalDeelnemers = overschrijdingAantalDeelnemers;
+	}
+
+	public Boolean getAkkoordHitKamp() {
+		return akkoordHitKamp;
+	}
+
+	public void setAkkoordHitKamp(final Boolean akkoordHitKamp) {
+		this.akkoordHitKamp = akkoordHitKamp;
+	}
+
+	public Boolean getAkkoordHitPlaats() {
+		return akkoordHitPlaats;
+	}
+
+	public void setAkkoordHitPlaats(final Boolean akkoordHitPlaats) {
+		this.akkoordHitPlaats = akkoordHitPlaats;
+	}
+
+	public String getMaximumAantalSubgroepjes() {
+		return maximumAantalSubgroepjes;
+	}
+
+	public void setMaximumAantalSubgroepjes(
+			final String maximumAantalSubgroepjes) {
+		this.maximumAantalSubgroepjes = maximumAantalSubgroepjes;
+	}
+
+	public void setStartDatum(final LocalDate startDatum) {
+		this.startDatum = startDatum;
+		startDatumtijd = updateDate(this.startDatum, startTijd);
+	}
+
+	public void setStartTijd(final LocalTime startTijd) {
+		this.startTijd = startTijd;
+		startDatumtijd = updateTime(startDatum, this.startTijd);
+	}
+
+	public void setEindDatum(final LocalDate eindDatum) {
+		this.eindDatum = eindDatum;
+		eindDatumtijd = updateDate(this.eindDatum, eindTijd);
+	}
+
+	public void setEindTijd(final LocalTime eindTijd) {
+		this.eindTijd = eindTijd;
+		eindDatumtijd = updateTime(eindDatum, this.eindTijd);
+	}
+
+	private LocalDateTime updateDate(final LocalDate date, final LocalTime time) {
+		LocalDateTime result;
+		if (time == null) {
+			result = date.toLocalDateTime(LocalTime.MIDNIGHT);
+		} else {
+			result = date.toLocalDateTime(time);
+		}
+		return result;
+	}
+
+	private LocalDateTime updateTime(final LocalDate date, final LocalTime time) {
+		LocalDateTime result;
+		if (date == null) {
+			result = new LocalDate().toLocalDateTime(time);
+		} else {
+			result = date.toLocalDateTime(time);
+		}
+		return result;
 	}
 
 }

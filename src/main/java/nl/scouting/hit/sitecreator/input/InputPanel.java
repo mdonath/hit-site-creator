@@ -13,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.input.module.csv.CsvFileImportPanel;
 import nl.scouting.hit.sitecreator.input.module.soap.SoapInputPanel;
 import nl.scouting.hit.sitecreator.input.module.xml.XmlInputPanel;
@@ -33,7 +34,7 @@ public class InputPanel extends JPanel {
 
 			@Override
 			protected Hit doInBackground() throws Exception {
-				return this.inputModule.load();
+				return inputModule.load();
 			}
 
 			@Override
@@ -56,7 +57,7 @@ public class InputPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			new Loader(InputPanel.this.currentInputModule).execute();
+			new Loader(currentInputModule).execute();
 		}
 	}
 
@@ -64,8 +65,11 @@ public class InputPanel extends JPanel {
 
 	private InputModule currentInputModule;
 
-	public InputPanel() {
+	private final Application application;
+
+	public InputPanel(final Application application) {
 		super(new BorderLayout());
+		this.application = application;
 		initComponents();
 	}
 
@@ -77,9 +81,9 @@ public class InputPanel extends JPanel {
 
 	private JTabbedPane createTabPanel() {
 		final JTabbedPane tab = UIUtil.createTab( //
-				new CsvFileImportPanel() //
-				, new XmlInputPanel() //
-				, new SoapInputPanel() //
+				new CsvFileImportPanel(application) //
+				, new XmlInputPanel(application) //
+				, new SoapInputPanel(application) //
 				);
 
 		tab.addChangeListener(new ChangeListener() {
@@ -90,7 +94,7 @@ public class InputPanel extends JPanel {
 				final Component selectedComponent = sourceTabbedPane
 						.getSelectedComponent();
 				if (selectedComponent != null) {
-					InputPanel.this.currentInputModule = ((InputModuleUI) selectedComponent)
+					currentInputModule = ((InputModuleUI) selectedComponent)
 							.getProcessor();
 				}
 			}

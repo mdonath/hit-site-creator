@@ -1,7 +1,5 @@
 package nl.scouting.hit.sitecreator.transform;
 
-import java.awt.Dimension;
-
 import javax.swing.JTree;
 
 public class JHitTree extends JTree {
@@ -10,6 +8,6 @@ public class JHitTree extends JTree {
 	public JHitTree(final HitTreeModel hitModel) {
 		super(hitModel);
 		setCellRenderer(new HitTreeCellRenderer());
-		setPreferredSize(new Dimension(120, 0));
+		setPreferredSize(null);
 	}
 }
