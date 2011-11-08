@@ -39,6 +39,7 @@ public class Parameters {
 		options.addOption("csv", true, "Naam van het CSV bestand");
 		options.addOption("jaar", true, "Jaar (nodig voor mapping)");
 		options.addOption("enc", true, "Encoding van bestand");
+		options.addOption("htmlout", true, "Directory voor html uitvoer");
 
 		return options;
 	}

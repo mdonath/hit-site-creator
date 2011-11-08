@@ -13,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
+import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
@@ -25,7 +26,7 @@ public final class TransformPanel extends JPanel implements
 	private JHitTree tree;
 	private JTable table;
 
-	public TransformPanel() {
+	public TransformPanel(final Application application) {
 		initComponents();
 	}
 

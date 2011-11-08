@@ -15,6 +15,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.output.module.html.HtmlOutputPanel;
 import nl.scouting.hit.sitecreator.output.module.joomla.JoomlaOutputPanel;
@@ -69,8 +70,10 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 	private OutputModule currentOutputModule;
 
 	private Hit hit;
+	private final Application application;
 
-	public OutputPanel() {
+	public OutputPanel(final Application application) {
+		this.application = application;
 		initComponents();
 	}
 
@@ -82,8 +85,8 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 
 	private JTabbedPane createTabPanel() {
 		final JTabbedPane tab = UIUtil.createTab( //
-				new HtmlOutputPanel() //
-				, new JoomlaOutputPanel() //
+				new HtmlOutputPanel(application) //
+				, new JoomlaOutputPanel(application) //
 				);
 		tab.addChangeListener(new ChangeListener() {
 			@Override

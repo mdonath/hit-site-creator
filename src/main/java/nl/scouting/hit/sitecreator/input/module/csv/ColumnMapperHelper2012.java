@@ -94,6 +94,8 @@ public class ColumnMapperHelper2012 implements ColumnMapperHelper {
 		// Leeftijd maximaal
 		columnMapping.put("Leeftijd maximaal", "maximumLeeftijd");
 		// Subgroepsamenstelling
+		columnMapping.put("Subgroepsamenstelling", "subgroepsamenstelling");
+
 		// Subgroepsamenstelling van
 		// Subgroepsamenstelling tot en met
 		// Subgroep extra

@@ -7,5 +7,6 @@ public class JHitTable extends JTable {
 
 	public JHitTable(final HitTableModel model) {
 		super(model);
+		setPreferredSize(null);
 	}
 }

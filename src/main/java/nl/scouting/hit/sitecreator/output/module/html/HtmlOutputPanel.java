@@ -11,6 +11,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
 
+import nl.scouting.hit.sitecreator.Application;
+import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.components.JDirectoryInput;
 import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
 import nl.scouting.hit.sitecreator.output.OutputModule;
@@ -22,7 +24,13 @@ public class HtmlOutputPanel extends AbstractOutputPanel {
 
 	private HtmlOutputModule outputModule;
 
-	public HtmlOutputPanel() {
+	private final Application application;
+
+	public static final ConfigKey<File> CONF_OUTDIR = new ConfigKey.FileConfigKey(
+			"htmlout");
+
+	public HtmlOutputPanel(final Application application) {
+		this.application = application;
 		getProcessor();
 		initComponents();
 	}
@@ -52,6 +60,9 @@ public class HtmlOutputPanel extends AbstractOutputPanel {
 								evt.getNewValue());
 					}
 				});
+		if (application.hasConfigurationValue(CONF_OUTDIR)) {
+			outDirField.setFile(application.getConfigurationValue(CONF_OUTDIR));
+		}
 
 		final JLabel encodingLabel = new JLabel("Encoding");
 		final JComboBox encodingField = new JEncodingComboBox(

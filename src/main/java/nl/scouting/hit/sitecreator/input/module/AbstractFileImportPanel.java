@@ -59,7 +59,7 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 								evt.getNewValue());
 					}
 				});
-		if (application.getConfigurationValue(CONFIG_CSV) != null) {
+		if (application.hasConfigurationValue(CONFIG_CSV)) {
 			locField.setFile(application.getConfigurationValue(CONFIG_CSV));
 		}
 		// ------------------
@@ -77,11 +77,11 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 				}
 			}
 		});
-		if (application.getConfigurationValue(CONFIG_JAAR) == null) {
-			yearField.setSelectedItem(huidigeJaar);
-		} else {
+		if (application.hasConfigurationValue(CONFIG_JAAR)) {
 			yearField.setSelectedItem(application
 					.getConfigurationValue(CONFIG_JAAR));
+		} else {
+			yearField.setSelectedItem(huidigeJaar);
 		}
 		// ------------------
 		final JLabel encodingLabel = new JLabel("Encoding");

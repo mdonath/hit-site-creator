@@ -1,0 +1,6 @@
+local_datetime(ldt) ::= "
+$ldt;format=\"yyyy\"$
+$ldt;format=\"dd-MM-yyyy\"$
+$ldt;format=\"d MMMM yyyy\"$
+$ldt;format=\"HH:mm\"$
+"

@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import nl.scouting.hit.sitecreator.input.InputPanel;
@@ -37,8 +39,19 @@ public final class ApplicationImpl extends JFrame implements Application {
 		content.add(createTransformPanel(), BorderLayout.CENTER);
 		content.add(createOutputPanel(), BorderLayout.SOUTH);
 
+		setLookAndFeel();
 		pack();
+
 		setLocationByPlatform(true);
+	}
+
+	private void setLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (final Exception ignored) {
+			// ignore
+		}
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	private InputPanel createInputPanel() {
@@ -55,13 +68,13 @@ public final class ApplicationImpl extends JFrame implements Application {
 	}
 
 	private TransformPanel createTransformPanel() {
-		final TransformPanel transformPanel = new TransformPanel();
+		final TransformPanel transformPanel = new TransformPanel(this);
 		addPropertyChangeListener("hit", transformPanel);
 		return transformPanel;
 	}
 
 	private JPanel createOutputPanel() {
-		final OutputPanel result = new OutputPanel();
+		final OutputPanel result = new OutputPanel(this);
 		addPropertyChangeListener("hit", result);
 		return result;
 	}
@@ -71,4 +84,8 @@ public final class ApplicationImpl extends JFrame implements Application {
 		return key.getValue(configuration);
 	}
 
+	@Override
+	public <T> boolean hasConfigurationValue(final ConfigKey<T> key) {
+		return getConfigurationValue(key) != null;
+	}
 }

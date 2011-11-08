@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 import nl.scouting.hit.sitecreator.output.module.AbstractOutputPanel;
@@ -36,18 +37,18 @@ public final class JoomlaOutputPanel extends AbstractOutputPanel {
 
 	private JoomlaOutputModule outputModule;
 
-	public JoomlaOutputPanel() {
+	public JoomlaOutputPanel(final Application application) {
 		initComponents();
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public OutputModule getProcessor() {
-		if (this.outputModule == null) {
-			this.outputModule = new JoomlaOutputModule();
-			addPropertyChangeListener("save", this.outputModule);
+		if (outputModule == null) {
+			outputModule = new JoomlaOutputModule();
+			addPropertyChangeListener("save", outputModule);
 		}
-		return this.outputModule;
+		return outputModule;
 	}
 
 	private void initComponents() {

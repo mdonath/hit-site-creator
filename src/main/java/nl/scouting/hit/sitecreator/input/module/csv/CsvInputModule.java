@@ -37,7 +37,9 @@ public class CsvInputModule extends AbstractFileImportInputModule {
 	public Hit load() throws InputModuleException {
 		System.out.println("inlezen met " + getEncoding() + " van " + getFile()
 				+ " van het jaar " + getJaar());
-		return loadCsv();
+		final Hit loadCsv = loadCsv();
+		loadCsv.linkKampenAanElkaar();
+		return loadCsv;
 	}
 
 	protected Hit loadCsv() throws InputModuleException {

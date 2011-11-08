@@ -19,16 +19,15 @@ public class HitKamp implements Comparable<HitKamp> {
 	private String plaatsNaam;
 	private HitPlaats plaats;
 
-	// TODO: vullen
 	private LocalDate startDatum;
 	private LocalTime startTijd;
-	private LocalDateTime startDatumtijd;// = new Date();
+	private LocalDateTime startDatumtijd;
 
 	private LocalDate eindDatum;
 	private LocalTime eindTijd;
-	private LocalDateTime eindDatumtijd;// = new Date();
+	private LocalDateTime eindDatumtijd;
 
-	private Integer deelnamekosten;// = 43; // in euro's.
+	private Integer deelnamekosten;
 
 	private Boolean akkoordHitKamp;
 	private Boolean akkoordHitPlaats;
@@ -36,12 +35,12 @@ public class HitKamp implements Comparable<HitKamp> {
 	//
 	// Deelnemer eigenschappen
 	//
-	private Integer minimumLeeftijd;// = 8
-	private Integer maximumLeeftijd;// = 88;
+	private Integer minimumLeeftijd;
+	private Integer maximumLeeftijd;
 
-	private Integer minimumAantalDeelnemers;// = 40;
-	private Integer maximumAantalDeelnemers;// = 40;
-	private Integer maximumAantalUitEenGroep;// = 5;
+	private Integer minimumAantalDeelnemers;
+	private Integer maximumAantalDeelnemers;
+	private Integer maximumAantalUitEenGroep;
 	private Integer overschrijdingAantalDeelnemers;
 
 	private String subgroepSamenstelling;// = "1-4";
@@ -51,7 +50,7 @@ public class HitKamp implements Comparable<HitKamp> {
 	// Alleen voor de Website
 	//
 	private String icoontje;
-	private final Set<String> icoontjes;
+	private final Set<Icoon> icoontjes;
 
 	private String titelTekst;// = "TitelTekst";
 	private String courantTekst;// = "CourantTekst";
@@ -77,7 +76,7 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	public HitKamp() {
 		super();
-		icoontjes = new TreeSet<String>();
+		icoontjes = new TreeSet<Icoon>();
 	}
 
 	public HitKamp(final String naam) {
@@ -110,7 +109,10 @@ public class HitKamp implements Comparable<HitKamp> {
 	public void setIcoontje(final String icoontje) {
 		this.icoontje = icoontje;
 		if (!"".equals(icoontje)) {
-			icoontjes.add(icoontje);
+			final Icoon forIdentifier = Icoon.forIdentifier(icoontje);
+			if (forIdentifier != null) {
+				icoontjes.add(forIdentifier);
+			}
 		}
 	}
 
@@ -134,7 +136,7 @@ public class HitKamp implements Comparable<HitKamp> {
 		return icoontje;
 	}
 
-	public Set<String> getIcoontjes() {
+	public Set<Icoon> getIcoontjes() {
 		return icoontjes;
 	}
 
