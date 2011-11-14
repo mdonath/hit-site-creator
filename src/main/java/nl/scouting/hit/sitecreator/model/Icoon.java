@@ -2,6 +2,8 @@ package nl.scouting.hit.sitecreator.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Icoon implements Comparable<Icoon> {
 
@@ -123,34 +125,43 @@ public class Icoon implements Comparable<Icoon> {
 		return icoonCache.get(identifier);
 	}
 
-	private String bestandsnaam; // "fiets.gif"
-	private String tekst; // "Dit kamp is per fiets"
+	public static Set<Icoon> getAll() {
+		return new TreeSet<Icoon>(icoonCache.values());
+	}
+
+	private final int volgorde;
+	private final String bestandsnaam; // "fiets.gif"
+	private final String tekst; // "Dit kamp is per fiets"
+
+	private static int volgordeCounter = 0;
 
 	public Icoon(final String bestandsnaam, final String tekst) {
 		super();
 		this.bestandsnaam = bestandsnaam;
 		this.tekst = tekst;
+		volgorde = volgordeCounter++;
 	}
 
 	@Override
 	public int compareTo(final Icoon o) {
-		return tekst.compareTo(o.getTekst());
+		return volgorde - o.volgorde;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + volgorde + "]" + tekst + "(" + bestandsnaam + ")";
 	}
 
 	public String getBestandsnaam() {
 		return bestandsnaam;
 	}
 
-	public void setBestandsnaam(final String bestandsnaam) {
-		this.bestandsnaam = bestandsnaam;
-	}
-
 	public String getTekst() {
 		return tekst;
 	}
 
-	public void setTekst(final String tekst) {
-		this.tekst = tekst;
+	public int getVolgorde() {
+		return volgorde;
 	}
 
 }

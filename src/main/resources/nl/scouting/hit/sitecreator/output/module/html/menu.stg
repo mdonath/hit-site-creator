@@ -1,0 +1,249 @@
+menu(hit) ::= "
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Overzicht HIT-Kamp informatie</title>
+  <meta http-equiv="content-type" content="text/html; charset="UTF-8" />
+  <meta name="author" content="HIT Scouting $hit.jaar$" />
+  <meta name="contact_id" content="MDO-$hit.jaar$" />
+  <meta name="section" content="HIT" />
+  <meta name="keywords" content="HIT, Scouting Nederland, jongeren, jeugd, avontuur, scouts" />
+  <meta name="maintainer" content="Martijn Donath" />
+  <meta name="description" content="Overzicht HIT-Kamp informatie $hit.jaar$" />
+  <link rel="stylesheet" href="hit.css" type="text/css" />
+  
+  <style type="text/css">
+    div.example {margin 20px; padding: 20px;}
+    div canvas {float: left;}
+    div br {clear: both;}
+    pre {padding-top: 10px; border: 2px dashed #999999; background: #dddddd;} 
+  </style>
+  
+  <!--[if IE]><script type="text/javascript" src="./excanvas.js"></script><![endif]-->
+  <script type="text/javascript" src="./canvasXpress.min.js"></script>
+  
+  <script>
+    var showDemo = function () {
+      new CanvasXpress('canvas0',
+        {y: {vars: ['Minimaal','Ingeschreven','Maximaal'],
+        smps: [$g15],
+        desc: ['Aantallen per HIT-kamp'],
+        data: [[$g17],[$g16],[$g18]]}},
+        {graphType: 'Bar',
+          graphOrientation: 'horizontal',
+          smpHairline: true,
+          autoExtend: true});
+      new CanvasXpress('canvas',
+        {y: {vars: [''],
+        smps: [$t7],
+        desc: ['Aantal HIT-kampen per leeftijd'],
+        data: [[$t6]]}},
+        {graphType: 'Bar',
+          graphOrientation: 'vertical',
+          smpHairline: true,
+          autoExtend: true});
+      new CanvasXpress('canvas1',
+        {y: {vars: [''],
+        smps: [$t9],
+        desc: ['Aantallen per gebruikt HITicoon'],
+        data: [[$t8]]}},
+        {graphType: 'Bar',
+          graphOrientation: 'vertical',
+          smpHairline: true,
+          autoExtend: true});
+      new CanvasXpress('canvas2',
+        {y: {vars: [''],
+        smps: [$t4],
+        desc: ['Het dagdeel waarin het HIT-kamp start en eindigt'],
+        data: [[$t3]]}},
+        {graphType: 'Bar',
+          graphOrientation: 'vertical',
+          smpHairline: true,
+          autoExtend: true});
+      new CanvasXpress('canvas3',
+        {y: {vars: [''],
+        smps: [$t2],
+        desc: ['Tijdsduur in dagdelen per HIT-kamp'],
+        data: [[$t1]]}},
+        {graphType: 'Bar',
+          graphOrientation: 'vertical',
+          smpHairline: true,
+          autoExtend: true});
+      new CanvasXpress('canvas4',
+        {y: {vars: [''],
+        smps: [$t11],
+        desc: ['Aantal deeln-plaatsen per leeftijd'],
+        data: [[$t10]]}},
+        {graphType: 'Bar',
+          graphOrientation: 'vertical',
+          smpHairline: true,
+          autoExtend: true});
+      new CanvasXpress('canvas5',
+        {y: {vars: [''],
+        smps: [$t13],
+        desc: ['Aantal per prijscatagorie'],
+        data: [[$t12]]}},
+        {graphType: 'Bar',
+          graphOrientation: 'vertical',
+          smpHairline: true,
+          autoExtend: true});
+    }
+</script>
+</head>
+<body id="kamp" onload="showDemo();">
+<h2>Linkenlijst naar HIT-Kamp info webpagina's</h2><br>
+Op deze webpagina tref je de totale lijst aan met linken naar de HIT-Kamp informatie pagina's.<br><br>
+
+<table border=1>
+<tr>
+	<td colspan=20>Aantallen zijn de echt ingeschrevene en dus niet wat er gereserveerd is in de groepjes</td>
+</tr>
+
+                                                     #             0                                       1                          2                            3                                     4                               5
+    $rows_deeln = SELECT COUNT($dataset{'lidnummer'})
+    		,$dataset{'deelnemer inschrijfdatum'}
+    		,$dataset{'formulier'}
+    		,$dataset{'minimaal aantal deelnemers'}
+    		,$dataset{'maximum aantal deelnemers'}
+    		,$dataset{'formuliernummer'} 
+    		FROM deeln_all
+    		WHERE
+    			 lla='HIT2011'
+    		 AND $dataset{'deelnemer status'}='Deelnemer staat ingeschreven' 
+    		 AND $dataset{'formuliernummer'} NOT IN ('5686','5687') 
+    		GROUP BY
+    			 $dataset{'formulier'}
+    			,$dataset{'deelnemer inschrijfdatum'} 
+    		ORDER BY
+    			 $dataset{'formulier'}
+    			,$dataset{'deelnemer inschrijfdatum'}]);
+ 
+    $row_deeln = (!defined ($rows_deeln) ? 0 : scalar (@{$rows_deeln}));
+ 
+    if ($row_deeln > 0) {
+        for ($g3=0;$g3<$row_deeln;$g3++) {
+          
+          $g12 = 0;
+          $g7 = substr($rows_deeln->[$g3][1],0,4);
+          $g8 = substr($rows_deeln->[$g3][1],4,2);
+          $g9 = substr($rows_deeln->[$g3][1],6,2);
+          
+          if ("$g1" ne "$rows_deeln->[$g3][2]") { 
+            $g19 = ($g19 == 0 ? "$rows_deeln->[$g3][5]" : "$g19");	  
+            while ((($g4 != $year) || ($g5 != $mon) || ($g6 != $mday)) && ($g12 < 300) && ("$g1" ne "")) {
+#      	      $g11 = int($g10 / 10).'px';
+      	      $g11 = "$g10".'px';
+      	      $g20 = "$g6 $maandnaam[$g5] : $g10 inschr.";
+      	      $hitmatrix .= qq[<td valign=bottom>$g10<br><img src="./iconengroot/staand.gif" width="20px" height="$g11" alt="$g20" title="$g20"></td>];
+      	      $g6++;
+      	      if ($g6 > $daginmnd[$g5]) {
+                $g6 = $g6 - $daginmnd[$g5];
+                $g5++;
+              }
+              $g12++;
+            }
+            if (("$g1" ne "") && ($g4 == $year) && ($g5 == $mon) && ($g6 == $mday)) {
+              $g15 .= ("$g15" eq "" ? qq['$g1'] : qq[,'$g1']);
+              $g16 .= ("$g16" eq "" ? qq['$g10'] : qq[,'$g10']);
+              $gtot += $g10;
+              $rows_kamp = $dbh -> selectall_arrayref (qq[SELECT $dataset{'minimaal aantal deelnemers'},$dataset{'maximum aantal deelnemers'},$dataset{'shantiformuliernummer'},$dataset{'hit-kamp in hit-plaats'},$dataset{'hit-kamp naam'} FROM deeln_all WHERE $preselectie typepersoon='5687' AND $dataset{'shantiformuliernummer'}='$g19']);
+              $row_kamp = (!defined ($rows_kamp) ? 0 : scalar (@{$rows_kamp}));
+              $g17 .= ("$g17" eq "" ? qq['$rows_kamp->[0][0]'] : qq[,'$rows_kamp->[0][0]']);
+              $g18 .= ("$g18" eq "" ? qq['$rows_kamp->[0][1]'] : qq[,'$rows_kamp->[0][1]']);
+              $g19 = "$rows_deeln->[$g3][5]";
+            }
+            	  
+            $hitmatrix .= ("$g1" eq "" ? "" : "</tr>\n");
+            $g1 = "$rows_deeln->[$g3][2]";
+            $hitmatrix .= "<tr><td valign=bottom>$g1</td>";
+            $g10 = 0;
+            $g4 = '2011';
+      	    $g5 = '01';
+      	    $g6 = '03';
+          }
+      	  while ((($g4 != $g7) || ($g5 != $g8) || ($g6 != $g9)) && ($g12 < 300)) {
+#      	     $g11 = int($g10 / 10).'px';
+      	    $g11 = "$g10".'px';
+      	    $g20 = "$g6 $maandnaam[$g5] : $g10 inschr.";
+      	    $hitmatrix .= qq[<td valign=bottom>$g10<br><img src="./iconengroot/staand.gif" width="20px" height="$g11" alt="$g20" title="$g20"></td>];
+      	    $g6++;
+      	    if ($g6 > $daginmnd[$g5]) {
+              $g6 = $g6 - $daginmnd[$g5];
+              $g5++;
+            }
+            $g12++;
+          }
+          if (($g4 == $g7) && ($g5 == $g8) && ($g6 == $g9)) {
+            $g10 = $g10 + $rows_deeln->[$g3][0];
+#      	     $g11 = int($g10 / 10).'px';
+      	    $g11 = "$g10".'px';
+      	    $g20 = "$g6 $maandnaam[$g5] : $g10 inschr.";
+      	    $hitmatrix .= qq[<td valign=bottom>$g10<br><img src="./iconengroot/staand.gif" width="20px" height="$g11" alt="$g20" title="$g20"></td>];
+            $g6++;
+      	    if ($g6 > $daginmnd[$g5]) {
+              $g6 = $g6 - $daginmnd[$g5];
+              $g5++;
+            }
+          }
+        }
+        while ((($g4 != $year) || ($g5 != $mon) || ($g6 != $mday)) && ($g12 < 300) && ("$g1" ne "")) {
+#   	   $g11 = int($g10 / 10).'px';
+          $g11 = "$g10".'px';
+      	  $g20 = "$g6 $maandnaam[$g5] : $g10 inschr.";
+      	  $hitmatrix .= qq[<td valign=bottom>$g10<br><img src="./iconengroot/staand.gif" width="20px" height="$g11" alt="$g20" title="$g20"></td>];
+      	  $g6++;
+      	  if ($g6 > $daginmnd[$g5]) {
+            $g6 = $g6 - $daginmnd[$g5];
+            $g5++;
+          }
+          $g12++;
+        }
+        if (("$g1" ne "") && ($g4 == $year) && ($g5 == $mon) && ($g6 == $mday)) {
+          $g15 .= ("$g15" eq "" ? qq['$g1'] : qq[,'$g1']);
+          $g16 .= ("$g16" eq "" ? qq['$g10'] : qq[,'$g10']);
+          $gtot += $g10;
+          $rows_kamp = $dbh -> selectall_arrayref (qq[SELECT $dataset{'minimaal aantal deelnemers'},$dataset{'maximum aantal deelnemers'},$dataset{'shantiformuliernummer'} FROM deeln_all WHERE $preselectie typepersoon='5687' AND $dataset{'shantiformuliernummer'}='$g19']);
+          $row_kamp = (!defined ($rows_kamp) ? 0 : scalar (@{$rows_kamp}));
+          $g17 .= ("$g17" eq "" ? qq['$rows_kamp->[0][0]'] : qq[,'$rows_kamp->[0][0]']);
+          $g18 .= ("$g18" eq "" ? qq['$rows_kamp->[0][1]'] : qq[,'$rows_kamp->[0][1]']);
+          $g19 = "$rows_deeln->[$g3][5]";
+        }
+        $hitmatrix .= "</tr>\n";
+        $hitmatrix .= "<tr><td>Totaal inschrijvingen is <b>$gtot</b></td></tr>\n";
+    }
+
+
+
+
+
+</table>
+    <div class="canvas">
+      <canvas class="a" id="canvas0" width="600" height="1000"></canvas>
+      <br><br>
+    </div>
+    <div class="canvas">
+      <canvas class="a" id="canvas" width="300" height="500"></canvas>
+      <br><br>
+    </div>
+    <div class="canvas">
+      <canvas class="a" id="canvas1" width="300" height="500"></canvas>
+      <br><br>
+    </div>
+    <div class="canvas">
+      <canvas class="a" id="canvas2" width="300" height="500"></canvas>
+      <br><br>
+    </div>
+    <div class="canvas">
+      <canvas class="a" id="canvas3" width="300" height="500"></canvas>
+      <br><br>
+    </div>
+    <div class="canvas">
+      <canvas class="a" id="canvas4" width="300" height="500"></canvas>
+      <br><br>
+    </div>
+    <div class="canvas">
+      <canvas class="a" id="canvas5" width="300" height="500"></canvas>
+      <br><br>
+    </div>
+</body>
+</html>

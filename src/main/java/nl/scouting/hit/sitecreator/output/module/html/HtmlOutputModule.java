@@ -19,6 +19,7 @@ import org.joda.time.LocalDateTime;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
+import org.stringtemplate.v4.StringRenderer;
 
 public class HtmlOutputModule implements OutputModule {
 
@@ -47,16 +48,27 @@ public class HtmlOutputModule implements OutputModule {
 	public void save(final Hit hit) throws IOException {
 		genereerKampPaginas(hit);
 		genereerKiesActiviteit(hit);
+		genereerHitCourant(hit);
+	}
+
+	// TODO: hit2011_menu.html
+
+	private void genereerHitCourant(final Hit hit)
+			throws FileNotFoundException, UnsupportedEncodingException,
+			IOException {
+		final STGroup group = getTemplate("hitcourant.stg");
+		final ST template = group.getInstanceOf("hitcourant");
+		template.add("hit", hit);
+		writeToFile(new File(outDir, "hitcourant.html"), template.render());
 	}
 
 	private void genereerKiesActiviteit(final Hit hit)
 			throws FileNotFoundException, UnsupportedEncodingException,
 			IOException {
-		// Kies een activiteit
-		final STGroup kiesTemplate = getTemplate("kieseenactiviteit.stg");
-		final ST st = kiesTemplate.getInstanceOf("hitkieskamp");
-		st.add("hit", hit);
-		writeToFile(new File(outDir, "hitkieskamp.html"), st.render());
+		final STGroup group = getTemplate("kieseenactiviteit.stg");
+		final ST template = group.getInstanceOf("hitkieskamp");
+		template.add("hit", hit);
+		writeToFile(new File(outDir, "hitkieskamp.html"), template.render());
 	}
 
 	private void genereerKampPaginas(final Hit hit) throws IOException {
@@ -71,13 +83,13 @@ public class HtmlOutputModule implements OutputModule {
 	}
 
 	private STGroup getTemplate(final String string) {
-		final STGroup kampTemplate = new STGroupFile(
+		final STGroup group = new STGroupFile(
 				"nl/scouting/hit/sitecreator/output/module/html/" + string,
 				'$', '$');
-		kampTemplate.registerRenderer(Date.class, new DateRenderer());
-		kampTemplate.registerRenderer(LocalDateTime.class,
-				new LocalDateTimeRenderer());
-		return kampTemplate;
+		group.registerRenderer(Date.class, new DateRenderer());
+		group.registerRenderer(LocalDateTime.class, new LocalDateTimeRenderer());
+		group.registerRenderer(String.class, new StringRenderer());
+		return group;
 	}
 
 	private void writeToFile(final HitKamp kamp, final String result)

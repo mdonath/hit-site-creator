@@ -1,8 +1,6 @@
 package nl.scouting.hit.sitecreator.input.module.csv;
 
-import static org.junit.Assert.*;
-
-import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory.FactoryException;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -13,14 +11,10 @@ import org.junit.Test;
  */
 public class ColumnMapperHelperFactoryTest {
 	@Test
-	public void load_2011_moet_goed_gaan() throws Exception {
-		ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getColumnMapperHelperForYear(2011);
+	public void load_2012_moet_goed_gaan() throws Exception {
+		final ColumnMapperHelper helper = ColumnMapperHelperFactory
+				.getColumnMapperHelperForYear(2012);
 		assertNotNull(helper);
 	}
 
-	@Test(expected = FactoryException.class)
-	public void load_2000_moet_fout_gaan() throws Exception {
-		ColumnMapperHelperFactory.getColumnMapperHelperForYear(2000);
-	}
 }

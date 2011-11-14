@@ -1,42 +1,41 @@
 package nl.scouting.hit.sitecreator.input.module.csv;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelper.LocalTimePropertyEditor;
+import static org.junit.Assert.assertTrue;
 
-import org.joda.time.LocalTime;
+import java.util.Map;
+
+import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory.FactoryException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 public class ColumnMapperHelperTest {
 
-	@Test
-	public void localTimePropertyEditor_setAsText_ok() throws Exception {
-		final LocalTimePropertyEditor editor = new ColumnMapperHelper.LocalTimePropertyEditor();
-		editor.setAsText("13:37");
-		final LocalTime time = (LocalTime) editor.getValue();
-		assertEquals("juiste uur", 13, time.getHourOfDay());
-		assertEquals("juiste minuten", 37, time.getMinuteOfHour());
+	private Map<String, String> mapping;
+
+	@Before
+	public final void setUp() throws Exception {
+		final ColumnMapperHelper helper = ColumnMapperHelperFactory
+				.getColumnMapperHelperForYear(2012);
+		mapping = helper.getColumnMapping();
+	}
+
+	@Test(expected = FactoryException.class)
+	public void verkeerd_jaar() throws Exception {
+		final ColumnMapperHelper helper = ColumnMapperHelperFactory
+				.getColumnMapperHelperForYear(2000);
+		helper.getColumnMapping();
 	}
 
 	@Test
-	public void localTimePropertyEditor_setAsText_empty() throws Exception {
-		final LocalTimePropertyEditor editor = new ColumnMapperHelper.LocalTimePropertyEditor();
-		editor.setAsText("");
-		assertNull("moet null zijn", editor.getValue());
+	public void key_met_spatie_moet_werken() throws Exception {
+		assertTrue(mapping.containsKey("HIT-Kamp naam"));
 	}
 
 	@Test
-	public void localTimePropertyEditor_setAsText_null() throws Exception {
-		final LocalTimePropertyEditor editor = new ColumnMapperHelper.LocalTimePropertyEditor();
-		editor.setAsText(null);
-		assertNull("moet null zijn", editor.getValue());
-	}
-
-	@Test
-	public void localTimePropertyEditor_getAsText() throws Exception {
-		final LocalTimePropertyEditor editor = new ColumnMapperHelper.LocalTimePropertyEditor();
-		editor.setValue(new LocalTime("13:37"));
-		assertEquals("13:37", editor.getAsText());
+	public void key_met_dubbele_punt_moet_werken() throws Exception {
+		assertTrue(mapping.toString(),
+				mapping.containsKey("De HIT Icoontjes: Staand kamp"));
 	}
 
 }

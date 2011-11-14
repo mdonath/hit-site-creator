@@ -14,17 +14,19 @@ public class HitKamp implements Comparable<HitKamp> {
 	// Kamp onderdeel gegevens
 	//
 	private Integer deelnemersnummer;
+	private String shantiformuliernummer;
+	private String hitwrapperpagina;
 
 	private String naam;
 	private String plaatsNaam;
 	private HitPlaats plaats;
 
-	private LocalDate startDatum;
-	private LocalTime startTijd;
+	private LocalDate startDatum; // write-only ivm csv-mapping
+	private LocalTime startTijd; // write-only ivm csv-mapping
 	private LocalDateTime startDatumtijd;
 
-	private LocalDate eindDatum;
-	private LocalTime eindTijd;
+	private LocalDate eindDatum; // write-only ivm csv-mapping
+	private LocalTime eindTijd; // write-only ivm csv-mapping
 	private LocalDateTime eindDatumtijd;
 
 	private Integer deelnamekosten;
@@ -43,7 +45,8 @@ public class HitKamp implements Comparable<HitKamp> {
 	private Integer maximumAantalUitEenGroep;
 	private Integer overschrijdingAantalDeelnemers;
 
-	private String subgroepSamenstelling;// = "1-4";
+	private String subgroepsamenstellingMinimum;
+	private String subgroepsamenstellingMaximum;
 	private String maximumAantalSubgroepjes;
 
 	//
@@ -52,28 +55,29 @@ public class HitKamp implements Comparable<HitKamp> {
 	private String icoontje;
 	private final Set<Icoon> icoontjes;
 
-	private String titelTekst;// = "TitelTekst";
-	private String courantTekst;// = "CourantTekst";
-	private String websiteTekst;// = "WebsiteTekst";
-	private URL webadresFoto1;// =
-								// asURL("http://hit.scouting.nl/stories/mook-1.jpg");
-	private URL webadresFoto2;// =
-								// asURL("http://hit.scouting.nl/stories/mook-2.jpg");
-	private URL webadresFoto3;// =
-								// asURL("http://hit.scouting.nl/stories/mook-3.jpg");
-	private URL websiteYoutube;// =
-								// asURL("http://www.youtube.com/webadresYoutube");
-	private String websiteContactpersoon;// = "C. Ontactpersoon";
-	private String websiteContactTelefoonnummer;// = "000-0000000";
-	private String websiteContactEmailadres;// =
-											// "c.ontactpersoon@email.adres.nl";
-	private URL websiteAdres;// = asURL("http://dit.is.ons.kamp.adres.nl");
+	private String titelTekst;
+	private String courantTekst;
+	private String websiteTekst;
+	private URL webadresFoto1;
+	private URL webadresFoto2;
+	private URL webadresFoto3;
+	private URL websiteYoutube;
 
-	private Integer afgelegdeKilometers;// = 10;
+	private String websiteContactpersoon;
+	private String websiteContactTelefoonnummer;
+	private String websiteContactEmailadres;
 
+	private URL websiteAdres;
+	private Integer afgelegdeKilometers; // afleiden uit icoontjes
+
+	/** Linkt alle kampen aan elkaar voor navigatiedoeleinden. */
 	private HitKamp previous;
+	/** Linkt alle kampen aan elkaar voor navigatiedoeleinden. */
 	private HitKamp next;
 
+	/**
+	 * Constructor.
+	 */
 	public HitKamp() {
 		super();
 		icoontjes = new TreeSet<Icoon>();
@@ -219,14 +223,6 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	public void setDeelnamekosten(final Integer deelnamekosten) {
 		this.deelnamekosten = deelnamekosten;
-	}
-
-	public String getSubgroepSamenstelling() {
-		return subgroepSamenstelling;
-	}
-
-	public void setSubgroepSamenstelling(final String subgroepSamenstelling) {
-		this.subgroepSamenstelling = subgroepSamenstelling;
 	}
 
 	public String getTitelTekst() {
@@ -415,6 +411,40 @@ public class HitKamp implements Comparable<HitKamp> {
 			result = date.toLocalDateTime(time);
 		}
 		return result;
+	}
+
+	public String getSubgroepsamenstellingMinimum() {
+		return subgroepsamenstellingMinimum;
+	}
+
+	public void setSubgroepsamenstellingMinimum(
+			final String subgroepsamenstellingMinimum) {
+		this.subgroepsamenstellingMinimum = subgroepsamenstellingMinimum;
+	}
+
+	public String getSubgroepsamenstellingMaximum() {
+		return subgroepsamenstellingMaximum;
+	}
+
+	public void setSubgroepsamenstellingMaximum(
+			final String subgroepsamenstellingMaximum) {
+		this.subgroepsamenstellingMaximum = subgroepsamenstellingMaximum;
+	}
+
+	public String getShantiformuliernummer() {
+		return shantiformuliernummer;
+	}
+
+	public void setShantiformuliernummer(final String shantiformuliernummer) {
+		this.shantiformuliernummer = shantiformuliernummer;
+	}
+
+	public String getHitwrapperpagina() {
+		return hitwrapperpagina;
+	}
+
+	public void setHitwrapperpagina(final String hitwrapperpagina) {
+		this.hitwrapperpagina = hitwrapperpagina;
 	}
 
 }

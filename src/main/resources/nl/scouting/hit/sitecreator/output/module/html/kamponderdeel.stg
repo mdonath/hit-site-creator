@@ -1,15 +1,18 @@
-$! Dit wordt door de applicatie aangeroepen als hoofdtemplate !$
-hitkamp(hit, kamp) ::= "
-<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
+hitkamp(hit, kamp) ::= <<
+	$! ********************************************************** !$
+	$! Dit wordt door de applicatie aangeroepen als hoofdtemplate !$
+	$! ********************************************************** !$
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
 $hitkamp_header(hit,kamp)$
 
-<body id=\"kamp\" style=\"width:650px;\">
+<body id="kamp" style="width:650px;">
 $hitkamp_commentaarblok_met_info(hit,kamp)$
 
-<div id=\"content\">
-	<div id=\"PrintKlaar\">
+<div id="content">
+	<div id="PrintKlaar">
 		$hitkamp_titel(hit, kamp)$
 		
 		$hitkamp_icoontjes(hit, kamp)$
@@ -26,44 +29,45 @@ $hitkamp_commentaarblok_met_info(hit,kamp)$
 
 	$hitkamp_buttons(hit, kamp)$
 	
-	<p style=\"float: left\">$kamp.deelnemersnummer$ Laatste update $hit.datumNu;format=\"dd MMMM yyyy (HH:mm)\"$</p>
+	<p style="float: left">$kamp.deelnemersnummer$ Laatste update $hit.datumNu;format="dd MMMM yyyy (HH:mm)"$</p>
 </div>
 </body>
 </html>
-"
+>>
 
 
-$! ************************************* !$
-$! *** De html-header van de pagina. *** !$
-$! ************************************* !$
-hitkamp_header(hit, kamp) ::= "
+hitkamp_header(hit, kamp) ::= <<
+	$! ************************************* !$
+	$! *** De html-header van de pagina. *** !$
+	$! ************************************* !$
 <head>
         <title>$kamp.naam$</title>
-        <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">
-        <meta name=\"author\" content=\"HIT Scouting $hit.jaar$\">
-        <meta name=\"contact_id\" content=\"MMD-$hit.jaar$\">
-        <meta name=\"section\" content=\"HIT\">
-        <meta name=\"keywords\" content=\"HIT, Scouting Nederland, jongeren, jeugd, avontuur, scouts\">
-        <meta name=\"maintainer\" content=\"Martijn Donath\">
-        <meta name=\"description\" content=\"Informatie over een van de kampen van de HIT $hit.jaar$\">
-        <link rel=\"stylesheet\" href=\"hit.css\" type=\"text/css\">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="author" content="HIT Scouting $hit.jaar$">
+        <meta name="contact_id" content="MMD-$hit.jaar$">
+        <meta name="section" content="HIT">
+        <meta name="keywords" content="HIT, Scouting Nederland, jongeren, jeugd, avontuur, scouts">
+        <meta name="maintainer" content="Martijn Donath">
+        <meta name="description" content="Informatie over een van de kampen van de HIT $hit.jaar$">
+        <link rel="stylesheet" href="hit.css" type="text/css">
 </head>
-"
+>>
 
 
-$! *********************************************** !$
-$! *** Het comentaarblok met helpdeskgegevens. *** !$
-$! *********************************************** !$
-hitkamp_commentaarblok_met_info(hit,kamp) ::= "
+hitkamp_commentaarblok_met_info(hit,kamp) ::= <<
+	$! *********************************************** !$
+	$! *** Het comentaarblok met helpdeskgegevens. *** !$
+	$! *********************************************** !$
+
 <!--
 Aangepast en gecontroleerd moeten worden:
 
 TABBLAD BASIS:
-Startdatum (deel)evenement $kamp.startDatumtijd;format=\"dd-MM-yyyy\"$ , begintijd $kamp.startDatumtijd;format=\"HH:mm\"$  
-Einddatum (deel)evenement * $kamp.eindDatumtijd;format=\"dd-MM-yyyy\"$ , eindttijd $kamp.eindDatumtijd;format=\"HH:mm\"$
-Inschrijven vanaf * $hit.inschrijvingStartdatum;format=\"dd MMMM yyyy\"$
-Inschrijven tot en met * $hit.inschrijvingEinddatum;format=\"dd MMMM yyyy\"$
-Inschrijving wijzigen tot $hit.inschrijvingWijzigenTotDatum;format=\"dd MMMM yyyy\"$
+Startdatum (deel)evenement $kamp.startDatumtijd;format="dd-MM-yyyy"$ , begintijd $kamp.startDatumtijd;format="HH:mm"$  
+Einddatum (deel)evenement * $kamp.eindDatumtijd;format="dd-MM-yyyy"$ , eindttijd $kamp.eindDatumtijd;format="HH:mm"$
+Inschrijven vanaf * $hit.inschrijvingStartdatum;format="dd MMMM yyyy"$
+Inschrijven tot en met * $hit.inschrijvingEinddatum;format="dd MMMM yyyy"$
+Inschrijving wijzigen tot $hit.inschrijvingWijzigenTotDatum;format="dd MMMM yyyy"$
 
 TABBLAD DEELNAMECONDITIES
 Minimum/maximum leeftijd $kamp.minimumLeeftijd$ en $kamp.maximumLeeftijd$
@@ -71,33 +75,34 @@ Minimum/maximum deelnemersaantal $kamp.maximumAantalDeelnemers$
 Maximum aantal uit één groep $kamp.maximumAantalUitEenGroep$
 
 TABBLAD FINANCIEEN
-Tot en met deze datum kosteloos annuleren $hit.inschrijvingKosteloosAnnulerenDatum;format=\"dd MMMM yyyy\"$
-Datum waarna annuleren met volledige kosten geldt $hit.inschrijvingGeenRestitutieDatum;format=\"dd MMMM yyyy\"$
+Tot en met deze datum kosteloos annuleren $hit.inschrijvingKosteloosAnnulerenDatum;format="dd MMMM yyyy"$
+Datum waarna annuleren met volledige kosten geldt $hit.inschrijvingGeenRestitutieDatum;format="dd MMMM yyyy"$
 
 TABBLAD SAMENSTELLEN
 deelnamekosten 
 Koptekst * Deelnamekosten HIT $hit.jaar$
 Omschrijving Deelname HIT $hit.jaar$
 Bedrag $kamp.deelnamekosten$
-Inningsdatum $hit.inningsdatum;format=\"dd MMMM yyyy\"$
+Inningsdatum $hit.inningsdatum;format="dd MMMM yyyy"$
 
 TABBLAD DOELGROEP
-Titel *  wijzigen (oude HIT-code verwijderen) \"$kamp.plaats.naam$ $kamp.naam$\"
-Tonen vanaf *  ,  Tonen t/m *  $hit.inschrijvingStartdatum;format=\"dd MMMM yyyy\"$  $hit.inschrijvingEinddatum;format=\"dd MMMM yyyy\"$
+Titel *  wijzigen (oude HIT-code verwijderen) "$kamp.plaats.naam$ $kamp.naam$"
+Tonen vanaf *  ,  Tonen t/m *  $hit.inschrijvingStartdatum;format="dd MMMM yyyy"$  $hit.inschrijvingEinddatum;format="dd MMMM yyyy"$
    
 -->
-"
+>>
 
 
 
-$! *************************************************** !$
-$! *** De titel en deelnemerskosten, leeftijd, etc *** !$
-$! *************************************************** !$
-hitkamp_titel(hit, kamp) ::= "
+hitkamp_titel(hit, kamp) ::= <<
+	$! *************************************************** !$
+	$! *** De titel en deelnemerskosten, leeftijd, etc *** !$
+	$! *************************************************** !$
+	
 <!-- Titel met deelnemerskosten, leeftijd etc -->
-<table width=\"100%\">
+<table width="100%">
 	<tr>
-		<td rowspan=\"6\" valign=\"top\">
+		<td rowspan="6" valign="top">
 		        <h1>$kamp.naam$</h1>
 		</td>
 	</tr>
@@ -109,7 +114,7 @@ hitkamp_titel(hit, kamp) ::= "
 	<tr>
 		<td valign=top>Datum</td>
 		<td valign=top>:</td>
-		<td valign=top>$kamp.startDatumtijd;format=\"d MMMM\"$ t/m $kamp.eindDatumtijd;format=\"d MMMM\"$</td>
+		<td valign=top>$kamp.startDatumtijd;format="d MMMM"$ t/m $kamp.eindDatumtijd;format="d MMMM"$</td>
 	</tr>
 	<tr>
 		<td valign=top>Leeftijd</td>
@@ -119,7 +124,7 @@ hitkamp_titel(hit, kamp) ::= "
 	<tr>
 		<td valign=top>Groep</td>
 		<td valign=top>:</td>
-		<td valign=top>$kamp.subgroepSamenstelling$</td>
+		<td valign=top>$kamp.subgroepSamenstellingMinimum$ - $kamp.subgroepSamenstellingMaximum$</td>
 	</tr>
 	<tr>
 		<td valign=top>Prijs</td>
@@ -127,19 +132,19 @@ hitkamp_titel(hit, kamp) ::= "
 		<td valign=top>€ $kamp.deelnamekosten$</td>
 	</tr>
 </table>
-"
+>>
 
 
 
-$! ****************************** !$
-$! *** De lijst met icoontjes *** !$
-$! ****************************** !$
-hitkamp_icoontjes(hit, kamp) ::= "
+hitkamp_icoontjes(hit, kamp) ::= <<
+	$! ****************************** !$
+	$! *** De lijst met icoontjes *** !$
+	$! ****************************** !$
 <!-- icoontjes met subtitel -->
-<table width=\"100%\" cellpadding=\"0\">
+<table width="100%" cellpadding="0">
 <tr>
 	<td>
-		<div align=\"right\">
+		<div align="right">
 			$! *** loop over de kamp.icoontjes, roep voor elk icoon de template 'hitkamp_icoon' aan. *** !$
 			$kamp.icoontjes:hitkamp_icoon()$			
 		</div>
@@ -147,94 +152,94 @@ hitkamp_icoontjes(hit, kamp) ::= "
 </tr>
 <tr>
 	<td>
-		<div align=\"left\">
+		<div align="left">
 			<h2>$kamp.titelTekst$<h2>
 		</div>
 	</td>
 </tr>
 </table>
-"
+>>
 
 
+hitkamp_icoon(icoon) ::= <<
 $! ************************************ !$
 $! *** Genereert precies één icoon. *** !$
 $! ************************************ !$
-hitkamp_icoon(icoon) ::= "
-<img src=\"./iconengroot/$icoon.bestandsnaam$\" alt=\"$icoon.tekst$\" title=\"$icoon.tekst$\" />
-"
+<img src="./iconengroot/$icoon.bestandsnaam$" alt="$icoon.tekst$" title="$icoon.tekst$" />
+>>
 
 
-$! *************************** !$
-$! *** Foto's en filmpjes. *** !$
-$! *************************** !$
-hitkamp_media(hit, kamp) ::= "
+hitkamp_media(hit, kamp) ::= <<
+	$! *************************** !$
+	$! *** Foto's en filmpjes. *** !$
+	$! *************************** !$
 <table>
 <tr>
-	<td width=\"190\" valign=\"top\">
-		<img src=\"$kamp.webadresFoto1$\" width=\"180\" alt=\"Foto 1\"><br><br>
-		<img src=\"$kamp.webadresFoto2$\" width=\"180\" alt=\"Foto 2\"><br><br>
+	<td width="190" valign="top">
+		<img src="$kamp.webadresFoto1$" width="180" alt="Foto 1"><br><br>
+		<img src="$kamp.webadresFoto2$" width="180" alt="Foto 2"><br><br>
 		
-		<img src=\"$kamp.webadresFoto3$\" width=\"180\" alt=\"Foto 3\">
+		<img src="$kamp.webadresFoto3$" width="180" alt="Foto 3">
 
 	</td>
 </tr>
 <!--
 <tr><td colspan=2>
-	<object width=\"670\" height=\"400\">
-		<param name=\"movie\" value=\"$kamp.websiteYoutube$\"></param>
-		<param name=\"allowFullScreen\" value=\"true\"></param>
-		<param name=\"allowscriptaccess\" value=\"always\"></param>
-		<embed src=\"$kamp.websiteYoutube$\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"670\" height=\"400\"></embed>
+	<object width="670" height="400">
+		<param name="movie" value="$kamp.websiteYoutube$"></param>
+		<param name="allowFullScreen" value="true"></param>
+		<param name="allowscriptaccess" value="always"></param>
+		<embed src="$kamp.websiteYoutube$" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="670" height="400"></embed>
 	</object>
 </td>
 </tr>
 -->
 </table>
-"
+>>
 
 
-$! ************************************ !$
-$! *** Contactgegevens van het kamp *** !$
-$! ************************************ !$
-hitkamp_contact(hit, kamp) ::= "
+hitkamp_contact(hit, kamp) ::= <<
+	$! ************************************ !$
+	$! *** Contactgegevens van het kamp *** !$
+	$! ************************************ !$
 <table>
 	<tr>
-		<td><img border=\"0\" src=\"./iconengroot/info.gif\" alt=\"Meer informatie? Mail of bel naar de contactpersoon van deze HIT\"></td>
+		<td><img border="0" src="./iconengroot/info.gif" alt="Meer informatie? Mail of bel naar de contactpersoon van deze HIT"></td>
 		<td>Bel bij vragen $kamp.websiteContactpersoon$: $kamp.websiteContactTelefoonnummer$<br>
-			<a href=\"mailto:$kamp.websiteContactEmailadres$\">Mail naar $kamp.websiteContactEmailadres$</a><br>';}
+			<a href="mailto:$kamp.websiteContactEmailadres$">Mail naar $kamp.websiteContactEmailadres$</a><br>';}
     	</td>
     </tr>
     <tr>
-    	<td><img border=\"0\" src=\"./iconengroot/web.gif\" alt=\"Link naar een website over dit HIT onderdeel\"></td>
-    	<td><a target=\"hitkamp\" href=\"$kamp.websiteAdres$\">$kamp.websiteAdres$</a></td>
+    	<td><img border="0" src="./iconengroot/web.gif" alt="Link naar een website over dit HIT onderdeel"></td>
+    	<td><a target="hitkamp" href="$kamp.websiteAdres$">$kamp.websiteAdres$</a></td>
     </tr>
 </table>
-"
+>>
 
 
 
-$! *********************************** !$
-$! *** Expliciete duidelijke info. *** !$
-$! *********************************** !$
-hitkamp_aanvullende_info(hit,kamp) ::= "
+hitkamp_aanvullende_info(hit,kamp) ::= <<
+	$! *********************************** !$
+	$! *** Expliciete duidelijke info. *** !$
+	$! *********************************** !$
 <h2>Aanvullende info:</h2>
 <p>
 Er mogen maximaal $kamp.maximumAantalUitEenGroep$ leden uit dezelfde Scoutinggroep meedoen.
 Er kunnen maximaal $kamp.maximumAantalDeelnemers$ deelnemers meedoen aan deze activiteit.
 Totale afstand die tijdens deze HIT gelopen wordt is maximaal $kamp.afgelegdeKilometers$ kilometer.
-Dit HIT-Kamp start op $kamp.startDatumtijd;format=\"d MMMM\"$ om $kamp.startDatumtijd;format=\"HH:mm\"$ uur en duurt tot en met $kamp.eindDatumtijd;format=\"d MMMM\"$ $kamp.eindDatumtijd;format=\"HH:mm\"$ uur. 
+Dit HIT-Kamp start op $kamp.startDatumtijd;format="d MMMM"$ om $kamp.startDatumtijd;format="HH:mm"$ uur en duurt tot en met $kamp.eindDatumtijd;format="d MMMM"$ $kamp.eindDatumtijd;format="HH:mm"$ uur. 
 </p>
-"
+>>
 
 
 
-$! ******************** !$
-$! *** Knoppenbalk. *** !$
-$! ******************** !$
-hitkamp_buttons(hit, kamp) ::= "	
-	<input type=\"BUTTON\" value=\"&lt;\" onclick=\"window.location.href='$kamp.previous.htmlFileNaam$'\" style=\"float: left\">
-	<input type=\"BUTTON\" value=\"&gt;\" onclick=\"window.location.href='$kamp.next.htmlFileNaam$'\" style=\"float: left\">
-	<input type=\"BUTTON\" value=\"Direct inschrijven\" onclick=\"window.open('https://sol.scouting.nl/frontend/sol/index.php?task=as_registration&action=add&frm_id=$kamp.shantiformuliernummer$')\" style=\"float: right\">
-	<input type=\"BUTTON\" value=\"Help\" onclick=\"window.location.href='symbolen.html'\" style=\"float: right\">
-	<br>
-"
+hitkamp_buttons(hit, kamp) ::= <<	
+	$! ******************** !$
+	$! *** Knoppenbalk. *** !$
+	$! ******************** !$
+<input type="BUTTON" value="&lt;" onclick="window.location.href='$kamp.previous.htmlFileNaam$'" style="float: left">
+<input type="BUTTON" value="&gt;" onclick="window.location.href='$kamp.next.htmlFileNaam$'" style="float: left">
+<input type="BUTTON" value="Direct inschrijven" onclick="window.open('https://sol.scouting.nl/frontend/sol/index.php?task=as_registration&action=add&frm_id=$kamp.shantiformuliernummer$')" style="float: right">
+<input type="BUTTON" value="Help" onclick="window.location.href='symbolen.html'" style="float: right">
+<br>
+>>

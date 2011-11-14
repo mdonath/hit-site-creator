@@ -6,11 +6,13 @@ import java.util.List;
 
 public class HitPlaats {
 
+	private Hit hit;
+
 	private String naam;
 
-	private List<HitKamp> hitKampen;
+	private String hitCourantTekst = "Nog geen tekst!";
 
-	private Hit hit;
+	private List<HitKamp> hitKampen;
 
 	public HitPlaats(final String naam, final HitKamp... hitKampen) {
 		this.naam = naam;
@@ -61,8 +63,16 @@ public class HitPlaats {
 		return hit;
 	}
 
-	public void setHit(Hit hit) {
+	public void setHit(final Hit hit) {
 		this.hit = hit;
+	}
+
+	public String getHitCourantTekst() {
+		return hitCourantTekst;
+	}
+
+	public void setHitCourantTekst(final String hitCourantTekst) {
+		this.hitCourantTekst = hitCourantTekst;
 	}
 
 }

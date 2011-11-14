@@ -22,17 +22,6 @@ import au.com.bytecode.opencsv.bean.MappingStrategy;
 
 public class CsvInputModule extends AbstractFileImportInputModule {
 
-	public MappingStrategy<HitKamp> getStrategy() throws FactoryException {
-		final HeaderColumnNameTranslateMappingStrategy<HitKamp> strat = new HeaderColumnNameTranslateMappingStrategy<HitKamp>();
-		strat.setType(HitKamp.class);
-
-		final ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getColumnMapperHelperForYear(getJaar());
-		final Map<String, String> columnMapping = helper.getColumnMapping();
-		strat.setColumnMapping(columnMapping);
-		return strat;
-	}
-
 	@Override
 	public Hit load() throws InputModuleException {
 		System.out.println("inlezen met " + getEncoding() + " van " + getFile()
@@ -58,7 +47,21 @@ public class CsvInputModule extends AbstractFileImportInputModule {
 			throw new InputModuleException(e);
 		} catch (final UnsupportedEncodingException e) {
 			throw new InputModuleException(e);
+		} catch (final MappingException e) {
+			throw new InputModuleException(e);
 		}
+	}
+
+	private MappingStrategy<HitKamp> getStrategy() throws FactoryException,
+			MappingException {
+		final HeaderColumnNameTranslateMappingStrategy<HitKamp> strat = new HeaderColumnNameTranslateMappingStrategy<HitKamp>();
+		strat.setType(HitKamp.class);
+
+		final ColumnMapperHelper helper = ColumnMapperHelperFactory
+				.getColumnMapperHelperForYear(getJaar());
+		final Map<String, String> columnMapping = helper.getColumnMapping();
+		strat.setColumnMapping(columnMapping);
+		return strat;
 	}
 
 	public Hit maakStructuur(final List<HitKamp> list) {

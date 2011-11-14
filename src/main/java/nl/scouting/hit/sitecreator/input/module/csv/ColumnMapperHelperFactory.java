@@ -1,5 +1,7 @@
 package nl.scouting.hit.sitecreator.input.module.csv;
 
+import java.io.InputStream;
+
 public final class ColumnMapperHelperFactory {
 
 	public static class FactoryException extends Exception {
@@ -12,12 +14,17 @@ public final class ColumnMapperHelperFactory {
 
 	public static final ColumnMapperHelper getColumnMapperHelperForYear(
 			final int jaar) throws FactoryException {
-		final String className = ColumnMapperHelper.class.getName() + jaar;
+		return getColumnMapperHelper(ColumnMapperHelperFactory.class
+				.getResourceAsStream("/nl/scouting/hit/sitecreator/input/module/csv/mapping-"
+						+ jaar + ".properties"));
+	}
+
+	public static final ColumnMapperHelper getColumnMapperHelper(
+			final InputStream inputStream) throws FactoryException {
 		try {
-			return (ColumnMapperHelper) Class.forName(className).newInstance();
-		} catch (final Exception e) {
+			return new ColumnMapperHelperByInputStream(inputStream);
+		} catch (final MappingException e) {
 			throw new FactoryException(e);
 		}
 	}
-
 }

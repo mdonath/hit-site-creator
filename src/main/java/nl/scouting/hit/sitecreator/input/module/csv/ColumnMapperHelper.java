@@ -13,7 +13,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 public interface ColumnMapperHelper {
 
-	Map<String, String> getColumnMapping();
+	Map<String, String> getColumnMapping() throws MappingException;
 
 	/**
 	 * Maakt een Integer van een String.

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Hit {
 
@@ -65,6 +67,20 @@ public class Hit {
 		if (totEnMetEenNaLaatsteKamp >= 0) {
 			kampen.get(totEnMetEenNaLaatsteKamp).setNext(kampen.get(0));
 		}
+	}
+
+	public Set<Icoon> getBeschikbareIconen() {
+		return Icoon.getAll();
+	}
+
+	public Set<Icoon> getGebruikteIconen() {
+		final Set<Icoon> result = new TreeSet<Icoon>();
+		for (final HitPlaats hitPlaats : hitPlaatsen) {
+			for (final HitKamp kamp : hitPlaats.getHitKampen()) {
+				result.addAll(kamp.getIcoontjes());
+			}
+		}
+		return result;
 	}
 
 	public int getAantalKampen() {

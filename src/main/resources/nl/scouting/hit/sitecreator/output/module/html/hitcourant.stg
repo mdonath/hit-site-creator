@@ -1,0 +1,95 @@
+hitcourant(hit) ::= <<
+$! ********************************** !$
+$! Maakt gegevens voor de HIT Courant !$
+$! ********************************** !$
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+	        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	        <meta name="author" content="Martijn Donath" />
+	        <meta name="section" content="HIT" />
+	        <meta name="keywords" content="HIT , Scouting Nederland, jongeren, jeugd, avontuur, scouts," />
+	        <meta name="maintainer" content="Martijn Donath" />
+	        <meta name="description" content="Gegevens voor de HIT Courant van $hit.jaar$" />
+	        <link rel="stylesheet" href="hit.css" type="text/css" />
+	</head>
+<body>
+
+<table width="300px">
+	<tr>
+		<td colspan="2">De volgende icoontjes zijn gebruikt:</td>
+	</tr>
+	$hit.gebruikteIconen : icoonLinkerKolom(), icoonMiddelKolom(), icoonRechterKolom()$
+</table>
+
+<table width="300px">
+	$hit.hitPlaatsen : hitcourant_plaats()$    
+</table>
+
+</body>
+</html>
+>>
+
+
+
+icoonLinkerKolom(icoon) ::= <<
+<tr>
+	$icoonMiddelKolom(icoon)$
+>>
+
+icoonMiddelKolom(icoon) ::= <<
+<td>$icoonGroot(icoon)$</td><td>$icoon.tekst$</td>
+>>
+
+icoonRechterKolom(icoon) ::= <<
+	$icoonMiddelKolom(icoon)$
+</tr>
+>>
+
+icoonGroot(icoon) ::= <<
+<img id="$icoon.bestandsnaam$" src="iconengroot/$icoon.bestandsnaam$" alt="$icoon.tekst$" title="$icoon.tekst$" style=""/>
+>>
+
+
+
+hitcourant_plaats(plaats) ::= <<
+	<tr>
+		<td><img width="150px" src="hit_logo_website_$plaats.naam;format="lower"$.png"></td>
+		<td><div id="hitp_naam">$plaats.naam$</div></td>
+	</tr>
+	<tr>
+		<td colspan="2">Kijk op https://hit.scouting.nl/$plaats.naam;format="lower"$ voor meer info.</td>
+	</tr>
+	<tr>
+		<td colspan="2">$plaats.hitCourantTekst;format="xml-encode"$</td>
+	</tr>
+
+	$plaats.hitKampen : hitcourant_kamp()$
+      
+>>
+
+
+
+hitcourant_kamp(kamp) ::= <<
+	<tr>
+		<td colspan="2"><hr></td>
+	</tr>
+	<tr>
+		<td colspan="2"><div id="hitk_naam"><h1>$kamp.naam$</h1></div></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">
+			$kamp.icoontjes : icoonGroot()$
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">$kamp.startDatumtijd;format="d"$-$kamp.eindDatumtijd;format="d MMMM"$
+		 | $kamp.minimumLeeftijd$-$kamp.maximumLeeftijd$ jaar
+		 | $kamp.subgroepsamenstellingMinimum$ - $kamp.subgroepsamenstellingMaximum$ pers. 
+		 | € $kamp.deelnamekosten$
+		 </td>
+	</tr>
+	<tr>
+		<td colspan="2">$kamp.courantTekst;format="xml-encode"$</td>
+	</tr>
+>>
