@@ -15,6 +15,7 @@ import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.components.JDirectoryInput;
 import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
+import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 import nl.scouting.hit.sitecreator.output.module.AbstractOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
@@ -24,12 +25,12 @@ public class HtmlOutputPanel extends AbstractOutputPanel {
 
 	private HtmlOutputModule outputModule;
 
-	private final Application application;
+	private final Application<Hit> application;
 
 	public static final ConfigKey<File> CONF_OUTDIR = new ConfigKey.FileConfigKey(
 			"htmlout");
 
-	public HtmlOutputPanel(final Application application) {
+	public HtmlOutputPanel(final Application<Hit> application) {
 		this.application = application;
 		getProcessor();
 		initComponents();

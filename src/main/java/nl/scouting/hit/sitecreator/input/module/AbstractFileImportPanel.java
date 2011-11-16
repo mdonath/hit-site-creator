@@ -17,13 +17,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.ConfigKey;
-import nl.scouting.hit.sitecreator.ConfigKey.FileConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.IntegerConfigKey;
-import nl.scouting.hit.sitecreator.ConfigKey.StringConfigKey;
 import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
 import nl.scouting.hit.sitecreator.components.JFileInput;
 import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
 import nl.scouting.hit.sitecreator.input.InputModule;
+import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public abstract class AbstractFileImportPanel extends AbstractInputPanel {
@@ -31,21 +30,22 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 
 	private InputModule inputModule;
 
-	private final Application application;
+	private final Application<Hit> application;
 
-	public static final ConfigKey<File> CONFIG_CSV = new FileConfigKey("csv");
 	public static final ConfigKey<Integer> CONFIG_JAAR = new IntegerConfigKey(
 			"jaar");
-	public static final ConfigKey<String> CONFIG_ENCODING = new StringConfigKey(
-			"enc");
 
-	public AbstractFileImportPanel(final Application application,
+	public AbstractFileImportPanel(final Application<Hit> application,
 			final String name, final FileNameExtensionFilter filter) {
 		super();
 		this.application = application;
 		setName(name);
 		initComponents(filter);
 	}
+
+	protected abstract ConfigKey<File> getInputConfigKey();
+
+	protected abstract ConfigKey<String> getEncodingKey();
 
 	public void initComponents(final FileNameExtensionFilter filter) {
 
@@ -59,8 +59,9 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 								evt.getNewValue());
 					}
 				});
-		if (application.hasConfigurationValue(CONFIG_CSV)) {
-			locField.setFile(application.getConfigurationValue(CONFIG_CSV));
+		if (application.hasConfigurationValue(getInputConfigKey())) {
+			locField.setFile(application
+					.getConfigurationValue(getInputConfigKey()));
 		}
 		// ------------------
 		final JLabel yearLabel = new JLabel("Jaar");
@@ -93,9 +94,9 @@ public abstract class AbstractFileImportPanel extends AbstractInputPanel {
 								((JComboBox) e.getSource()).getSelectedItem());
 					}
 				});
-		if (application.getConfigurationValue(CONFIG_ENCODING) != null) {
+		if (application.getConfigurationValue(getEncodingKey()) != null) {
 			encodingField.setSelectedItem(application
-					.getConfigurationValue(CONFIG_ENCODING));
+					.getConfigurationValue(getEncodingKey()));
 		}
 		// ------------------
 		final GroupLayout layout = UIUtil.createGroupLayout(this);

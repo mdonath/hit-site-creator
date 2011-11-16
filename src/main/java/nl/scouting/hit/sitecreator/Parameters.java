@@ -36,9 +36,14 @@ public class Parameters {
 
 	private static Options createOptions() {
 		final Options options = new Options();
-		options.addOption("csv", true, "Naam van het CSV bestand");
 		options.addOption("jaar", true, "Jaar (nodig voor mapping)");
-		options.addOption("enc", true, "Encoding van bestand");
+
+		for (final String soort : new String[] { "kamp", "plaats", "project" }) {
+			options.addOption(soort + "csv", true,
+					"Naam van het CSV bestand met " + soort + "gegevens");
+			options.addOption(soort + "enc", true, "Encoding van bestand met "
+					+ soort + "gegevens");
+		}
 		options.addOption("htmlout", true, "Directory voor html uitvoer");
 
 		return options;

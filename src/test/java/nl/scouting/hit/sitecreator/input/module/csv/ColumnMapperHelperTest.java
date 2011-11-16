@@ -16,14 +16,14 @@ public class ColumnMapperHelperTest {
 	@Before
 	public final void setUp() throws Exception {
 		final ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getColumnMapperHelperForYear(2012);
+				.getKampColumnMapperHelperForYear(2012);
 		mapping = helper.getColumnMapping();
 	}
 
 	@Test(expected = FactoryException.class)
 	public void verkeerd_jaar() throws Exception {
 		final ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getColumnMapperHelperForYear(2000);
+				.getKampColumnMapperHelperForYear(2000);
 		helper.getColumnMapping();
 	}
 

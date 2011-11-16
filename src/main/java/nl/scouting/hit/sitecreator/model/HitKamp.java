@@ -83,6 +83,58 @@ public class HitKamp implements Comparable<HitKamp> {
 		icoontjes = new TreeSet<Icoon>();
 	}
 
+	public void merge(final HitKamp kamp) {
+		deelnemersnummer = kamp.deelnemersnummer;
+		shantiformuliernummer = kamp.shantiformuliernummer;
+		hitwrapperpagina = kamp.hitwrapperpagina;
+
+		naam = kamp.naam;
+
+		startDatumtijd = kamp.startDatumtijd;
+
+		eindDatumtijd = kamp.eindDatumtijd;
+
+		deelnamekosten = kamp.deelnamekosten;
+
+		akkoordHitKamp = kamp.akkoordHitKamp;
+		akkoordHitPlaats = kamp.akkoordHitPlaats;
+
+		//
+		// Deelnemer eigenschappen
+		//
+		minimumLeeftijd = kamp.minimumLeeftijd;
+		maximumLeeftijd = kamp.maximumLeeftijd;
+
+		minimumAantalDeelnemers = kamp.minimumAantalDeelnemers;
+		maximumAantalDeelnemers = kamp.maximumAantalDeelnemers;
+		maximumAantalUitEenGroep = kamp.maximumAantalUitEenGroep;
+		overschrijdingAantalDeelnemers = kamp.overschrijdingAantalDeelnemers;
+
+		subgroepsamenstellingMinimum = kamp.subgroepsamenstellingMinimum;
+		subgroepsamenstellingMaximum = kamp.subgroepsamenstellingMaximum;
+		maximumAantalSubgroepjes = kamp.maximumAantalSubgroepjes;
+
+		//
+		// Alleen voor de Website
+		//
+		icoontjes.clear();
+		icoontjes.addAll(kamp.icoontjes);
+
+		titelTekst = kamp.titelTekst;
+		courantTekst = kamp.courantTekst;
+		websiteTekst = kamp.websiteTekst;
+		webadresFoto1 = kamp.webadresFoto1;
+		webadresFoto2 = kamp.webadresFoto2;
+		webadresFoto3 = kamp.webadresFoto3;
+
+		websiteContactpersoon = kamp.websiteContactpersoon;
+		websiteContactTelefoonnummer = kamp.websiteContactTelefoonnummer;
+		websiteContactEmailadres = kamp.websiteContactEmailadres;
+
+		websiteAdres = kamp.websiteAdres;
+		afgelegdeKilometers = kamp.afgelegdeKilometers;
+	}
+
 	public HitKamp(final String naam) {
 		this();
 		this.naam = naam;
@@ -132,6 +184,11 @@ public class HitKamp implements Comparable<HitKamp> {
 			result = naam.compareTo(o.getNaam());
 		}
 		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return naam.equals(((HitKamp) obj).naam);
 	}
 
 	// ----

@@ -24,12 +24,12 @@ public final class HitTreeCellRenderer implements TreeCellRenderer {
 	private static final String FMT = "%s (%d)";
 
 	public HitTreeCellRenderer() {
-		this.renderer = new JPanel(new GridLayout(0, 1));
-		this.titleLabel = new JLabel(" ");
-		this.renderer.add(this.titleLabel);
-		this.backgroundSelectionColor = this.defaultRenderer
+		renderer = new JPanel(new GridLayout(0, 1));
+		titleLabel = new JLabel(" ");
+		renderer.add(titleLabel);
+		backgroundSelectionColor = defaultRenderer
 				.getBackgroundSelectionColor();
-		this.backgroundNonSelectionColor = this.defaultRenderer
+		backgroundNonSelectionColor = defaultRenderer
 				.getBackgroundNonSelectionColor();
 	}
 
@@ -40,23 +40,23 @@ public final class HitTreeCellRenderer implements TreeCellRenderer {
 		Component returnValue = null;
 		if (value != null) {
 			if (value instanceof Hit) {
-				this.titleLabel.setText(printHit((Hit) value));
+				titleLabel.setText(printHit((Hit) value));
 			} else if (value instanceof HitPlaats) {
-				this.titleLabel.setText(printHitPlaats((HitPlaats) value));
+				titleLabel.setText(printHitPlaats((HitPlaats) value));
 			} else if (value instanceof HitKamp) {
-				this.titleLabel.setText(printHitKamp((HitKamp) value));
+				titleLabel.setText(printHitKamp((HitKamp) value));
 			}
 			if (selected) {
-				this.renderer.setBackground(this.backgroundSelectionColor);
+				renderer.setBackground(backgroundSelectionColor);
 			} else {
-				this.renderer.setBackground(this.backgroundNonSelectionColor);
+				renderer.setBackground(backgroundNonSelectionColor);
 			}
-			this.renderer.setEnabled(tree.isEnabled());
-			returnValue = this.renderer;
+			renderer.setEnabled(tree.isEnabled());
+			returnValue = renderer;
 		}
 		if (returnValue == null) {
-			returnValue = this.defaultRenderer.getTreeCellRendererComponent(
-					tree, value, selected, expanded, leaf, row, hasFocus);
+			returnValue = defaultRenderer.getTreeCellRendererComponent(tree,
+					value, selected, expanded, leaf, row, hasFocus);
 		}
 		return returnValue;
 	}
@@ -68,11 +68,11 @@ public final class HitTreeCellRenderer implements TreeCellRenderer {
 		return String.format(FMT, hit.getJaar(), hit.getAantalKampen());
 	}
 
-	private String printHitKamp(final HitKamp kamp) {
-		return kamp.getNaam();
-	}
-
 	private String printHitPlaats(final HitPlaats plaats) {
 		return String.format(FMT, plaats.getNaam(), plaats.getAantalKampen());
+	}
+
+	private String printHitKamp(final HitKamp kamp) {
+		return kamp.getNaam();
 	}
 }

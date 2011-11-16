@@ -12,7 +12,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-import nl.scouting.hit.sitecreator.input.InputPanel;
+import nl.scouting.hit.sitecreator.input.UberInputPanel;
+import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.output.OutputPanel;
 import nl.scouting.hit.sitecreator.transform.TransformPanel;
 
@@ -21,9 +22,12 @@ import nl.scouting.hit.sitecreator.transform.TransformPanel;
  * 
  * @author Martijn Donath
  */
-public final class ApplicationImpl extends JFrame implements Application {
+public final class ApplicationImpl extends JFrame implements Application<Hit> {
 	private static final long serialVersionUID = 1L;
+
 	private final Map<String, String> configuration;
+
+	private Hit hit;
 
 	public ApplicationImpl(final String[] arguments) {
 		super("HIT SiteCreator");
@@ -54,8 +58,8 @@ public final class ApplicationImpl extends JFrame implements Application {
 		SwingUtilities.updateComponentTreeUI(this);
 	}
 
-	private InputPanel createInputPanel() {
-		final InputPanel inputPanel = new InputPanel(this);
+	private JPanel createInputPanel() {
+		final UberInputPanel inputPanel = new UberInputPanel(this);
 		inputPanel.addPropertyChangeListener("hit",
 				new PropertyChangeListener() {
 					@Override
@@ -87,5 +91,16 @@ public final class ApplicationImpl extends JFrame implements Application {
 	@Override
 	public <T> boolean hasConfigurationValue(final ConfigKey<T> key) {
 		return getConfigurationValue(key) != null;
+	}
+
+	@Override
+	public void setModel(final Hit model) {
+		hit = model;
+
+	}
+
+	@Override
+	public Hit getModel() {
+		return hit;
 	}
 }

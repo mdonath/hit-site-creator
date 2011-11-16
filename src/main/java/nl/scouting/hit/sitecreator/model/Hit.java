@@ -1,47 +1,92 @@
 package nl.scouting.hit.sitecreator.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+
 public class Hit {
 
 	private Integer jaar;
 	private List<HitPlaats> hitPlaatsen;
-	private Date inschrijvingStartdatum = DateUtil.asDate("02-01-2012");
-	private Date inschrijvingEinddatum = DateUtil.asDate("09-03-2012");
-	private Date inschrijvingWijzigenTotDatum = DateUtil.asDate("09-03-2012");
-	private Date inschrijvingKosteloosAnnulerenDatum = DateUtil
-			.asDate("09-03-2012");
-	private Date inschrijvingGeenRestitutieDatum = DateUtil
-			.asDate("10-03-2012");
-	private Date inningsdatum = DateUtil.asDate("19-03-2012");
-	private Date datumNu = new Date();
+	private LocalDate inschrijvingStartdatum;
+	private LocalDate inschrijvingEinddatum;
+	private LocalDate inschrijvingWijzigenTotDatum;
+	private LocalDate inschrijvingKosteloosAnnulerenDatum;
+	private LocalDate inschrijvingGeenRestitutieDatum;
+	private LocalDate inningsdatum;
+	private LocalDateTime datumNu = new LocalDateTime();
+
+	public Hit() {
+		this(0);
+	}
 
 	public Hit(final Integer jaar) {
-		this.jaar = jaar;
-		hitPlaatsen = new ArrayList<HitPlaats>(6);
+		this(jaar, Collections.<HitPlaats> emptyList());
 	}
 
 	public Hit(final Integer jaar, final HitPlaats... hitPlaatsen) {
+		this(jaar, Arrays.asList(hitPlaatsen));
+	}
+
+	public Hit(final Integer jaar, final Collection<HitPlaats> hitPlaatsen) {
 		this.jaar = jaar;
-		if (hitPlaatsen != null) {
-			this.hitPlaatsen = new ArrayList<HitPlaats>(hitPlaatsen.length);
+		this.hitPlaatsen = new ArrayList<HitPlaats>(hitPlaatsen.size());
+		if (!((hitPlaatsen == null) || hitPlaatsen.isEmpty())) {
 			for (final HitPlaats plaats : hitPlaatsen) {
 				addHitPlaats(plaats);
 			}
+		}
+	}
+
+	public void merge(final Hit otherHit) {
+		if (jaar.equals(otherHit.jaar)) {
+			inschrijvingStartdatum = otherHit.inschrijvingStartdatum;
+			inschrijvingEinddatum = otherHit.inschrijvingEinddatum;
+			inschrijvingGeenRestitutieDatum = otherHit.inschrijvingGeenRestitutieDatum;
+			inschrijvingKosteloosAnnulerenDatum = otherHit.inschrijvingKosteloosAnnulerenDatum;
+			inschrijvingWijzigenTotDatum = otherHit.inschrijvingWijzigenTotDatum;
+			inningsdatum = otherHit.inningsdatum;
+			merge(otherHit.getHitPlaatsen());
 		} else {
-			this.hitPlaatsen = Collections.emptyList();
+			throw new MergeException("Verkeerd jaar om te mergen: " + jaar
+					+ " / " + otherHit.jaar);
+		}
+	}
+
+	public void merge(final Collection<HitPlaats> hitPlaatsen) {
+		for (final HitPlaats plaats : hitPlaatsen) {
+			if (this.hitPlaatsen.contains(plaats)) {
+				final int index = this.hitPlaatsen.indexOf(plaats);
+				this.hitPlaatsen.get(index).merge(plaats);
+			} else {
+				addHitPlaats(plaats);
+			}
+		}
+	}
+
+	public void mergeKampen(final Collection<HitPlaats> hitPlaatsen) {
+		for (final HitPlaats plaats : hitPlaatsen) {
+			if (this.hitPlaatsen.contains(plaats)) {
+				final int index = this.hitPlaatsen.indexOf(plaats);
+				this.hitPlaatsen.get(index).merge(plaats.getHitKampen());
+			} else {
+				addHitPlaats(plaats);
+			}
 		}
 	}
 
 	public void addHitPlaats(final HitPlaats hitPlaats) {
 		hitPlaatsen.add(hitPlaats);
 		hitPlaats.setHit(this);
+		Collections.sort(hitPlaatsen);
 		linkKampenAanElkaar();
 	}
 
@@ -117,62 +162,62 @@ public class Hit {
 		return sb.toString();
 	}
 
-	public Date getInschrijvingStartdatum() {
+	public LocalDate getInschrijvingStartdatum() {
 		return inschrijvingStartdatum;
 	}
 
-	public void setInschrijvingStartdatum(final Date inschrijvingStartdatum) {
+	public void setInschrijvingStartdatum(final LocalDate inschrijvingStartdatum) {
 		this.inschrijvingStartdatum = inschrijvingStartdatum;
 	}
 
-	public Date getInschrijvingEinddatum() {
+	public LocalDate getInschrijvingEinddatum() {
 		return inschrijvingEinddatum;
 	}
 
-	public void setInschrijvingEinddatum(final Date inschrijvingEinddatum) {
+	public void setInschrijvingEinddatum(final LocalDate inschrijvingEinddatum) {
 		this.inschrijvingEinddatum = inschrijvingEinddatum;
 	}
 
-	public Date getInschrijvingWijzigenTotDatum() {
+	public LocalDate getInschrijvingWijzigenTotDatum() {
 		return inschrijvingWijzigenTotDatum;
 	}
 
 	public void setInschrijvingWijzigenTotDatum(
-			final Date inschrijvingWijzigenTotDatum) {
+			final LocalDate inschrijvingWijzigenTotDatum) {
 		this.inschrijvingWijzigenTotDatum = inschrijvingWijzigenTotDatum;
 	}
 
-	public Date getInschrijvingKosteloosAnnulerenDatum() {
+	public LocalDate getInschrijvingKosteloosAnnulerenDatum() {
 		return inschrijvingKosteloosAnnulerenDatum;
 	}
 
 	public void setInschrijvingKosteloosAnnulerenDatum(
-			final Date inschrijvingKosteloosAnnulerenDatum) {
+			final LocalDate inschrijvingKosteloosAnnulerenDatum) {
 		this.inschrijvingKosteloosAnnulerenDatum = inschrijvingKosteloosAnnulerenDatum;
 	}
 
-	public Date getInschrijvingGeenRestitutieDatum() {
+	public LocalDate getInschrijvingGeenRestitutieDatum() {
 		return inschrijvingGeenRestitutieDatum;
 	}
 
 	public void setInschrijvingGeenRestitutieDatum(
-			final Date inschrijvingGeenRestitutieDatum) {
+			final LocalDate inschrijvingGeenRestitutieDatum) {
 		this.inschrijvingGeenRestitutieDatum = inschrijvingGeenRestitutieDatum;
 	}
 
-	public Date getInningsdatum() {
+	public LocalDate getInningsdatum() {
 		return inningsdatum;
 	}
 
-	public void setInningsdatum(final Date inningsdatum) {
+	public void setInningsdatum(final LocalDate inningsdatum) {
 		this.inningsdatum = inningsdatum;
 	}
 
-	public Date getDatumNu() {
+	public LocalDateTime getDatumNu() {
 		return datumNu;
 	}
 
-	public void setDatumNu(final Date datumNu) {
+	public void setDatumNu(final LocalDateTime datumNu) {
 		this.datumNu = datumNu;
 	}
 

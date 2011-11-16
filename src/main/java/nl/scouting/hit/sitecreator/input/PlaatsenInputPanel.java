@@ -8,46 +8,16 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingWorker;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import nl.scouting.hit.sitecreator.Application;
-import nl.scouting.hit.sitecreator.input.module.csv.CsvFileImportPanel;
-import nl.scouting.hit.sitecreator.input.module.soap.SoapInputPanel;
-import nl.scouting.hit.sitecreator.input.module.xml.XmlInputPanel;
+import nl.scouting.hit.sitecreator.input.module.csv.CsvPlaatsFileImportPanel;
 import nl.scouting.hit.sitecreator.model.Hit;
-import nl.scouting.hit.sitecreator.model.ModelUtil;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public class InputPanel extends JPanel {
-	public class LoadAction extends AbstractAction {
-		public class Loader extends SwingWorker<Hit, Void> {
-
-			private final InputModule inputModule;
-
-			public Loader(final InputModule inputModule) {
-				this.inputModule = inputModule;
-
-			}
-
-			@Override
-			protected Hit doInBackground() throws Exception {
-				return inputModule.load();
-			}
-
-			@Override
-			protected void done() {
-				Hit hit;
-				try {
-					hit = get();
-				} catch (final Exception ignore) {
-					hit = ModelUtil.createEmptyStructure();
-				}
-				InputPanel.this.firePropertyChange("hit", null, hit);
-			}
-		}
+public class PlaatsenInputPanel extends JPanel {
+	public final class LoadAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
 
@@ -57,7 +27,13 @@ public class InputPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			new Loader(currentInputModule).execute();
+			new AbstractLoader(currentInputModule) {
+				@Override
+				protected void loadFinished(final Hit hit) {
+					PlaatsenInputPanel.this
+							.firePropertyChange("hit", null, hit);
+				}
+			}.execute();
 		}
 	}
 
@@ -67,10 +43,16 @@ public class InputPanel extends JPanel {
 
 	private final Application application;
 
-	public InputPanel(final Application application) {
+	public PlaatsenInputPanel(final Application application) {
 		super(new BorderLayout());
 		this.application = application;
+		setName("Plaatsen");
 		initComponents();
+	}
+
+	private void initComponents() {
+		add(createTabPanel(), BorderLayout.CENTER);
+		add(createButtonPanel(), BorderLayout.SOUTH);
 	}
 
 	private Component createButtonPanel() {
@@ -81,9 +63,9 @@ public class InputPanel extends JPanel {
 
 	private JTabbedPane createTabPanel() {
 		final JTabbedPane tab = UIUtil.createTab( //
-				new CsvFileImportPanel(application) //
-				, new XmlInputPanel(application) //
-				, new SoapInputPanel(application) //
+				new CsvPlaatsFileImportPanel(application) //
+				// , new XmlInputPanel(application) //
+				// , new SoapInputPanel(application) //
 				);
 
 		tab.addChangeListener(new ChangeListener() {
@@ -102,11 +84,5 @@ public class InputPanel extends JPanel {
 		tab.setSelectedIndex(-1);
 		tab.setSelectedIndex(0);
 		return tab;
-	}
-
-	private void initComponents() {
-		setBorder(new TitledBorder("Input"));
-		add(createTabPanel(), BorderLayout.CENTER);
-		add(createButtonPanel(), BorderLayout.SOUTH);
 	}
 }

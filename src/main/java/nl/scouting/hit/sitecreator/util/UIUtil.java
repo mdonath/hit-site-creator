@@ -1,6 +1,7 @@
 package nl.scouting.hit.sitecreator.util;
 
 import javax.swing.GroupLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -13,9 +14,9 @@ public class UIUtil {
 		return layout;
 	}
 
-	public static final JTabbedPane createTab(final JPanel... tabs) {
+	public static final JTabbedPane createTab(final JComponent... tabs) {
 		final JTabbedPane tabPane = new JTabbedPane();
-		for (final JPanel tab : tabs) {
+		for (final JComponent tab : tabs) {
 			tabPane.add(tab);
 		}
 		return tabPane;

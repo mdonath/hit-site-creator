@@ -17,12 +17,12 @@ public final class HitTreeModel implements TreeModel {
 	private final List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
 
 	public HitTreeModel(final Hit hit) {
-		this.root = hit;
+		root = hit;
 	}
 
 	@Override
 	public void addTreeModelListener(final TreeModelListener l) {
-		this.treeModelListeners.add(l);
+		treeModelListeners.add(l);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public final class HitTreeModel implements TreeModel {
 
 	@Override
 	public Object getRoot() {
-		return this.root;
+		return root;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public final class HitTreeModel implements TreeModel {
 
 	@Override
 	public void removeTreeModelListener(final TreeModelListener l) {
-		this.treeModelListeners.remove(l);
+		treeModelListeners.remove(l);
 	}
 
 	@Override

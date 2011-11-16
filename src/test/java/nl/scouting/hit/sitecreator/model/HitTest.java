@@ -9,9 +9,68 @@ import java.util.Set;
 import org.junit.Test;
 
 public class HitTest {
+
+	@Test(expected = MergeException.class)
+	public void merge_twee_hits_verschillend_jaar() throws Exception {
+		final Hit hit1 = new Hit(2012);
+		final Hit hit2 = new Hit(2013);
+		hit1.merge(hit2);
+	}
+
 	@Test
-	public void testname() throws Exception {
+	public void merge_twee_hits() throws Exception {
+		final Hit hit1 = new Hit(2012, new HitPlaats("alphen"));
+		final Hit hit2 = new Hit(2012, new HitPlaats("mook"));
+		assertEquals(1, hit1.getHitPlaatsen().size());
+		hit1.merge(hit2);
+		assertEquals(2, hit1.getHitPlaatsen().size());
+	}
+
+	@Test
+	public void merge_dezelfde_plaats() throws Exception {
+		final Hit hit1 = new Hit(2012, new HitPlaats("alphen"));
+		final Hit hit2 = new Hit(2012, new HitPlaats("alphen"));
+		assertEquals(1, hit1.getHitPlaatsen().size());
+		hit1.merge(hit2);
+		assertEquals(1, hit1.getHitPlaatsen().size());
+	}
+
+	@Test
+	public void merge_dezelfde_plaats_met_kampen() throws Exception {
+		final Hit hit1 = new Hit(2012, new HitPlaats("alphen", new HitKamp(
+				"een")));
+		final Hit hit2 = new Hit(2012, new HitPlaats("alphen", new HitKamp(
+				"twee")));
+		hit1.merge(hit2);
+		assertEquals(1, hit1.getHitPlaatsen().size());
+		assertEquals(2, hit1.getAantalKampen());
+	}
+
+	@Test
+	public void simpele_constructor() throws Exception {
 		assertEquals(Integer.valueOf(2012), new Hit(2012).getJaar());
+	}
+
+	@Test
+	public void aantal_kampen_is_nul() throws Exception {
+		assertEquals(0, new Hit(2012).getAantalKampen());
+	}
+
+	@Test
+	public void aantal_kampen_is_twee() throws Exception {
+		assertEquals(2,
+				new Hit(2012, //
+						new HitPlaats("mook", //
+								new HitKamp("stook"), new HitKamp("water")))
+						.getAantalKampen());
+	}
+
+	@Test
+	public void aantal_kampen_over_twee_plaatsen_is_twee() throws Exception {
+		assertEquals(2, new Hit(2012 //
+				, new HitPlaats("mook", new HitKamp("stook")) //
+				, new HitPlaats("zeeland", new HitKamp("water"))) //
+				.getAantalKampen());
 	}
 
 	@Test

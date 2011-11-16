@@ -16,11 +16,11 @@ import nl.scouting.hit.sitecreator.model.HitKamp;
 
 import org.junit.Test;
 
-public class CsvInputModuleTest {
+public class CsvKampInputModuleTest {
 
 	@Test
 	public void aantal_hitplaatsen_moet_compleet_zijn() throws Exception {
-		final CsvInputModule input = new CsvInputModule();
+		final CsvKampInputModule input = new CsvKampInputModule();
 		input.setFile(loadClasspathResourceToTempFile("nl/scouting/hit/sitecreator/input/module/csv/formuliergegevens_5687_anon.csv"));
 		input.setJaar(2012);
 		input.setEncoding("UTF-8");
@@ -32,7 +32,7 @@ public class CsvInputModuleTest {
 
 	@Test
 	public void startdatum() throws Exception {
-		final CsvInputModule input = new CsvInputModule();
+		final CsvKampInputModule input = new CsvKampInputModule();
 		input.setFile(loadClasspathResourceToTempFile("nl/scouting/hit/sitecreator/input/module/csv/formuliergegevens_5687_anon.csv"));
 		input.setJaar(2012);
 		input.setEncoding("UTF-8");
