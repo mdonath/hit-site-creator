@@ -12,22 +12,21 @@ import nl.scouting.hit.sitecreator.input.InputModule;
 import nl.scouting.hit.sitecreator.input.module.AbstractFileImportPanel;
 import nl.scouting.hit.sitecreator.model.Hit;
 
-public class CsvProjectFileImportPanel extends AbstractFileImportPanel {
+public class CsvDeelnemerFileImportPanel extends AbstractFileImportPanel {
 	private static final long serialVersionUID = 1L;
 
-	public static final ConfigKey<File> CONFIG_CSV = new FileConfigKey(
-			"projectcsv");
+	public static final ConfigKey<File> CONFIG_CSV = new FileConfigKey("dlncsv");
 	public static final ConfigKey<String> CONFIG_ENCODING = new StringConfigKey(
-			"projectenc");
+			"dlnenc");
 
-	public CsvProjectFileImportPanel(final Application<Hit> application) {
+	public CsvDeelnemerFileImportPanel(final Application<Hit> application) {
 		super(application, "CSV", new FileNameExtensionFilter(
-				"Bestand met de HIT Project gegevens", "csv", "txt"));
+				"Bestand met de HIT Deelnemer gegevens", "csv", "txt"));
 	}
 
 	@Override
 	protected final InputModule createInputModule() {
-		return new CsvProjectInputModule();
+		return new CsvDeelnemerInputModule();
 	}
 
 	@Override

@@ -137,11 +137,15 @@ public interface ColumnMapperHelper {
 				throws IllegalArgumentException {
 			try {
 				String checked = text;
-				if (!checked.startsWith("http")) {
-					checked = "http://" + checked;
+				if ((checked != null) && !"".equals(checked)) {
+					if (!"http://".equals(checked)) {
+						if (!checked.startsWith("http")) {
+							checked = "http://" + checked;
+						}
+						final URL url = new URL(checked);
+						setValue(url);
+					}
 				}
-				final URL url = new URL(checked);
-				setValue(url);
 			} catch (final MalformedURLException e) {
 				throw new IllegalArgumentException(e);
 			}

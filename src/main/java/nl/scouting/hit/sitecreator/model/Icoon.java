@@ -8,117 +8,74 @@ import java.util.TreeSet;
 public class Icoon implements Comparable<Icoon> {
 
 	private static final Map<String, Icoon> icoonCache = new HashMap<String, Icoon>();
+
+	private static void register(final Map<String, Icoon> cache,
+			final Icoon icoon) {
+		cache.put(icoon.getTekst(), icoon);
+	}
+
 	static {
-		icoonCache.put("Staand kamp", //
-				new Icoon("staand.gif", "Staand kamp"));
-		icoonCache.put("Trekken per fiets", //
-				new Icoon("fiets.gif", "Trekken per fiets"));
-		icoonCache.put("Trekken met rugzak", //
-				new Icoon("hike.gif", "Trekken met rugzak"));
-		icoonCache.put("Trekken per kano", //
-				new Icoon("kano.gif", "Trekken per kano"));
-		icoonCache.put("Trekkend per boot", //
-				new Icoon("zeilboot.gif", "Trekkend per boot"));
-		icoonCache.put("Lopen zonder rugzak", //
-				new Icoon("geenrugz.gif", "Lopen zonder rugzak"));
-		icoonCache.put("Lopen met een ander voorwerp", //
-				new Icoon("hikevr.gif", "Lopen met een ander voorwerp"));
-		icoonCache.put("Inschrijven per persoon", //
-				new Icoon("0pers.gif", "Inschrijven per persoon"));
-		icoonCache.put("Inschrijven per groep", //
-				new Icoon("groepje.gif", "Inschrijven per groep"));
-		icoonCache
-				.put("Overnachten in een zelfmeegenomen tent", //
-						new Icoon("tent.gif",
-								"Overnachten in een zelfmeegenomen tent"));
-		icoonCache.put("Overnachten in een frietbuil", //
-				new Icoon("friet.gif", "Overnachten in een frietbuil"));
-		icoonCache.put("Overnachten zonder tent", //
-				new Icoon("todo.gif", "Overnachten zonder tent"));
-		icoonCache.put("Overnachten in tenten verzorgd door staf", //
-				new Icoon("tent_opgezet.gif",
-						"Overnachten in tenten verzorgd door staf"));
-		icoonCache.put("Overnachten in gebouw", //
-				new Icoon("gebouw.gif", "Overnachten in gebouw"));
-		icoonCache.put("Totale afstand is 0 km", //
-				new Icoon("0km.gif", "Totale afstand is 0 km"));
-		icoonCache.put("Totale afstand is 5 km", //
-				new Icoon("5km.gif", "Totale afstand is 5 km"));
-		icoonCache.put("Totale afstand is 15 km", //
-				new Icoon("15km.gif", "Totale afstand is 15 km"));
-		icoonCache.put("Totale afstand is 20 km", //
-				new Icoon("20km.gif", "Totale afstand is 20 km"));
-		icoonCache.put("Totale afstand is 25 km", //
-				new Icoon("25km.gif", "Totale afstand is 25 km"));
-		icoonCache.put("Totale afstand is 30 km", //
-				new Icoon("30km.gif", "Totale afstand is 30 km"));
-		icoonCache.put("Totale afstand is 35 km", //
-				new Icoon("35km.gif", "Totale afstand is 35 km"));
-		icoonCache.put("Totale afstand is 40 km", //
-				new Icoon("40km.gif", "Totale afstand is 40 km"));
-		icoonCache.put("Totale afstand is 45 km", //
-				new Icoon("45km.gif", "Totale afstand is 45 km"));
-		icoonCache.put("Totale afstand is 50 km", //
-				new Icoon("50km.gif", "Totale afstand is 50 km"));
-		icoonCache.put("Totale afstand is 55 km", //
-				new Icoon("55km.gif", "Totale afstand is 55 km"));
-		icoonCache.put("Totale afstand is 60 km", //
-				new Icoon("60km.gif", "Totale afstand is 60 km"));
-		icoonCache.put("Totale afstand is 65 km", //
-				new Icoon("65km.gif", "Totale afstand is 65 km"));
-		icoonCache.put("Totale afstand is 70 km", //
-				new Icoon("70km.gif", "Totale afstand is 70 km"));
-		icoonCache.put("Totale afstand is 75 km", //
-				new Icoon("75km.gif", "Totale afstand is 75 km"));
-		icoonCache.put("Totale afstand is 80 km", //
-				new Icoon("80km.gif", "Totale afstand is 80 km"));
-		icoonCache.put("Totale afstand is 85 km", //
-				new Icoon("85km.gif", "Totale afstand is 85 km"));
-		icoonCache.put("Totale afstand is 90 km", //
-				new Icoon("90km.gif", "Totale afstand is 90 km"));
-		icoonCache.put("Totale afstand is 100 km", //
-				new Icoon("100km.gif", "Totale afstand is 100 km"));
-		icoonCache.put("Totale afstand is 120 km", //
-				new Icoon("120km.gif", "Totale afstand is 120 km"));
-		icoonCache.put("Totale afstand is 150 km", //
-				new Icoon("150km.gif", "Totale afstand is 150 km"));
-		icoonCache.put("Koken op houtvuur zonder pannen", //
-				new Icoon("vuur.gif", "Koken op houtvuur zonder pannen"));
-		icoonCache.put("Koken op houtvuur met pannen", //
-				new Icoon("opvuur.gif", "Koken op houtvuur met pannen"));
-		icoonCache.put("Koken op gas met pannen", //
-				new Icoon("gas.gif", "Koken op gas met pannen"));
-		icoonCache.put("Gekookt door de staf", //
-				new Icoon("stafkookt.gif", "Gekookt door de staf"));
-		icoonCache.put("Kennis van kaart en kompas op eenvoudig niveau", //
-				new Icoon("k_kv.gif",
-						"Kennis van kaart en kompas op eenvoudig niveau"));
-		icoonCache.put("Kennis van kaart en kompas op gevorderd niveau", //
-				new Icoon("k_kgv.gif",
-						"Kennis van kaart en kompas op gevorderd niveau"));
-		icoonCache.put("Kennis van kaart en kompas op specialistisch nivea", //
-				new Icoon("k_ks.gif",
-						"Kennis van kaart en kompas op specialistisch niveau"));
-		icoonCache.put("Activiteit waarmee een insigne kan worden behaald", //
-				new Icoon("insigne.gif",
-						"Activiteit waarmee een insigne kan worden behaald"));
-		icoonCache.put("Zwemdiploma verplicht", //
-				new Icoon("zwem.gif", "Zwemdiploma verplicht"));
-		icoonCache.put("Mobieltje meenemen", //
-				new Icoon("mobieltje.gif", "Mobieltje meenemen"));
-		icoonCache.put("Mobieltjes zijn verboden", //
-				new Icoon("geenmobieltje.gif", "Mobieltjes zijn verboden"));
-		icoonCache
-				.put("Geschikt voor minder validen (rolstoel)", //
-						new Icoon("todo.gif",
-								"Geschikt voor minder validen (rolstoel)"));
-		icoonCache.put("Vraagteken Mysterie elemeneten", //
-				new Icoon("todo.gif", "Vraagteken Mysterie elemeneten"));
-		icoonCache.put("Buitenland - ID kaart of paspoort verplicht", //
-				new Icoon("todo.gif",
-						"Buitenland - ID kaart of paspoort verplicht"));
-		icoonCache.put("Trekkend per auto", //
-				new Icoon("todo.gif", "Trekkend per auto"));
+		register(icoonCache, new BewegingsIcoon("staand", "Staand kamp"));
+		register(icoonCache, new BewegingsIcoon("fiets", "Trekken per fiets"));
+		register(icoonCache, new BewegingsIcoon("hike", "Trekken met rugzak"));
+		register(icoonCache, new BewegingsIcoon("kano", "Trekken per kano"));
+		register(icoonCache,
+				new BewegingsIcoon("zeilboot", "Trekkend per boot"));
+		register(icoonCache, new BewegingsIcoon("geenrugz",
+				"Lopen zonder rugzak"));
+		register(icoonCache, new BewegingsIcoon("hikevr",
+				"Lopen met een ander voorwerp"));
+		register(icoonCache, new BewegingsIcoon("auto", "Trekkend per auto"));
+
+		register(icoonCache, new InschrijfIcoon("0pers",
+				"Inschrijven per persoon"));
+		register(icoonCache, new InschrijfIcoon("groepje",
+				"Inschrijven per groep"));
+
+		register(icoonCache, new OvernachtingIcoon("tent",
+				"Overnachten in een zelfmeegenomen tent"));
+		register(icoonCache, new OvernachtingIcoon("friet",
+				"Overnachten in een frietbuil"));
+		register(icoonCache, new OvernachtingIcoon("nacht",
+				"Overnachten zonder tent"));
+		register(icoonCache, new OvernachtingIcoon("tent_opgezet",
+				"Overnachten in tenten verzorgd door staf"));
+		register(icoonCache, new OvernachtingIcoon("gebouw",
+				"Overnachten in gebouw"));
+		register(icoonCache, new OvernachtingIcoon("bootslaap",
+				"Overnachten op een boot"));
+
+		for (final int afstand : new int[] { 5, 15, 20, 25, 30, 35, 40, 45, 50,
+				55, 60, 80, 100, 120 }) {
+			register(icoonCache, new AfstandsIcoon(afstand));
+		}
+
+		register(icoonCache, new KookIcoon("vuur",
+				"Koken op houtvuur zonder pannen"));
+		register(icoonCache, new KookIcoon("opvuur",
+				"Koken op houtvuur met pannen"));
+		register(icoonCache, new KookIcoon("gas", "Koken op gas met pannen"));
+		register(icoonCache, new KookIcoon("stafkookt", "Gekookt door de staf"));
+
+		register(icoonCache, new Icoon("k_ks",
+				"Kennis van kaart en kompas op eenvoudig niveau"));
+		register(icoonCache, new Icoon("k_kv",
+				"Kennis van kaart en kompas op gevorderd niveau"));
+		register(icoonCache, new Icoon("k_kgv",
+				"Kennis van kaart en kompas op specialistisch niveau"));
+		register(icoonCache, new Icoon("insigne",
+				"Activiteit waarmee een insigne kan worden behaald"));
+
+		register(icoonCache, new Icoon("zwem", "Zwemdiploma verplicht"));
+		register(icoonCache, new Icoon("mobieltje", "Mobieltje meenemen"));
+		register(icoonCache, new Icoon("geenmobieltje",
+				"Mobieltjes zijn verboden"));
+		register(icoonCache, new Icoon("rolstoel",
+				"Geschikt voor minder validen (rolstoel)"));
+		register(icoonCache, new Icoon("vraagt",
+				"Vraagteken Mysterie elemeneten"));
+		register(icoonCache, new Icoon("buitenland",
+				"Buitenland - ID kaart of paspoort verplicht"));
 	}
 
 	public static Icoon forIdentifier(final String identifier) {
@@ -130,7 +87,7 @@ public class Icoon implements Comparable<Icoon> {
 	}
 
 	private final int volgorde;
-	private final String bestandsnaam; // "fiets.gif"
+	private final String bestandsnaam; // "fiets"
 	private final String tekst; // "Dit kamp is per fiets"
 
 	private static int volgordeCounter = 0;
@@ -164,4 +121,88 @@ public class Icoon implements Comparable<Icoon> {
 		return volgorde;
 	}
 
+	public boolean isAfstandsIndicate() {
+		return false;
+	}
+
+	public boolean isBeweging() {
+		return false;
+	}
+
+	public boolean isInschrijving() {
+		return false;
+	}
+
+	public boolean isOvernachting() {
+		return false;
+	}
+
+	public boolean isKook() {
+		return false;
+	}
+
+	public static class AfstandsIcoon extends Icoon {
+
+		private final int afstand;
+
+		public AfstandsIcoon(final int afstand) {
+			super(afstand + "km", "Totale afstand is " + afstand + " km");
+			this.afstand = afstand;
+		}
+
+		public int getAfstand() {
+			return afstand;
+		}
+
+		@Override
+		public boolean isAfstandsIndicate() {
+			return true;
+		}
+	}
+
+	public static class BewegingsIcoon extends Icoon {
+
+		public BewegingsIcoon(final String bestandsnaam, final String tekst) {
+			super(bestandsnaam, tekst);
+		}
+
+		@Override
+		public boolean isBeweging() {
+			return true;
+		}
+	}
+
+	public static class InschrijfIcoon extends Icoon {
+
+		public InschrijfIcoon(final String bestandsnaam, final String tekst) {
+			super(bestandsnaam, tekst);
+		}
+
+		@Override
+		public boolean isInschrijving() {
+			return true;
+		}
+	}
+
+	public static class OvernachtingIcoon extends Icoon {
+		public OvernachtingIcoon(final String bestandsnaam, final String tekst) {
+			super(bestandsnaam, tekst);
+		}
+
+		@Override
+		public boolean isOvernachting() {
+			return true;
+		}
+	}
+
+	public static class KookIcoon extends Icoon {
+		public KookIcoon(final String bestandsnaam, final String tekst) {
+			super(bestandsnaam, tekst);
+		}
+
+		@Override
+		public boolean isKook() {
+			return true;
+		}
+	}
 }

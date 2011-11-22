@@ -30,13 +30,13 @@ public final class TransformPanel extends JPanel implements
 	private JTable propertyTable;
 	private JTable detailTable;
 
-	public TransformPanel(final Application application) {
+	public TransformPanel(final Application<Hit> application) {
 		initComponents();
 	}
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		setBorder(new TitledBorder("Transform"));
+		setBorder(new TitledBorder("Model"));
 
 		final JSplitPane split = new JSplitPane( //
 				JSplitPane.HORIZONTAL_SPLIT, //
@@ -108,7 +108,7 @@ public final class TransformPanel extends JPanel implements
 		detailTable.setModel(new HitProjectTableModel(hit));
 		propertyTable.setModel(new BeanPropertyTableModel(hit, "aantalKampen",
 				"beschikbareIconen", "gebruikteIconen", "hitPlaatsen",
-				"kampenGesorteerd", "datumNu"));
+				"kampenGesorteerd", "datumNu", "gebruikteIconenVoorCourant"));
 	}
 
 	protected void setPlaatsModels(final HitPlaats plaats) {

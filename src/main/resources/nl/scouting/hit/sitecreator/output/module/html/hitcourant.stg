@@ -7,89 +7,238 @@ $! ********************************** !$
 	<head>
 	        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	        <meta name="author" content="Martijn Donath" />
-	        <meta name="section" content="HIT" />
-	        <meta name="keywords" content="HIT , Scouting Nederland, jongeren, jeugd, avontuur, scouts," />
-	        <meta name="maintainer" content="Martijn Donath" />
-	        <meta name="description" content="Gegevens voor de HIT Courant van $hit.jaar$" />
-	        <link rel="stylesheet" href="hit.css" type="text/css" />
+	        $hitcourant_css()$
 	</head>
-<body>
-
-<table width="300px">
-	<tr>
-		<td colspan="2">De volgende icoontjes zijn gebruikt:</td>
-	</tr>
-	$hit.gebruikteIconen : icoonLinkerKolom(), icoonMiddelKolom(), icoonRechterKolom()$
-</table>
-
-<table width="300px">
-	$hit.hitPlaatsen : hitcourant_plaats()$    
-</table>
-
-</body>
+	
+	<body>
+		$hitcourant_eerstebladzijde(hit)$
+		$hitcourant_krant(hit)$
+		$hitcourant_colofon(hit)$
+	</body>
 </html>
 >>
 
+hitcourant_css() ::= <<
+$! ********************** !$
+$! De css voor de layout. !$
+$! ********************** !$
+<style>
+	body {
+		font-family: Helvetica;
+	}
+		
+	h1 {
+		font-family: Impact;
+		color: 005eb0;
+		margin-top: .75em;
+		margin-bottom: 0em;
+		font-weight: normal;
+	}
+	
+	div.hoekanik {
+		border: .2em solid black;
+		padding: 1em;
+	}
+	
+	div.hoekanik h1 {
+		text-align: center;
+		margin-top: 0em;
+	}
 
+	div.hoekanik .start {
+		color: green;
+	}
+	
+	div.hoekanik .end {
+		color: red;
+	}
 
-icoonLinkerKolom(icoon) ::= <<
-<tr>
-	$icoonMiddelKolom(icoon)$
+	div.inschrijving {
+		font-weight: bold;
+		text-align: center;
+		font-size: 120%;
+	}
+
+	h2.verklaring {
+		text-align: center;
+		color: green;
+		font-style: italic;
+	}
+
+	table.verklaring {
+		border-collapse: collapse;
+	}
+
+	table.verklaring td {
+		border: .2em solid black;
+	}
+	
+	img.icoon {
+		width: 2.5em;
+		height: auto;
+	}
+	
+	table.krant {
+		width: 33%;
+	}
+	
+	table.krant td.kampinfo {
+		text-align: justify;
+	}
+	
+	table.krant td.icoontjes {
+		text-align: right;
+	}
+	
+	table.krant td.icoontjes {
+		margin-left: .1em;
+	}
+	
+	table.krant td.kampinfo {
+		text-align: right;
+		font-weight: bold;
+	}
+	
+	div.colofon {
+		background-color: green;
+		color: white;
+		padding: 1em;
+	}
+	
+	
+	div.colofon h1 {
+		font-family: Helvetica;
+		color: yellow;
+		margin-top: 0em;
+	}
+</style>
 >>
 
-icoonMiddelKolom(icoon) ::= <<
-<td>$icoonGroot(icoon)$</td><td>$icoon.tekst$</td>
+hitcourant_eerstebladzijde(hit) ::= <<	
+	<h1>This is HIT! Jouw paasweekend vol Scoutinguitdaging!</h1>
+	<p><strong>Wat ga jij doen met Pasen $hit.jaar$? Die keuze is snel gemaakt, want
+	in $hit.jaar$ kun je bij de HIT kiezen uit meer dan 60 spannende en
+	uitdagende activiteiten op $length(hit.hitPlaatsen)$ plaatsen in Nederland en zelfs het
+	buitenland!</strong></p>
+	
+	<p>Tijdens de paasdagen beleven weer duizenden scouts van alle
+	leeftijden HIT $hit.jaar$! De HIT is de ultieme Scoutingactiviteit waarin je
+	alle vernieuwingen uit het spelaanbod kunt ontdekken.</p>
+	
+	<p>In $hit.jaar$ vindt de HIT plaats van
+	$ if(hit.heeftBeginEnEindInVerschillendeMaanden)$ $hit.vrijdag;format="EEEE d MMMM"$
+	$ else $ $hit.vrijdag;format="EEEE d"$
+	$ endif $
+    tot en met $hit.maandag;format="EEEE d MMMM"$.
+	Al vanaf $hit.inschrijvingStartdatum;format="d MMMM"$ kun je je inschrijven. Lees snel verder in deze HIT-
+	courant of kijk op de website of er ook dit jaar voor jou en je
+	Scoutingvrienden weer een te gekke HIT bij zit!<br/>
+	Maar let op: wees er snel bij, want vol = vol.</p>
+	
+	<div class="hoekanik">
+		<h1>Hoe kan ik me inschrijven?</h1>
+		<p>Ongetwijfeld heb je iets leuks gevonden in deze courant en daar wil je nu meer over weten?
+		Ga dan naar de HIT website op <u>hit.scouting.nl</u> en bekijk daar de verdere informatie over de door
+		jouw gekozen HIT. Op deze pagina’s vind je onderaan meteen een link naar het inschrijfformulier.
+		Hiervoor moet je eerst even inloggen op de website van Scouting Nederland.<br />
+		Kom je er niet meteen uit? Op de website staat een uitgebreide handleiding. Ook kun je via de
+		website contact opnemen met de HIT-helpdesk<br />
+		<div class="inschrijving">Je kunt je inschrijven vanaf <span class="start">$hit.inschrijvingStartdatum; format="d MMMM yyyy"$</span>.
+		De inschrijving sluit op <span class="end">$hit.inschrijvingEinddatum; format="d MMMM yyyy"$</span>!</div>
+	</div>
+	
+	<h2 class="verklaring">Verklaring van de symbolen in deze HIT-courant</h2>
+	<table class="verklaring">
+		$hit.gebruikteIconenVoorCourant : icoonLinkerKolom(), icoonMiddelKolom(), icoonRechterKolom()$
+	</table>
+	
+	<p>Wijzigingen voorbehouden, kijk op de website bij de activiteit voor de laatste informatie</p>
 >>
 
-icoonRechterKolom(icoon) ::= <<
-	$icoonMiddelKolom(icoon)$
-</tr>
->>
 
-icoonGroot(icoon) ::= <<
-<img id="$icoon.bestandsnaam$" src="iconengroot/$icoon.bestandsnaam$" alt="$icoon.tekst$" title="$icoon.tekst$" style=""/>
->>
 
+hitcourant_krant(hit) ::= <<
+	<table class="krant">
+		$hit.hitPlaatsen : hitcourant_plaats()$    
+	</table>
+>>
 
 
 hitcourant_plaats(plaats) ::= <<
 	<tr>
-		<td><img width="150px" src="hit_logo_website_$plaats.naam;format="lower"$.png"></td>
-		<td><div id="hitp_naam">$plaats.naam$</div></td>
+		<td><img class="plaatslogo" src="hit_logo_website_$plaats.naam;format="lower"$.png"></td>
+ 	</tr>
+	<tr>
+		<td>Kijk op https://hit.scouting.nl/$plaats.naam;format="lower"$ voor meer info.</td>
 	</tr>
 	<tr>
-		<td colspan="2">Kijk op https://hit.scouting.nl/$plaats.naam;format="lower"$ voor meer info.</td>
-	</tr>
-	<tr>
-		<td colspan="2">$plaats.hitCourantTekst;format="xml-encode"$</td>
+		<td>$plaats.hitCourantTekst;format="xml-encode"$</td>
 	</tr>
 
-	$plaats.hitKampen : hitcourant_kamp()$
-      
+	$plaats.hitKampen : hitcourant_kamp()$      
 >>
 
 
 
 hitcourant_kamp(kamp) ::= <<
 	<tr>
-		<td colspan="2"><hr></td>
+		<td><h1>$kamp.naam$</h1></td>
 	</tr>
 	<tr>
-		<td colspan="2"><div id="hitk_naam"><h1>$kamp.naam$</h1></div></td>
-	</tr>
-	<tr>
-		<td colspan="2" align="right">
+		<td class="icoontjes">
 			$kamp.icoontjes : icoonGroot()$
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" align="right">$kamp.startDatumtijd;format="d"$-$kamp.eindDatumtijd;format="d MMMM"$
-		 | $kamp.minimumLeeftijd$-$kamp.maximumLeeftijd$ jaar
+		<td class="kampinfo">
+	$ if(kamp.heeftBeginEnEindInVerschillendeMaanden)$ 
+		$kamp.startDatumtijd;format="d MMMM"$
+		$ else $ 
+		$kamp.startDatumtijd;format="d"$
+	$ endif $
+		 - $kamp.eindDatumtijd; format="d MMMM"$
+		 | $kamp.minimumLeeftijd$ - $kamp.maximumLeeftijd$ jaar
 		 | $kamp.subgroepsamenstellingMinimum$ - $kamp.subgroepsamenstellingMaximum$ pers. 
 		 | € $kamp.deelnamekosten$
 		 </td>
 	</tr>
 	<tr>
-		<td colspan="2">$kamp.courantTekst;format="xml-encode"$</td>
+		<td>$kamp.courantTekst; format="xml-encode"$</td>
 	</tr>
 >>
+
+
+
+hitcourant_colofon(hit) ::= <<
+	<div class="colofon">
+		<h1>Colofon HIT- courant $hit.jaar$</h1>
+		<p>De HIT-courant verschijnt een keer per jaar en is bestemd voor alle leden van Scouting Nederland.</p>
+		
+		<p>
+			<strong>Redactie:</strong> $hit.hitPlaatsen : { plaats | $plaats.contactPersoonNaam$}; separator=", "$. 
+			<br /><strong>Foto’s:</strong> Sebastiaan Westerweel en de diverse HIT-plaatsen
+			<br /><strong>Illustratie voorkant:</strong> Bart Jansen
+			<br /><strong>Eindredactie:</strong> Maarten Romkes, Françoise de Lange, Lars Vermeij (Team communicatie, Landelijk servicecentrum Scouting Nederland)
+		</p>
+		
+		<p>Scouting Nederland<br />
+		Postbus 210 3830 AE Leusden</p>
+		
+		<p>
+			<strong>tel</strong> +31 (0)33 496 09 11<br />
+			<strong>e-mail</strong> helpdesk@hit.scouting.nl<br />
+			<strong>web</strong> www.hit.scouting.nl<br />
+		</p>
+	<div>
+>>
+
+
+
+icoonLinkerKolom(icoon) ::= "<tr>$icoonMiddelKolom(icoon)$"
+icoonMiddelKolom(icoon) ::= "<td>$icoonGroot(icoon)$</td><td>$icoon.tekst$</td>"
+icoonRechterKolom(icoon) ::= "$icoonMiddelKolom(icoon)$</tr>"
+
+icoonGroot(icoon) ::= <<
+<img src="iconengrootnieuw/$icoon.bestandsnaam$.png" alt="$icoon.tekst$" title="$icoon.tekst$" class="icoon" />
+>>
+

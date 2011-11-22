@@ -30,38 +30,39 @@ public class UberInputPanel extends JPanel {
 	}
 
 	private Component createTabPanel() {
-		final ProjectInputPanel project = new ProjectInputPanel(application);
-		project.addPropertyChangeListener("hit", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				final Hit load = (Hit) evt.getNewValue();
-				Hit hit = application.getModel();
-				if (hit == null) {
-					hit = load;
-					application.setModel(hit);
-				} else {
-					hit.merge(load);
-				}
-				firePropertyChange("hit", null, hit);
-			}
-		});
+		final JTabbedPane tab = UIUtil.createTab( //
+				createProjectPanel() //
+				, createPlaatsPanel() //
+				, createKampPanel() //
+				, createDeelnemerPanel());
 
-		final PlaatsenInputPanel plaats = new PlaatsenInputPanel(application);
-		plaats.addPropertyChangeListener("hit", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				final Hit load = (Hit) evt.getNewValue();
-				Hit hit = application.getModel();
-				if (hit == null) {
-					hit = load;
-					application.setModel(hit);
-				} else {
-					hit.merge(load.getHitPlaatsen());
-				}
-				firePropertyChange("hit", null, hit);
-			}
-		});
+		tab.setSelectedIndex(-1);
+		tab.setSelectedIndex(0);
+		return tab;
+	}
 
+	private DeelnemersInputPanel createDeelnemerPanel() {
+		final DeelnemersInputPanel deelnemers = new DeelnemersInputPanel(
+				application);
+		deelnemers.addPropertyChangeListener("hit",
+				new PropertyChangeListener() {
+					@Override
+					public void propertyChange(final PropertyChangeEvent evt) {
+						final Hit load = (Hit) evt.getNewValue();
+						Hit hit = application.getModel();
+						if (hit == null) {
+							hit = load;
+							application.setModel(hit);
+						} else {
+							hit.mergeDeelnemers(load.getHitPlaatsen());
+						}
+						firePropertyChange("hit", null, hit);
+					}
+				});
+		return deelnemers;
+	}
+
+	protected KampenInputPanel createKampPanel() {
 		final KampenInputPanel kamp = new KampenInputPanel(application);
 		kamp.addPropertyChangeListener("hit", new PropertyChangeListener() {
 			@Override
@@ -77,12 +78,44 @@ public class UberInputPanel extends JPanel {
 				firePropertyChange("hit", null, hit);
 			}
 		});
+		return kamp;
+	}
 
-		final JTabbedPane tab = UIUtil.createTab( //
-				project, plaats, kamp);
+	protected PlaatsenInputPanel createPlaatsPanel() {
+		final PlaatsenInputPanel plaats = new PlaatsenInputPanel(application);
+		plaats.addPropertyChangeListener("hit", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final Hit load = (Hit) evt.getNewValue();
+				Hit hit = application.getModel();
+				if (hit == null) {
+					hit = load;
+					application.setModel(hit);
+				} else {
+					hit.merge(load.getHitPlaatsen());
+				}
+				firePropertyChange("hit", null, hit);
+			}
+		});
+		return plaats;
+	}
 
-		tab.setSelectedIndex(-1);
-		tab.setSelectedIndex(0);
-		return tab;
+	protected ProjectInputPanel createProjectPanel() {
+		final ProjectInputPanel project = new ProjectInputPanel(application);
+		project.addPropertyChangeListener("hit", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final Hit load = (Hit) evt.getNewValue();
+				Hit hit = application.getModel();
+				if (hit == null) {
+					hit = load;
+					application.setModel(hit);
+				} else {
+					hit.merge(load);
+				}
+				firePropertyChange("hit", null, hit);
+			}
+		});
+		return project;
 	}
 }

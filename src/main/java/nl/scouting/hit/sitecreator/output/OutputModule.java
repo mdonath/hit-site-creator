@@ -6,5 +6,11 @@ import java.io.IOException;
 import nl.scouting.hit.sitecreator.model.Hit;
 
 public interface OutputModule extends PropertyChangeListener {
+	/**
+	 * Bewaart, genereert, of doet iets met het meegegeven {@link Hit} object.
+	 * 
+	 * @param hit
+	 * @throws IOException
+	 */
 	void save(Hit hit) throws IOException;
 }

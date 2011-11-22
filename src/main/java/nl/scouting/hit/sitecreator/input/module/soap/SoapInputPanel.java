@@ -1,5 +1,7 @@
 package nl.scouting.hit.sitecreator.input.module.soap;
 
+import java.awt.Color;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -10,6 +12,7 @@ import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
 import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
 import nl.scouting.hit.sitecreator.input.InputModule;
+import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public class SoapInputPanel extends AbstractInputPanel {
@@ -31,7 +34,7 @@ public class SoapInputPanel extends AbstractInputPanel {
 
 	private SoapInputModule inputModule;
 
-	public SoapInputPanel(final Application application) {
+	public SoapInputPanel(final Application<Hit> application) {
 		initComponents();
 	}
 
@@ -48,6 +51,7 @@ public class SoapInputPanel extends AbstractInputPanel {
 
 	private void initComponents() {
 		setName("Soap");
+		setBackground(Color.RED); // FIXME soap-input doet het nog niet
 
 		final JLabel urlLabel = new JLabel("Soap URL");
 		final JTextField urlField = new JTextField();

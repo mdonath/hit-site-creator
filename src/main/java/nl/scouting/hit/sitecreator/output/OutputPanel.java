@@ -18,6 +18,7 @@ import javax.swing.event.ChangeListener;
 import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.output.module.html.HtmlOutputPanel;
+import nl.scouting.hit.sitecreator.output.module.images.ImagesOutputPanel;
 import nl.scouting.hit.sitecreator.output.module.joomla.JoomlaOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
@@ -70,9 +71,9 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 	private OutputModule currentOutputModule;
 
 	private Hit hit;
-	private final Application application;
+	private final Application<Hit> application;
 
-	public OutputPanel(final Application application) {
+	public OutputPanel(final Application<Hit> application) {
 		this.application = application;
 		initComponents();
 	}
@@ -87,6 +88,7 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 		final JTabbedPane tab = UIUtil.createTab( //
 				new HtmlOutputPanel(application) //
 				, new JoomlaOutputPanel(application) //
+				, new ImagesOutputPanel(application) //
 				);
 		tab.addChangeListener(new ChangeListener() {
 			@Override

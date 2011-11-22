@@ -48,4 +48,11 @@ public class HitKampTest {
 		assertEquals("juist tijd moet gevuld zijn", new LocalDateTime(
 				"2012-12-13T13:37:00"), k.getEindDatumtijd());
 	}
+
+	@Test
+	public void bepaal_afgelegde_kilometers() {
+		final HitKamp k = new HitKamp();
+		k.setIcoontje("Totale afstand is 20 km");
+		assertEquals(Integer.valueOf(20), k.getAfgelegdeKilometers());
+	}
 }

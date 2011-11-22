@@ -117,7 +117,7 @@ public class HitTest {
 		final Hit hit = new Hit(2012);
 		final Set<Icoon> beschikbareIconen = hit.getBeschikbareIconen();
 		assertNotNull(beschikbareIconen);
-		assertEquals(50, beschikbareIconen.size());
+		assertEquals(44, beschikbareIconen.size());
 	}
 
 	@Test

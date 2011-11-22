@@ -1,9 +1,13 @@
 package nl.scouting.hit.sitecreator.model;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import nl.scouting.hit.sitecreator.model.Icoon.AfstandsIcoon;
+
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
@@ -61,7 +65,6 @@ public class HitKamp implements Comparable<HitKamp> {
 	private URL webadresFoto1;
 	private URL webadresFoto2;
 	private URL webadresFoto3;
-	private URL websiteYoutube;
 
 	private String websiteContactpersoon;
 	private String websiteContactTelefoonnummer;
@@ -75,12 +78,24 @@ public class HitKamp implements Comparable<HitKamp> {
 	/** Linkt alle kampen aan elkaar voor navigatiedoeleinden. */
 	private HitKamp next;
 
+	/** Ingeschreven deelnemers. */
+	private List<HitDeelnemer> deelnemers;
+
 	/**
 	 * Constructor.
 	 */
 	public HitKamp() {
-		super();
+		this(null);
+	}
+
+	public HitKamp(final String naam) {
+		this.naam = naam;
 		icoontjes = new TreeSet<Icoon>();
+	}
+
+	public HitKamp(final String naam, final List<HitDeelnemer> deelnemers) {
+		this(naam);
+		this.deelnemers = deelnemers;
 	}
 
 	public void merge(final HitKamp kamp) {
@@ -135,9 +150,27 @@ public class HitKamp implements Comparable<HitKamp> {
 		afgelegdeKilometers = kamp.afgelegdeKilometers;
 	}
 
-	public HitKamp(final String naam) {
-		this();
-		this.naam = naam;
+	public boolean isHeeftBeginEnEindInVerschillendeMaanden() {
+		return getStartDatumtijd().getMonthOfYear() != getEindDatumtijd()
+				.getMonthOfYear();
+
+	}
+
+	public boolean isHeeftMaximumUitEenGroep() {
+		return (maximumAantalUitEenGroep != null)
+				&& (maximumAantalUitEenGroep > 0);
+	}
+
+	public boolean isHeeftAfgelegdeKilometers() {
+		return (afgelegdeKilometers != null) && (afgelegdeKilometers > 0);
+	}
+
+	public boolean isHeeftEenYoutubeFilmpje() {
+		return webadresFoto3.getHost().toLowerCase().contains("youtube.com");
+	}
+
+	public boolean isBegintOpGoedeVrijdag() {
+		return DateTimeConstants.FRIDAY == startDatumtijd.getDayOfWeek();
 	}
 
 	public String getHtmlFileNaam() {
@@ -168,6 +201,10 @@ public class HitKamp implements Comparable<HitKamp> {
 			final Icoon forIdentifier = Icoon.forIdentifier(icoontje);
 			if (forIdentifier != null) {
 				icoontjes.add(forIdentifier);
+				if (forIdentifier.isAfstandsIndicate()) {
+					afgelegdeKilometers = ((AfstandsIcoon) forIdentifier)
+							.getAfstand();
+				}
 			}
 		}
 	}
@@ -320,14 +357,6 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	public void setWebadresFoto3(final URL webadresFoto3) {
 		this.webadresFoto3 = webadresFoto3;
-	}
-
-	public URL getWebsiteYoutube() {
-		return websiteYoutube;
-	}
-
-	public void setWebsiteYoutube(final URL websiteYoutube) {
-		this.websiteYoutube = websiteYoutube;
 	}
 
 	public String getWebsiteContactpersoon() {
@@ -502,6 +531,14 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	public void setHitwrapperpagina(final String hitwrapperpagina) {
 		this.hitwrapperpagina = hitwrapperpagina;
+	}
+
+	public List<HitDeelnemer> getDeelnemers() {
+		return deelnemers;
+	}
+
+	public void setDeelnemers(final List<HitDeelnemer> deelnemers) {
+		this.deelnemers = deelnemers;
 	}
 
 }

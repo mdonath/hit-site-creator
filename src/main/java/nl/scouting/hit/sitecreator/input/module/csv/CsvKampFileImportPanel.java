@@ -8,7 +8,9 @@ import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.FileConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.StringConfigKey;
+import nl.scouting.hit.sitecreator.input.InputModule;
 import nl.scouting.hit.sitecreator.input.module.AbstractFileImportPanel;
+import nl.scouting.hit.sitecreator.model.Hit;
 
 public class CsvKampFileImportPanel extends AbstractFileImportPanel {
 	private static final long serialVersionUID = 1L;
@@ -18,13 +20,13 @@ public class CsvKampFileImportPanel extends AbstractFileImportPanel {
 	public static final ConfigKey<String> CONFIG_ENCODING = new StringConfigKey(
 			"kampenc");
 
-	public CsvKampFileImportPanel(final Application application) {
+	public CsvKampFileImportPanel(final Application<Hit> application) {
 		super(application, "CSV", new FileNameExtensionFilter(
 				"Bestand met alle kampgegevens", "csv", "txt"));
 	}
 
 	@Override
-	protected final CsvKampInputModule createInputModule() {
+	protected final InputModule createInputModule() {
 		return new CsvKampInputModule();
 	}
 

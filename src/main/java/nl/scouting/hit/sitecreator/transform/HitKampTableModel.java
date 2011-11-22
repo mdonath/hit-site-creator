@@ -30,7 +30,7 @@ public class HitKampTableModel extends AbstractTableModel {
 	}
 
 	@Override
-	public Class getColumnClass(final int column) {
+	public Class<?> getColumnClass(final int column) {
 		return (getValueAt(0, column).getClass());
 	}
 

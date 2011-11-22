@@ -41,9 +41,9 @@ public class PlaatsenInputPanel extends JPanel {
 
 	private InputModule currentInputModule;
 
-	private final Application application;
+	private final Application<Hit> application;
 
-	public PlaatsenInputPanel(final Application application) {
+	public PlaatsenInputPanel(final Application<Hit> application) {
 		super(new BorderLayout());
 		this.application = application;
 		setName("Plaatsen");

@@ -10,18 +10,20 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Date;
+import java.util.List;
 
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.model.HitKamp;
-import nl.scouting.hit.sitecreator.output.OutputModule;
+import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputModule;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.StringRenderer;
 
-public class HtmlOutputModule implements OutputModule {
+public class HtmlOutputModule extends AbstractProgressOutputModule {
 
 	private File outDir;
 	private String encoding;
@@ -73,21 +75,30 @@ public class HtmlOutputModule implements OutputModule {
 
 	private void genereerKampPaginas(final Hit hit) throws IOException {
 		final STGroup kampTemplate = getTemplate("kamponderdeel.stg");
-		for (final HitKamp kamp : hit.getKampenGesorteerd()) {
+		final List<HitKamp> kampen = hit.getKampenGesorteerd();
+		int counter = 0;
+		for (final HitKamp kamp : kampen) {
 			final ST st = kampTemplate.getInstanceOf("hitkamp");
 			st.add("hit", hit);
 			st.add("kamp", kamp);
 
 			writeToFile(kamp, st.render());
+			fireProgressListenerEvent(++counter, kampen.size());
 		}
 	}
 
-	private STGroup getTemplate(final String string) {
-		final STGroup group = new STGroupFile(
-				"nl/scouting/hit/sitecreator/output/module/html/" + string,
-				'$', '$');
+	private STGroup getTemplate(final String file) {
+		final STGroup group;
+		if (new File(file).exists()) {
+			group = new STGroupFile(file, '$', '$');
+		} else {
+			group = new STGroupFile(
+					"nl/scouting/hit/sitecreator/output/module/html/" + file,
+					'$', '$');
+		}
 		group.registerRenderer(Date.class, new DateRenderer());
 		group.registerRenderer(LocalDateTime.class, new LocalDateTimeRenderer());
+		group.registerRenderer(LocalDate.class, new LocalDateRenderer());
 		group.registerRenderer(String.class, new StringRenderer());
 		return group;
 	}

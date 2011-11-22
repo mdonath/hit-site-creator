@@ -1,6 +1,7 @@
 package nl.scouting.hit.sitecreator.input;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
@@ -12,11 +13,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import nl.scouting.hit.sitecreator.Application;
-import nl.scouting.hit.sitecreator.input.module.csv.CsvProjectFileImportPanel;
+import nl.scouting.hit.sitecreator.input.module.csv.CsvDeelnemerFileImportPanel;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public class ProjectInputPanel extends JPanel {
+public class DeelnemersInputPanel extends JPanel {
 	public final class LoadAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -30,7 +31,8 @@ public class ProjectInputPanel extends JPanel {
 			new AbstractLoader(currentInputModule) {
 				@Override
 				protected void loadFinished(final Hit hit) {
-					ProjectInputPanel.this.firePropertyChange("hit", null, hit);
+					DeelnemersInputPanel.this.firePropertyChange("hit", null,
+							hit);
 				}
 			}.execute();
 		}
@@ -42,14 +44,14 @@ public class ProjectInputPanel extends JPanel {
 
 	private final Application<Hit> application;
 
-	public ProjectInputPanel(final Application<Hit> application) {
+	public DeelnemersInputPanel(final Application<Hit> application) {
 		super(new BorderLayout());
 		this.application = application;
-		setName("Project");
 		initComponents();
 	}
 
 	private void initComponents() {
+		setName("Deelnemers");
 		add(createTabPanel(), BorderLayout.CENTER);
 		add(createButtonPanel(), BorderLayout.SOUTH);
 	}
@@ -62,7 +64,7 @@ public class ProjectInputPanel extends JPanel {
 
 	private JTabbedPane createTabPanel() {
 		final JTabbedPane tab = UIUtil.createTab( //
-				new CsvProjectFileImportPanel(application) //
+				new CsvDeelnemerFileImportPanel(application) //
 				);
 
 		tab.addChangeListener(new ChangeListener() {

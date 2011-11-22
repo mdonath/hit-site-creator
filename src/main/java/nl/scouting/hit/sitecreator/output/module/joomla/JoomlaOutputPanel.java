@@ -1,5 +1,7 @@
 package nl.scouting.hit.sitecreator.output.module.joomla;
 
+import java.awt.Color;
+
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
@@ -7,6 +9,7 @@ import javax.swing.JTextField;
 
 import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
+import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 import nl.scouting.hit.sitecreator.output.module.AbstractOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
@@ -37,7 +40,7 @@ public final class JoomlaOutputPanel extends AbstractOutputPanel {
 
 	private JoomlaOutputModule outputModule;
 
-	public JoomlaOutputPanel(final Application application) {
+	public JoomlaOutputPanel(final Application<Hit> application) {
 		initComponents();
 	}
 
@@ -53,6 +56,7 @@ public final class JoomlaOutputPanel extends AbstractOutputPanel {
 
 	private void initComponents() {
 		setName("Joomla");
+		setBackground(Color.RED); // FIXME joomla-output doet het nog niet
 
 		final JLabel urlLabel = new JLabel("Joomla URL");
 		final JTextField urlField = new JTextField();

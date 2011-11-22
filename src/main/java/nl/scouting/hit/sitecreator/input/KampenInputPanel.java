@@ -14,7 +14,6 @@ import javax.swing.event.ChangeListener;
 import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.input.module.csv.CsvKampFileImportPanel;
 import nl.scouting.hit.sitecreator.input.module.soap.SoapInputPanel;
-import nl.scouting.hit.sitecreator.input.module.xml.XmlInputPanel;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
@@ -42,9 +41,9 @@ public class KampenInputPanel extends JPanel {
 
 	private InputModule currentInputModule;
 
-	private final Application application;
+	private final Application<Hit> application;
 
-	public KampenInputPanel(final Application application) {
+	public KampenInputPanel(final Application<Hit> application) {
 		super(new BorderLayout());
 		this.application = application;
 		setName("Kampen");
@@ -65,7 +64,6 @@ public class KampenInputPanel extends JPanel {
 	private JTabbedPane createTabPanel() {
 		final JTabbedPane tab = UIUtil.createTab( //
 				new CsvKampFileImportPanel(application) //
-				, new XmlInputPanel(application) //
 				, new SoapInputPanel(application) //
 				);
 

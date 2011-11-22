@@ -9,30 +9,30 @@ hitkamp(hit, kamp) ::= <<
 $hitkamp_header(hit,kamp)$
 
 <body id="kamp" style="width:650px;">
+$hitkamp_commentaarblok_met_info(hit,kamp)$
 
 <div id="content">
-	$hitkamp_titel(hit, kamp)$
-	
-	$hitkamp_icoontjes(hit, kamp)$
-	
-	$hitkamp_verhaal(hit, kamp)$
-	
-	$hitkamp_contact(hit, kamp)$
-	
-	$hitkamp_aanvullende_info(hit,kamp)$
- 
+	<div id="PrintKlaar">
+		$hitkamp_titel(hit, kamp)$
+		
+		$hitkamp_icoontjes(hit, kamp)$
+		
+		<!-- verhaal -->
+		$hitkamp_verhaal(hit, kamp)$
+		
+		$hitkamp_contact(hit, kamp)$
+		
+		$hitkamp_aanvullende_info(hit,kamp)$
+	</div>
+
 	$hitkamp_buttons(hit, kamp)$
 	
-	$hitkamp_updated(hit, kamp)$
+	<p style="float: left">$kamp.deelnemersnummer$ Laatste update $hit.datumNu;format="dd MMMM yyyy (HH:mm)"$</p>
 </div>
 </body>
 </html>
 >>
 
-
-hitkamp_updated(hit, kamp) ::= <<
-	<p style="float: left">#$kamp.deelnemersnummer$ Laatste update: $hit.datumNu;format="dd MMMM yyyy (HH:mm)"$</p>
->>
 
 hitkamp_header(hit, kamp) ::= <<
 	$! ************************************* !$
@@ -42,11 +42,54 @@ hitkamp_header(hit, kamp) ::= <<
         <title>$kamp.naam$</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="author" content="HIT Scouting $hit.jaar$">
+        <meta name="contact_id" content="MMD-$hit.jaar$">
+        <meta name="section" content="HIT">
         <meta name="keywords" content="HIT, Scouting Nederland, jongeren, jeugd, avontuur, scouts">
+        <meta name="maintainer" content="Martijn Donath">
         <meta name="description" content="Informatie over een van de kampen van de HIT $hit.jaar$">
         <link rel="stylesheet" href="hit.css" type="text/css">
 </head>
 >>
+
+
+hitkamp_commentaarblok_met_info(hit,kamp) ::= <<
+	$! *********************************************** !$
+	$! *** Het comentaarblok met helpdeskgegevens. *** !$
+	$! *********************************************** !$
+
+<!--
+Aangepast en gecontroleerd moeten worden:
+
+TABBLAD BASIS:
+Startdatum (deel)evenement $kamp.startDatumtijd;format="dd-MM-yyyy"$ , begintijd $kamp.startDatumtijd;format="HH:mm"$  
+Einddatum (deel)evenement * $kamp.eindDatumtijd;format="dd-MM-yyyy"$ , eindttijd $kamp.eindDatumtijd;format="HH:mm"$
+Inschrijven vanaf * $hit.inschrijvingStartdatum;format="dd MMMM yyyy"$
+Inschrijven tot en met * $hit.inschrijvingEinddatum;format="dd MMMM yyyy"$
+Inschrijving wijzigen tot $hit.inschrijvingWijzigenTotDatum;format="dd MMMM yyyy"$
+
+TABBLAD DEELNAMECONDITIES
+Minimum/maximum leeftijd $kamp.minimumLeeftijd$ en $kamp.maximumLeeftijd$
+Minimum/maximum deelnemersaantal $kamp.maximumAantalDeelnemers$
+Maximum aantal uit één groep $kamp.maximumAantalUitEenGroep$
+
+TABBLAD FINANCIEEN
+Tot en met deze datum kosteloos annuleren $hit.inschrijvingKosteloosAnnulerenDatum;format="dd MMMM yyyy"$
+Datum waarna annuleren met volledige kosten geldt $hit.inschrijvingGeenRestitutieDatum;format="dd MMMM yyyy"$
+
+TABBLAD SAMENSTELLEN
+deelnamekosten 
+Koptekst * Deelnamekosten HIT $hit.jaar$
+Omschrijving Deelname HIT $hit.jaar$
+Bedrag $kamp.deelnamekosten$
+Inningsdatum $hit.inningsdatum;format="dd MMMM yyyy"$
+
+TABBLAD DOELGROEP
+Titel *  wijzigen (oude HIT-code verwijderen) "$kamp.plaats.naam$ $kamp.naam$"
+Tonen vanaf *  ,  Tonen t/m *  $hit.inschrijvingStartdatum;format="dd MMMM yyyy"$  $hit.inschrijvingEinddatum;format="dd MMMM yyyy"$
+   
+-->
+>>
+
 
 
 hitkamp_titel(hit, kamp) ::= <<
@@ -54,36 +97,37 @@ hitkamp_titel(hit, kamp) ::= <<
 	$! *** De titel en deelnemerskosten, leeftijd, etc *** !$
 	$! *************************************************** !$
 	
+<!-- Titel met deelnemerskosten, leeftijd etc -->
 <table width="100%">
 	<tr>
-		<td valign="top" rowspan="6">
+		<td rowspan="6" valign="top">
 		        <h1>$kamp.naam$</h1>
 		</td>
 	</tr>
 	<tr>
-		<td valign="top">Plaats</td>
-		<td valign="top">:</td>
-		<td valign="top">$kamp.plaats.naam$</td>
+		<td valign=top>Plaats</td>
+		<td valign=top>:</td>
+		<td valign=top>$kamp.plaats.naam$</td>
 	</tr>
 	<tr>
-		<td valign="top">Datum</td>
-		<td valign="top">:</td>
-		<td valign="top">$kamp.startDatumtijd;format="d MMMM"$ t/m $kamp.eindDatumtijd;format="d MMMM"$</td>
+		<td valign=top>Datum</td>
+		<td valign=top>:</td>
+		<td valign=top>$kamp.startDatumtijd;format="d MMMM"$ t/m $kamp.eindDatumtijd;format="d MMMM"$</td>
 	</tr>
 	<tr>
-		<td valign="top">Leeftijd</td>
-		<td valign="top">:</td>
-		<td valign="top">$kamp.minimumLeeftijd$ t/m $kamp.maximumLeeftijd$ jaar</td>
+		<td valign=top>Leeftijd</td>
+		<td valign=top>:</td>
+		<td valign=top>$kamp.minimumLeeftijd$ t/m $kamp.maximumLeeftijd$ jaar</td>
 	</tr>
 	<tr>
-		<td valign="top">Groep</td>
-		<td valign="top">:</td>
-		<td valign="top">$kamp.subgroepsamenstellingMinimum$ t/m $kamp.subgroepsamenstellingMaximum$ pers.</td>
+		<td valign=top>Groep</td>
+		<td valign=top>:</td>
+		<td valign=top>$kamp.subgroepsamenstellingMinimum$ t/m $kamp.subgroepsamenstellingMaximum$ pers.</td>
 	</tr>
 	<tr>
-		<td valign="top">Prijs</td>
-		<td valign="top">:</td>
-		<td valign="top">€ $kamp.deelnamekosten$</td>
+		<td valign=top>Prijs</td>
+		<td valign=top>:</td>
+		<td valign=top>€ $kamp.deelnamekosten$</td>
 	</tr>
 </table>
 >>

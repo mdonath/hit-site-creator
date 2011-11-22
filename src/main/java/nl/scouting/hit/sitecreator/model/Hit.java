@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import nl.scouting.hit.sitecreator.model.Icoon.AfstandsIcoon;
+import nl.scouting.hit.sitecreator.util.DateUtil;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
@@ -22,7 +25,6 @@ public class Hit {
 	private LocalDate inschrijvingKosteloosAnnulerenDatum;
 	private LocalDate inschrijvingGeenRestitutieDatum;
 	private LocalDate inningsdatum;
-	private LocalDateTime datumNu = new LocalDateTime();
 
 	public Hit() {
 		this(0);
@@ -83,6 +85,23 @@ public class Hit {
 		}
 	}
 
+	public void mergeDeelnemers(final Collection<HitPlaats> hitPlaatsen) {
+		// pseudo kampen met hitplaats.shantiformuliernummer
+
+	}
+
+	public LocalDate getVrijdag() {
+		return DateUtil.getEaster(jaar).minusDays(2);
+	}
+
+	public LocalDate getMaandag() {
+		return DateUtil.getEaster(jaar).plusDays(1);
+	}
+
+	public boolean isHeeftBeginEnEindInVerschillendeMaanden() {
+		return getVrijdag().getMonthOfYear() != getMaandag().getMonthOfYear();
+	}
+
 	public void addHitPlaats(final HitPlaats hitPlaats) {
 		hitPlaatsen.add(hitPlaats);
 		hitPlaats.setHit(this);
@@ -116,6 +135,18 @@ public class Hit {
 
 	public Set<Icoon> getBeschikbareIconen() {
 		return Icoon.getAll();
+	}
+
+	public Set<Icoon> getGebruikteIconenVoorCourant() {
+		final Set<Icoon> result = getGebruikteIconen();
+		for (final Iterator<Icoon> i = result.iterator(); i.hasNext();) {
+			final Icoon icoon = i.next();
+			if (icoon.isAfstandsIndicate()
+					&& (((AfstandsIcoon) icoon).getAfstand() != 60)) {
+				i.remove();
+			}
+		}
+		return result;
 	}
 
 	public Set<Icoon> getGebruikteIconen() {
@@ -214,11 +245,7 @@ public class Hit {
 	}
 
 	public LocalDateTime getDatumNu() {
-		return datumNu;
-	}
-
-	public void setDatumNu(final LocalDateTime datumNu) {
-		this.datumNu = datumNu;
+		return new LocalDateTime();
 	}
 
 }

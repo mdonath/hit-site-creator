@@ -68,5 +68,5 @@ hitkieskamp_kamp(kamp) ::= <<
 
 
 hitkamp_icoon(icoon) ::= <<
-<img src="./iconenklein/$icoon.bestandsnaam$" alt="$icoon.tekst$" title="$icoon.tekst$" />
+<img src="./iconennieuwgifm25pix/$icoon.bestandsnaam$.gif" alt="$icoon.tekst$" title="$icoon.tekst$" />
 >>
