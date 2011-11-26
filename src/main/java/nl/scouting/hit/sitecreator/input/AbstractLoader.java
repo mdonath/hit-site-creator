@@ -2,6 +2,7 @@ package nl.scouting.hit.sitecreator.input;
 
 import javax.swing.SwingWorker;
 
+import nl.scouting.hit.sitecreator.input.module.InputModule;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.model.ModelUtil;
 
@@ -23,6 +24,7 @@ public abstract class AbstractLoader extends SwingWorker<Hit, Void> {
 		try {
 			hit = get();
 		} catch (final Exception ignore) {
+			ignore.printStackTrace();
 			hit = ModelUtil.createEmptyStructure();
 		}
 

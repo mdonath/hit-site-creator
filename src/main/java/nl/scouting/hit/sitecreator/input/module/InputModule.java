@@ -1,4 +1,4 @@
-package nl.scouting.hit.sitecreator.input;
+package nl.scouting.hit.sitecreator.input.module;
 
 import java.beans.PropertyChangeListener;
 
@@ -15,4 +15,6 @@ public interface InputModule extends PropertyChangeListener {
 	}
 
 	Hit load() throws InputModuleException;
+
+	String getType();
 }

@@ -2,7 +2,7 @@ package nl.scouting.hit.sitecreator.input.module.soap;
 
 import java.beans.PropertyChangeEvent;
 
-import nl.scouting.hit.sitecreator.input.InputModule;
+import nl.scouting.hit.sitecreator.input.module.InputModule;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.model.ModelUtil;
 
@@ -23,8 +23,8 @@ public class SoapInputModule implements InputModule {
 	private String password;
 
 	private void connect() {
-		System.out.println("Connect naar '" + this.user + ":" + this.password
-				+ "@" + this.url + "'");
+		System.out.println("Connect naar '" + user + ":" + password + "@" + url
+				+ "'");
 	}
 
 	@Override
@@ -37,12 +37,17 @@ public class SoapInputModule implements InputModule {
 	public void propertyChange(final PropertyChangeEvent evt) {
 		final String propertyName = evt.getPropertyName();
 		if ("url".equals(propertyName)) {
-			this.url = (String) evt.getNewValue();
+			url = (String) evt.getNewValue();
 		} else if ("user".equals(propertyName)) {
-			this.user = (String) evt.getNewValue();
+			user = (String) evt.getNewValue();
 		} else if ("password".equals(propertyName)) {
-			this.password = (String) evt.getNewValue();
+			password = (String) evt.getNewValue();
 		}
+	}
+
+	@Override
+	public String getType() {
+		return "Soap";
 	}
 
 }

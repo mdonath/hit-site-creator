@@ -3,13 +3,11 @@ package nl.scouting.hit.sitecreator.input.module;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 
-import nl.scouting.hit.sitecreator.input.InputModule;
-
-public abstract class AbstractFileImportInputModule implements InputModule {
+public abstract class AbstractFileImportInputModule implements FileInputModule {
 
 	private File file;
-	private Integer jaar;
 	private String encoding;
+	private Integer jaar;
 
 	public void setFile(final File file) {
 		this.file = file;
@@ -30,6 +28,7 @@ public abstract class AbstractFileImportInputModule implements InputModule {
 			file = (File) evt.getNewValue();
 		} else if ("jaar".equals(propertyName)) {
 			jaar = (Integer) evt.getNewValue();
+			System.out.println(getClass() + ": " + propertyName + "=" + jaar);
 		} else if ("encoding".equals(propertyName)) {
 			encoding = (String) evt.getNewValue();
 		}

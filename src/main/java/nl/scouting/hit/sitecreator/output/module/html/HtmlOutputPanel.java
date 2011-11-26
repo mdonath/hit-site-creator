@@ -75,8 +75,6 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<Hit> {
 				});
 
 		final GroupLayout layout = UIUtil.createGroupLayout(this);
-		layout.setAutoCreateContainerGaps(true);
-		layout.setAutoCreateGaps(true);
 
 		// horizontaal gezien heb ik van links naar rechts twee paralelle
 		// groepen. In de eerste groep zitten labels, in de tweede velden

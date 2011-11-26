@@ -2,14 +2,27 @@ package nl.scouting.hit.sitecreator.input;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Calendar;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
 import nl.scouting.hit.sitecreator.Application;
+import nl.scouting.hit.sitecreator.ConfigKey;
+import nl.scouting.hit.sitecreator.ConfigKey.FileConfigKey;
+import nl.scouting.hit.sitecreator.ConfigKey.IntegerConfigKey;
+import nl.scouting.hit.sitecreator.ConfigKey.StringConfigKey;
+import nl.scouting.hit.sitecreator.input.module.FileImportModel;
+import nl.scouting.hit.sitecreator.input.module.csv.CsvFileImportModel;
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
@@ -17,6 +30,9 @@ public class UberInputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private final Application<Hit> application;
+
+	public static final ConfigKey<Integer> CONFIG_JAAR = new IntegerConfigKey(
+			"jaar");
 
 	public UberInputPanel(final Application<Hit> application) {
 		super(new BorderLayout());
@@ -26,10 +42,65 @@ public class UberInputPanel extends JPanel {
 
 	private void initComponents() {
 		setBorder(new TitledBorder("Alle soorten input"));
+
 		add(createTabPanel(), BorderLayout.CENTER);
+		add(createJaarPanel(), BorderLayout.NORTH);
+	}
+
+	private Component createJaarPanel() {
+		final JPanel result = new JPanel();
+		final JLabel yearLabel = new JLabel("Jaar");
+
+		final int huidigeJaar = Calendar.getInstance().get(Calendar.YEAR);
+		final JComboBox yearField = new JComboBox(createJaarItems(huidigeJaar));
+		yearField.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				final Object[] selected = e.getItemSelectable()
+						.getSelectedObjects();
+				if (selected != null) {
+					firePropertyChange("jaar", null, selected[0]);
+				}
+			}
+		});
+		if (application.hasConfigurationValue(CONFIG_JAAR)) {
+			yearField.setSelectedItem(application
+					.getConfigurationValue(CONFIG_JAAR));
+		} else {
+			yearField.setSelectedItem(huidigeJaar);
+		}
+
+		final GroupLayout layout = UIUtil.createGroupLayout(result);
+		layout.setHorizontalGroup(layout.createSequentialGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.LEADING) //
+						.addComponent(yearLabel) //
+				) //
+				.addGroup(layout.createParallelGroup(Alignment.LEADING) //
+						.addComponent(yearField) //
+				) //
+		);
+		layout.setVerticalGroup(layout.createSequentialGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
+						.addComponent(yearLabel) //
+						.addComponent(yearField) //
+				) //
+		);
+
+		return result;
+	}
+
+	private static Integer[] createJaarItems(final int huidigeJaar) {
+		final int startJaar = 2010;
+		final int aantal = huidigeJaar - startJaar;
+		final Integer[] items = new Integer[aantal + 2];
+		for (int i = 0; i < items.length; i++) {
+			items[i] = Integer.valueOf(startJaar + i);
+		}
+		return items;
 	}
 
 	private Component createTabPanel() {
+
 		final JTabbedPane tab = UIUtil.createTab( //
 				createProjectPanel() //
 				, createPlaatsPanel() //
@@ -41,81 +112,97 @@ public class UberInputPanel extends JPanel {
 		return tab;
 	}
 
-	private DeelnemersInputPanel createDeelnemerPanel() {
-		final DeelnemersInputPanel deelnemers = new DeelnemersInputPanel(
-				application);
-		deelnemers.addPropertyChangeListener("hit",
-				new PropertyChangeListener() {
+	protected ProjectInputTabPanel createProjectPanel() {
+		final FileImportModel model = createCsvFileImportModel("project");
+		addPropertyChangeListener("jaar", model);
+
+		final ProjectInputTabPanel result = new ProjectInputTabPanel(model);
+
+		result.addPropertyChangeListener("hit",
+				new HitPropertyChangeListener() {
 					@Override
-					public void propertyChange(final PropertyChangeEvent evt) {
-						final Hit load = (Hit) evt.getNewValue();
-						Hit hit = application.getModel();
-						if (hit == null) {
-							hit = load;
-							application.setModel(hit);
-						} else {
-							hit.mergeDeelnemers(load.getHitPlaatsen());
-						}
-						firePropertyChange("hit", null, hit);
+					protected void merge(final Hit oldHit, final Hit newHit) {
+						oldHit.merge(newHit);
 					}
 				});
-		return deelnemers;
+		return result;
 	}
 
-	protected KampenInputPanel createKampPanel() {
-		final KampenInputPanel kamp = new KampenInputPanel(application);
-		kamp.addPropertyChangeListener("hit", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				final Hit load = (Hit) evt.getNewValue();
-				Hit hit = application.getModel();
-				if (hit == null) {
-					hit = load;
-					application.setModel(hit);
-				} else {
-					hit.mergeKampen(load.getHitPlaatsen());
-				}
-				firePropertyChange("hit", null, hit);
-			}
-		});
-		return kamp;
+	protected PlaatsenInputTabPanel createPlaatsPanel() {
+		final FileImportModel model = createCsvFileImportModel("plaats");
+		addPropertyChangeListener("jaar", model);
+
+		final PlaatsenInputTabPanel result = new PlaatsenInputTabPanel(model);
+
+		result.addPropertyChangeListener("hit",
+				new HitPropertyChangeListener() {
+					@Override
+					protected void merge(final Hit oldHit, final Hit newHit) {
+						oldHit.merge(newHit.getHitPlaatsen());
+					}
+				});
+		return result;
 	}
 
-	protected PlaatsenInputPanel createPlaatsPanel() {
-		final PlaatsenInputPanel plaats = new PlaatsenInputPanel(application);
-		plaats.addPropertyChangeListener("hit", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				final Hit load = (Hit) evt.getNewValue();
-				Hit hit = application.getModel();
-				if (hit == null) {
-					hit = load;
-					application.setModel(hit);
-				} else {
-					hit.merge(load.getHitPlaatsen());
-				}
-				firePropertyChange("hit", null, hit);
-			}
-		});
-		return plaats;
+	protected KampenInputTabPanel createKampPanel() {
+		final FileImportModel model = createCsvFileImportModel("kamp");
+		addPropertyChangeListener("jaar", model);
+
+		final KampenInputTabPanel result = new KampenInputTabPanel(model);
+
+		result.addPropertyChangeListener("hit",
+				new HitPropertyChangeListener() {
+					@Override
+					protected void merge(final Hit oldHit, final Hit newHit) {
+						oldHit.mergeKampen(newHit.getHitPlaatsen());
+					}
+				});
+		return result;
 	}
 
-	protected ProjectInputPanel createProjectPanel() {
-		final ProjectInputPanel project = new ProjectInputPanel(application);
-		project.addPropertyChangeListener("hit", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(final PropertyChangeEvent evt) {
-				final Hit load = (Hit) evt.getNewValue();
-				Hit hit = application.getModel();
-				if (hit == null) {
-					hit = load;
-					application.setModel(hit);
-				} else {
-					hit.merge(load);
-				}
-				firePropertyChange("hit", null, hit);
-			}
-		});
-		return project;
+	private DeelnemersInputTabPanel createDeelnemerPanel() {
+
+		final FileImportModel model = createCsvFileImportModel("dln");
+		addPropertyChangeListener("jaar", model);
+		final DeelnemersInputTabPanel result = new DeelnemersInputTabPanel(
+				model);
+
+		result.addPropertyChangeListener("hit",
+				new HitPropertyChangeListener() {
+					@Override
+					protected void merge(final Hit oldHit, final Hit newHit) {
+						oldHit.mergeDeelnemers(newHit.getHitPlaatsen());
+					}
+				});
+		return result;
 	}
+
+	protected FileImportModel createCsvFileImportModel(final String wat) {
+		return new CsvFileImportModel(
+				application.getConfigurationValue(new FileConfigKey(wat + "csv")), //
+				application.getConfigurationValue(new StringConfigKey(wat
+						+ "enc")), //
+				application.getConfigurationValue(new IntegerConfigKey("jaar")) //
+		);
+	}
+
+	abstract class HitPropertyChangeListener implements PropertyChangeListener {
+
+		@Override
+		public final void propertyChange(final PropertyChangeEvent evt) {
+			final Hit load = (Hit) evt.getNewValue();
+			Hit hit = application.getModel();
+			if (hit == null) {
+				hit = load;
+				application.setModel(hit);
+			} else {
+				hit.merge(load);
+			}
+			firePropertyChange("hit", null, hit);
+		}
+
+		protected abstract void merge(Hit oldHit, Hit newHit);
+
+	}
+
 }

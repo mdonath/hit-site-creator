@@ -8,18 +8,15 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
-import nl.scouting.hit.sitecreator.input.AbstractInputPanel;
-import nl.scouting.hit.sitecreator.input.InputModule;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.input.module.InputModule;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public class SoapInputPanel extends AbstractInputPanel {
-	private final class TextChangeNotifierListener extends
+	protected final class TextChangeNotifierListener extends
 			TextChangedDocumentListener {
 
-		private TextChangeNotifierListener(final String propertyName) {
+		TextChangeNotifierListener(final String propertyName) {
 			super(propertyName);
 		}
 
@@ -34,7 +31,7 @@ public class SoapInputPanel extends AbstractInputPanel {
 
 	private SoapInputModule inputModule;
 
-	public SoapInputPanel(final Application<Hit> application) {
+	public SoapInputPanel() {
 		initComponents();
 	}
 

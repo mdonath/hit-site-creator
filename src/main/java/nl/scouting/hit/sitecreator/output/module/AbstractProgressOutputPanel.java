@@ -19,8 +19,8 @@ public abstract class AbstractProgressOutputPanel<A> extends JPanel implements
 
 	protected AbstractProgressOutputPanel(final Application<A> application) {
 		this.application = application;
-		getProcessor();
 		initComponents();
+		getProcessor();
 	}
 
 	private void initComponents() {

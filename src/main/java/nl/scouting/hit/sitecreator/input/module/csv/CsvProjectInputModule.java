@@ -2,19 +2,25 @@ package nl.scouting.hit.sitecreator.input.module.csv;
 
 import java.util.List;
 
-import nl.scouting.hit.sitecreator.input.module.AbstractCsvFileImportInputModule;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import nl.scouting.hit.sitecreator.model.Hit;
 
 public class CsvProjectInputModule extends
 		AbstractCsvFileImportInputModule<Hit> {
 
-	protected CsvProjectInputModule() {
+	public CsvProjectInputModule() {
 		super(Hit.class);
 	}
 
 	@Override
 	protected Hit maakStructuur(final List<Hit> projecten) {
 		return projecten.get(0);
+	}
+
+	@Override
+	public FileNameExtensionFilter getFilter() {
+		return createCsvFilter("Bestand met de HIT Project gegevens");
 	}
 
 }

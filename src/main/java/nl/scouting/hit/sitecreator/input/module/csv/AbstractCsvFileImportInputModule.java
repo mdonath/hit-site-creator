@@ -1,4 +1,4 @@
-package nl.scouting.hit.sitecreator.input.module;
+package nl.scouting.hit.sitecreator.input.module.csv;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelper;
-import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import nl.scouting.hit.sitecreator.input.module.AbstractFileImportInputModule;
 import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory.FactoryException;
-import nl.scouting.hit.sitecreator.input.module.csv.MappingException;
 import nl.scouting.hit.sitecreator.model.Hit;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.CsvToBean;
@@ -23,6 +23,11 @@ public abstract class AbstractCsvFileImportInputModule<T> extends
 
 	protected AbstractCsvFileImportInputModule(final Class<T> clazz) {
 		this.clazz = clazz;
+	}
+
+	@Override
+	public String getType() {
+		return "Csv";
 	}
 
 	@Override
@@ -50,6 +55,11 @@ public abstract class AbstractCsvFileImportInputModule<T> extends
 
 	protected InputStream getInputStream() throws IOException {
 		return new FileInputStream(getFile());
+	}
+
+	protected final static FileNameExtensionFilter createCsvFilter(
+			final String description) {
+		return new FileNameExtensionFilter(description, "csv", "txt");
 	}
 
 	private MappingStrategy<T> getStrategy() throws FactoryException,

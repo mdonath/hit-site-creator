@@ -1,6 +1,8 @@
-package nl.scouting.hit.sitecreator.input;
+package nl.scouting.hit.sitecreator.input.module.soap;
 
 import javax.swing.JPanel;
+
+import nl.scouting.hit.sitecreator.input.InputModuleUI;
 
 public abstract class AbstractInputPanel extends JPanel implements
 		InputModuleUI {
@@ -9,4 +11,5 @@ public abstract class AbstractInputPanel extends JPanel implements
 	protected AbstractInputPanel() {
 		getProcessor();
 	}
+
 }

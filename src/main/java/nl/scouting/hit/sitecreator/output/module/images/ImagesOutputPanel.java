@@ -97,6 +97,7 @@ public final class ImagesOutputPanel extends AbstractProgressOutputPanel<Hit> {
 			outputModule = new ImagesOutputModule();
 			addPropertyChangeListener("save", outputModule);
 			addPropertyChangeListener("outDir", outputModule);
+			outputModule.addProgressListener(this);
 		}
 		return outputModule;
 	}

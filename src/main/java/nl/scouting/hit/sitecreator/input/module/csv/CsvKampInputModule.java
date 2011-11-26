@@ -6,7 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import nl.scouting.hit.sitecreator.input.module.AbstractCsvFileImportInputModule;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import nl.scouting.hit.sitecreator.model.Hit;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
@@ -14,7 +15,7 @@ import nl.scouting.hit.sitecreator.model.HitPlaats;
 public class CsvKampInputModule extends
 		AbstractCsvFileImportInputModule<HitKamp> {
 
-	protected CsvKampInputModule() {
+	public CsvKampInputModule() {
 		super(HitKamp.class);
 	}
 
@@ -35,7 +36,7 @@ public class CsvKampInputModule extends
 		return hit;
 	}
 
-	protected Map<String, HitPlaats> createPlaatsCache(
+	protected static Map<String, HitPlaats> createPlaatsCache(
 			final List<HitKamp> kampen, final Hit hit) {
 		final Map<String, HitPlaats> result = new HashMap<String, HitPlaats>();
 		for (final String plaatsNaam : createUniekeGesorteerdeSetHitPlaatsNamen(kampen)) {
@@ -46,13 +47,18 @@ public class CsvKampInputModule extends
 		return result;
 	}
 
-	protected Set<String> createUniekeGesorteerdeSetHitPlaatsNamen(
+	protected static Set<String> createUniekeGesorteerdeSetHitPlaatsNamen(
 			final List<HitKamp> kampen) {
 		final Set<String> result = new TreeSet<String>();
 		for (final HitKamp kamp : kampen) {
 			result.add(kamp.getPlaatsNaam());
 		}
 		return result;
+	}
+
+	@Override
+	public FileNameExtensionFilter getFilter() {
+		return createCsvFilter("Bestand met alle kampgegevens");
 	}
 
 }
