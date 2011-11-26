@@ -30,7 +30,7 @@ public final class ApplicationImpl extends JFrame implements Application<Hit> {
 	private Hit hit;
 
 	public ApplicationImpl(final String[] arguments) {
-		super("HIT SiteCreator");
+		super(ApplicationLabels.getLabel("app.name"));
 		configuration = new Parameters(arguments).getConfiguration();
 		initComponents();
 	}
