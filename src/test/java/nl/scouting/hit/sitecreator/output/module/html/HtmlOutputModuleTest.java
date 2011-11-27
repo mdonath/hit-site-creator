@@ -3,7 +3,7 @@ package nl.scouting.hit.sitecreator.output.module.html;
 import java.io.File;
 import java.io.IOException;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 import nl.scouting.hit.sitecreator.util.IOUtil;
@@ -18,7 +18,7 @@ public class HtmlOutputModuleTest {
 
 	private File tempDir;
 
-	private static final Hit HIT = new Hit(
+	private static final HitProject HIT = new HitProject(
 			2012, //
 			new HitPlaats("Mook", new HitKamp("Stook"), new HitKamp("Water")),
 			new HitPlaats("Alphen"));
@@ -47,7 +47,7 @@ public class HtmlOutputModuleTest {
 		theater.setDeelnemersnummer(222);
 		final HitPlaats mook = new HitPlaats("Mook", stook, water, theater);
 		final HitPlaats alphen = new HitPlaats("Alphen");
-		final Hit hit = new Hit(2012, alphen, mook);
+		final HitProject hit = new HitProject(2012, alphen, mook);
 		module.save(hit);
 	}
 

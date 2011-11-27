@@ -15,7 +15,7 @@ import nl.scouting.hit.sitecreator.util.DateUtil;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
-public class Hit {
+public class HitProject {
 
 	private Integer jaar;
 	private List<HitPlaats> hitPlaatsen;
@@ -26,29 +26,30 @@ public class Hit {
 	private LocalDate inschrijvingGeenRestitutieDatum;
 	private LocalDate inningsdatum;
 
-	public Hit() {
+	public HitProject() {
 		this(0);
 	}
 
-	public Hit(final Integer jaar) {
+	public HitProject(final Integer jaar) {
 		this(jaar, Collections.<HitPlaats> emptyList());
 	}
 
-	public Hit(final Integer jaar, final HitPlaats... hitPlaatsen) {
+	public HitProject(final Integer jaar, final HitPlaats... hitPlaatsen) {
 		this(jaar, Arrays.asList(hitPlaatsen));
 	}
 
-	public Hit(final Integer jaar, final Collection<HitPlaats> hitPlaatsen) {
+	public HitProject(final Integer jaar,
+			final Collection<HitPlaats> hitPlaatsen) {
 		this.jaar = jaar;
 		this.hitPlaatsen = new ArrayList<HitPlaats>(hitPlaatsen.size());
-		if (!((hitPlaatsen == null) || hitPlaatsen.isEmpty())) {
+		if (!hitPlaatsen.isEmpty()) {
 			for (final HitPlaats plaats : hitPlaatsen) {
 				addHitPlaats(plaats);
 			}
 		}
 	}
 
-	public void merge(final Hit otherHit) {
+	public void mergeProject(final HitProject otherHit) {
 		if (jaar.equals(otherHit.jaar)) {
 			inschrijvingStartdatum = otherHit.inschrijvingStartdatum;
 			inschrijvingEinddatum = otherHit.inschrijvingEinddatum;
@@ -56,14 +57,14 @@ public class Hit {
 			inschrijvingKosteloosAnnulerenDatum = otherHit.inschrijvingKosteloosAnnulerenDatum;
 			inschrijvingWijzigenTotDatum = otherHit.inschrijvingWijzigenTotDatum;
 			inningsdatum = otherHit.inningsdatum;
-			merge(otherHit.getHitPlaatsen());
+			// mergePlaatsen(otherHit.getHitPlaatsen());
 		} else {
 			throw new MergeException("Verkeerd jaar om te mergen: " + jaar
 					+ " / " + otherHit.jaar);
 		}
 	}
 
-	public void merge(final Collection<HitPlaats> hitPlaatsen) {
+	public void mergePlaatsen(final Collection<HitPlaats> hitPlaatsen) {
 		for (final HitPlaats plaats : hitPlaatsen) {
 			if (this.hitPlaatsen.contains(plaats)) {
 				final int index = this.hitPlaatsen.indexOf(plaats);
@@ -87,7 +88,6 @@ public class Hit {
 
 	public void mergeDeelnemers(final Collection<HitPlaats> hitPlaatsen) {
 		// pseudo kampen met hitplaats.shantiformuliernummer
-
 	}
 
 	public LocalDate getVrijdag() {

@@ -7,16 +7,16 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 
 public final class HitTreeModel implements TreeModel {
-	private final Hit root;
+	private final HitProject root;
 
 	private final List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
 
-	public HitTreeModel(final Hit hit) {
+	public HitTreeModel(final HitProject hit) {
 		root = hit;
 	}
 
@@ -27,8 +27,8 @@ public final class HitTreeModel implements TreeModel {
 
 	@Override
 	public Object getChild(final Object parent, final int index) {
-		if (parent instanceof Hit) {
-			return ((Hit) parent).getHitPlaatsen().get(index);
+		if (parent instanceof HitProject) {
+			return ((HitProject) parent).getHitPlaatsen().get(index);
 		} else if (parent instanceof HitPlaats) {
 			return ((HitPlaats) parent).getHitKampen().get(index);
 		}
@@ -37,8 +37,8 @@ public final class HitTreeModel implements TreeModel {
 
 	@Override
 	public int getChildCount(final Object parent) {
-		if (parent instanceof Hit) {
-			return ((Hit) parent).getHitPlaatsen().size();
+		if (parent instanceof HitProject) {
+			return ((HitProject) parent).getHitPlaatsen().size();
 		} else if (parent instanceof HitPlaats) {
 			return ((HitPlaats) parent).getHitKampen().size();
 		}
@@ -47,8 +47,8 @@ public final class HitTreeModel implements TreeModel {
 
 	@Override
 	public int getIndexOfChild(final Object parent, final Object child) {
-		if (parent instanceof Hit) {
-			return ((Hit) parent).getHitPlaatsen().indexOf(child);
+		if (parent instanceof HitProject) {
+			return ((HitProject) parent).getHitPlaatsen().indexOf(child);
 		} else if (parent instanceof HitPlaats) {
 			return ((HitPlaats) parent).getHitKampen().indexOf(child);
 		}

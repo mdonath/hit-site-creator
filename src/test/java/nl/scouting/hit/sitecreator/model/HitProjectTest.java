@@ -8,58 +8,58 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class HitTest {
+public class HitProjectTest {
 
 	@Test(expected = MergeException.class)
-	public void merge_twee_hits_verschillend_jaar() throws Exception {
-		final Hit hit1 = new Hit(2012);
-		final Hit hit2 = new Hit(2013);
-		hit1.merge(hit2);
-	}
+			public void mergePlaatsenProject_twee_hits_verschillend_jaar() throws Exception {
+				final HitProject hit1 = new HitProject(2012);
+				final HitProject hit2 = new HitProject(2013);
+				hit1.mergeProject(hit2);
+			}
 
 	@Test
-	public void merge_twee_hits() throws Exception {
-		final Hit hit1 = new Hit(2012, new HitPlaats("alphen"));
-		final Hit hit2 = new Hit(2012, new HitPlaats("mook"));
-		assertEquals(1, hit1.getHitPlaatsen().size());
-		hit1.merge(hit2);
-		assertEquals(2, hit1.getHitPlaatsen().size());
-	}
+			public void mergePlaatsenProject_twee_hits() throws Exception {
+				final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen"));
+				final HitProject hit2 = new HitProject(2012, new HitPlaats("mook"));
+				assertEquals(1, hit1.getHitPlaatsen().size());
+				hit1.mergeProject(hit2);
+				assertEquals(2, hit1.getHitPlaatsen().size());
+			}
 
 	@Test
-	public void merge_dezelfde_plaats() throws Exception {
-		final Hit hit1 = new Hit(2012, new HitPlaats("alphen"));
-		final Hit hit2 = new Hit(2012, new HitPlaats("alphen"));
-		assertEquals(1, hit1.getHitPlaatsen().size());
-		hit1.merge(hit2);
-		assertEquals(1, hit1.getHitPlaatsen().size());
-	}
+			public void mergePlaatsenProject_dezelfde_plaats() throws Exception {
+				final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen"));
+				final HitProject hit2 = new HitProject(2012, new HitPlaats("alphen"));
+				assertEquals(1, hit1.getHitPlaatsen().size());
+				hit1.mergeProject(hit2);
+				assertEquals(1, hit1.getHitPlaatsen().size());
+			}
 
 	@Test
-	public void merge_dezelfde_plaats_met_kampen() throws Exception {
-		final Hit hit1 = new Hit(2012, new HitPlaats("alphen", new HitKamp(
-				"een")));
-		final Hit hit2 = new Hit(2012, new HitPlaats("alphen", new HitKamp(
-				"twee")));
-		hit1.merge(hit2);
-		assertEquals(1, hit1.getHitPlaatsen().size());
-		assertEquals(2, hit1.getAantalKampen());
-	}
+			public void mergePlaatsenProject_dezelfde_plaats_met_kampen() throws Exception {
+				final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen", new HitKamp(
+						"een")));
+				final HitProject hit2 = new HitProject(2012, new HitPlaats("alphen", new HitKamp(
+						"twee")));
+				hit1.mergeProject(hit2);
+				assertEquals(1, hit1.getHitPlaatsen().size());
+				assertEquals(2, hit1.getAantalKampen());
+			}
 
 	@Test
 	public void simpele_constructor() throws Exception {
-		assertEquals(Integer.valueOf(2012), new Hit(2012).getJaar());
+		assertEquals(Integer.valueOf(2012), new HitProject(2012).getJaar());
 	}
 
 	@Test
 	public void aantal_kampen_is_nul() throws Exception {
-		assertEquals(0, new Hit(2012).getAantalKampen());
+		assertEquals(0, new HitProject(2012).getAantalKampen());
 	}
 
 	@Test
 	public void aantal_kampen_is_twee() throws Exception {
 		assertEquals(2,
-				new Hit(2012, //
+				new HitProject(2012, //
 						new HitPlaats("mook", //
 								new HitKamp("stook"), new HitKamp("water")))
 						.getAantalKampen());
@@ -67,7 +67,7 @@ public class HitTest {
 
 	@Test
 	public void aantal_kampen_over_twee_plaatsen_is_twee() throws Exception {
-		assertEquals(2, new Hit(2012 //
+		assertEquals(2, new HitProject(2012 //
 				, new HitPlaats("mook", new HitKamp("stook")) //
 				, new HitPlaats("zeeland", new HitKamp("water"))) //
 				.getAantalKampen());
@@ -76,7 +76,7 @@ public class HitTest {
 	@Test
 	public void linkKampenAanElkaar_met_twee_plaatsen_vier_kampen()
 			throws Exception {
-		final Hit hit = new Hit(2012);
+		final HitProject hit = new HitProject(2012);
 		final HitPlaats alphen = new HitPlaats("Alphen");
 		final HitKamp een = new HitKamp("Een");
 		alphen.addHitKamp(een);
@@ -101,7 +101,7 @@ public class HitTest {
 
 	@Test
 	public void linkKampenAanElkaar_met_een_plaats_een_kamp() throws Exception {
-		final Hit hit = new Hit(2012);
+		final HitProject hit = new HitProject(2012);
 		final HitPlaats alphen = new HitPlaats("Alphen");
 		final HitKamp een = new HitKamp("Een");
 		alphen.addHitKamp(een);
@@ -114,7 +114,7 @@ public class HitTest {
 
 	@Test
 	public void beschikbare_iconen() throws Exception {
-		final Hit hit = new Hit(2012);
+		final HitProject hit = new HitProject(2012);
 		final Set<Icoon> beschikbareIconen = hit.getBeschikbareIconen();
 		assertNotNull(beschikbareIconen);
 		assertEquals(44, beschikbareIconen.size());
@@ -122,7 +122,7 @@ public class HitTest {
 
 	@Test
 	public void gebruikte_iconen_leeg() throws Exception {
-		final Hit hit = new Hit(2012);
+		final HitProject hit = new HitProject(2012);
 		final Set<Icoon> gebruikteIconen = hit.getGebruikteIconen();
 		assertNotNull(gebruikteIconen);
 		assertEquals(0, gebruikteIconen.size());
@@ -137,7 +137,7 @@ public class HitTest {
 		kamp2.setIcoontje("Staand kamp");
 		kamp2.setIcoontje("Totale afstand is 15 km");
 
-		final Hit hit = new Hit(2012, new HitPlaats("Mook", kamp1, kamp2));
+		final HitProject hit = new HitProject(2012, new HitPlaats("Mook", kamp1, kamp2));
 
 		final Set<Icoon> gebruikteIconen = hit.getGebruikteIconen();
 		assertNotNull(gebruikteIconen);

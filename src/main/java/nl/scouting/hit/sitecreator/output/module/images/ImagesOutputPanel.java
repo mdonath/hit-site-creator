@@ -12,7 +12,7 @@ import javax.swing.filechooser.FileFilter;
 import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.components.JDirectoryInput;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
@@ -22,7 +22,7 @@ import nl.scouting.hit.sitecreator.util.UIUtil;
  * 
  * @author Martijn Donath
  */
-public final class ImagesOutputPanel extends AbstractProgressOutputPanel<Hit> {
+public final class ImagesOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 	private static final long serialVersionUID = 1L;
 
 	private ImagesOutputModule outputModule;
@@ -30,7 +30,7 @@ public final class ImagesOutputPanel extends AbstractProgressOutputPanel<Hit> {
 	public static final ConfigKey<File> CONF_OUTDIR = new ConfigKey.FileConfigKey(
 			"htmlout");
 
-	public ImagesOutputPanel(final Application<Hit> application) {
+	public ImagesOutputPanel(final Application<HitProject> application) {
 		super(application);
 		initComponents();
 	}

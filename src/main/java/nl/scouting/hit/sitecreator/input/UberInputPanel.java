@@ -23,18 +23,19 @@ import nl.scouting.hit.sitecreator.ConfigKey.IntegerConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.StringConfigKey;
 import nl.scouting.hit.sitecreator.input.module.FileImportModel;
 import nl.scouting.hit.sitecreator.input.module.csv.CsvFileImportModel;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitEntiteit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public class UberInputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private final Application<Hit> application;
+	private final Application<HitProject> application;
 
 	public static final ConfigKey<Integer> CONFIG_JAAR = new IntegerConfigKey(
 			"jaar");
 
-	public UberInputPanel(final Application<Hit> application) {
+	public UberInputPanel(final Application<HitProject> application) {
 		super(new BorderLayout());
 		this.application = application;
 		initComponents();
@@ -45,6 +46,10 @@ public class UberInputPanel extends JPanel {
 
 		add(createTabPanel(), BorderLayout.CENTER);
 		add(createJaarPanel(), BorderLayout.NORTH);
+	}
+
+	protected void fireJaarChanged(final Object jaar) {
+		firePropertyChange("jaar", null, jaar);
 	}
 
 	private Component createJaarPanel() {
@@ -59,7 +64,7 @@ public class UberInputPanel extends JPanel {
 				final Object[] selected = e.getItemSelectable()
 						.getSelectedObjects();
 				if (selected != null) {
-					firePropertyChange("jaar", null, selected[0]);
+					fireJaarChanged(selected[0]);
 				}
 			}
 		});
@@ -117,12 +122,12 @@ public class UberInputPanel extends JPanel {
 		addPropertyChangeListener("jaar", model);
 
 		final ProjectInputTabPanel result = new ProjectInputTabPanel(model);
-
-		result.addPropertyChangeListener("hit",
+		result.addPropertyChangeListener(HitEntiteit.Project.name(),
 				new HitPropertyChangeListener() {
 					@Override
-					protected void merge(final Hit oldHit, final Hit newHit) {
-						oldHit.merge(newHit);
+					protected void merge(final HitProject oldHit,
+							final HitProject newHit) {
+						oldHit.mergeProject(newHit);
 					}
 				});
 		return result;
@@ -134,11 +139,12 @@ public class UberInputPanel extends JPanel {
 
 		final PlaatsenInputTabPanel result = new PlaatsenInputTabPanel(model);
 
-		result.addPropertyChangeListener("hit",
+		result.addPropertyChangeListener(HitEntiteit.Plaats.name(),
 				new HitPropertyChangeListener() {
 					@Override
-					protected void merge(final Hit oldHit, final Hit newHit) {
-						oldHit.merge(newHit.getHitPlaatsen());
+					protected void merge(final HitProject oldHit,
+							final HitProject newHit) {
+						oldHit.mergePlaatsen(newHit.getHitPlaatsen());
 					}
 				});
 		return result;
@@ -150,10 +156,11 @@ public class UberInputPanel extends JPanel {
 
 		final KampenInputTabPanel result = new KampenInputTabPanel(model);
 
-		result.addPropertyChangeListener("hit",
+		result.addPropertyChangeListener(HitEntiteit.Kamp.name(),
 				new HitPropertyChangeListener() {
 					@Override
-					protected void merge(final Hit oldHit, final Hit newHit) {
+					protected void merge(final HitProject oldHit,
+							final HitProject newHit) {
 						oldHit.mergeKampen(newHit.getHitPlaatsen());
 					}
 				});
@@ -167,10 +174,11 @@ public class UberInputPanel extends JPanel {
 		final DeelnemersInputTabPanel result = new DeelnemersInputTabPanel(
 				model);
 
-		result.addPropertyChangeListener("hit",
+		result.addPropertyChangeListener(HitEntiteit.Deelnemer.name(),
 				new HitPropertyChangeListener() {
 					@Override
-					protected void merge(final Hit oldHit, final Hit newHit) {
+					protected void merge(final HitProject oldHit,
+							final HitProject newHit) {
 						oldHit.mergeDeelnemers(newHit.getHitPlaatsen());
 					}
 				});
@@ -190,19 +198,33 @@ public class UberInputPanel extends JPanel {
 
 		@Override
 		public final void propertyChange(final PropertyChangeEvent evt) {
-			final Hit load = (Hit) evt.getNewValue();
-			Hit hit = application.getModel();
+			final HitProject load = (HitProject) evt.getNewValue();
+			HitProject hit = getApplication().getModel();
 			if (hit == null) {
 				hit = load;
-				application.setModel(hit);
+				getApplication().setModel(hit);
 			} else {
-				hit.merge(load);
+				merge(hit, load);
 			}
-			firePropertyChange("hit", null, hit);
+			fireHitChanged(hit);
 		}
 
-		protected abstract void merge(Hit oldHit, Hit newHit);
+		/**
+		 * Mergt de twee hit projecten.
+		 * 
+		 * @param oldHit
+		 * @param newHit
+		 */
+		protected abstract void merge(HitProject oldHit, HitProject newHit);
 
+	}
+
+	protected void fireHitChanged(final HitProject hitProject) {
+		firePropertyChange("hit", null, hitProject);
+	}
+
+	protected Application<HitProject> getApplication() {
+		return application;
 	}
 
 }

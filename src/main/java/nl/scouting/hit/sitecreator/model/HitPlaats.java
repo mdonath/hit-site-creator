@@ -7,7 +7,7 @@ import java.util.List;
 
 public class HitPlaats implements Comparable<HitPlaats> {
 
-	private Hit hit;
+	private HitProject hit;
 	private List<HitKamp> hitKampen;
 
 	private Integer deelnemersnummer;
@@ -113,11 +113,11 @@ public class HitPlaats implements Comparable<HitPlaats> {
 		return sb.toString();
 	}
 
-	public Hit getHit() {
+	public HitProject getHit() {
 		return hit;
 	}
 
-	public void setHit(final Hit hit) {
+	public void setHit(final HitProject hit) {
 		this.hit = hit;
 	}
 

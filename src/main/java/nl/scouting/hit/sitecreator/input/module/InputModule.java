@@ -2,7 +2,8 @@ package nl.scouting.hit.sitecreator.input.module;
 
 import java.beans.PropertyChangeListener;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitEntiteit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 
 public interface InputModule extends PropertyChangeListener {
 
@@ -14,7 +15,9 @@ public interface InputModule extends PropertyChangeListener {
 		}
 	}
 
-	Hit load() throws InputModuleException;
+	HitProject load() throws InputModuleException;
 
 	String getType();
+
+	HitEntiteit getEntityType();
 }

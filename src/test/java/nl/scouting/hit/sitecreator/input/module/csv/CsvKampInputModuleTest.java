@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class CsvKampInputModuleTest {
 		input.setJaar(2012);
 		input.setEncoding("UTF-8");
 
-		final Hit result = input.load();
+		final HitProject result = input.load();
 		assertNotNull(result);
 		assertEquals(6, result.getHitPlaatsen().size());
 	}
@@ -36,7 +36,7 @@ public class CsvKampInputModuleTest {
 		input.setFile(loadClasspathResourceToTempFile("nl/scouting/hit/sitecreator/input/module/csv/formuliergegevens_5687_anon.csv"));
 		input.setJaar(2012);
 		input.setEncoding("UTF-8");
-		final Hit hit = input.load();
+		final HitProject hit = input.load();
 		final HitKamp kamp = hit.getHitPlaatsen().get(0).getHitKampen().get(0);
 
 		assertEquals(2012, kamp.getStartDatumtijd().getYear());

@@ -28,7 +28,6 @@ public abstract class AbstractFileImportInputModule implements FileInputModule {
 			file = (File) evt.getNewValue();
 		} else if ("jaar".equals(propertyName)) {
 			jaar = (Integer) evt.getNewValue();
-			System.out.println(getClass() + ": " + propertyName + "=" + jaar);
 		} else if ("encoding".equals(propertyName)) {
 			encoding = (String) evt.getNewValue();
 		}

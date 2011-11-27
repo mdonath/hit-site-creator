@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class CsvPlaatsInputModuleTest {
 		};
 		module.setJaar(2012);
 		module.setEncoding("UTF-8");
-		final Hit hit = module.load();
+		final HitProject hit = module.load();
 		assertNotNull(hit);
 		final Iterator<HitPlaats> iterator = hit.getHitPlaatsen().iterator();
 		assertEquals("Alphen", iterator.next().getNaam());

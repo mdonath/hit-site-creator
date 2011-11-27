@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 
 import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.components.TextChangedDocumentListener;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 import nl.scouting.hit.sitecreator.output.module.AbstractOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
@@ -40,7 +40,7 @@ public final class JoomlaOutputPanel extends AbstractOutputPanel {
 
 	private JoomlaOutputModule outputModule;
 
-	public JoomlaOutputPanel(final Application<Hit> application) {
+	public JoomlaOutputPanel(final Application<HitProject> application) {
 		initComponents();
 	}
 

@@ -13,7 +13,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import nl.scouting.hit.sitecreator.input.module.InputModule;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitEntiteit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public abstract class AbstractInputTabPanel extends JPanel {
@@ -31,8 +32,8 @@ public abstract class AbstractInputTabPanel extends JPanel {
 		public void actionPerformed(final ActionEvent e) {
 			new AbstractLoader(currentInputModule) {
 				@Override
-				protected void loadFinished(final Hit hit) {
-					AbstractInputTabPanel.this.firePropertyChange("hit", null,
+				protected void loadFinished(final HitProject hit) {
+					fireHitEntiteitChanged(currentInputModule.getEntityType(),
 							hit);
 				}
 			}.execute();
@@ -72,4 +73,10 @@ public abstract class AbstractInputTabPanel extends JPanel {
 		tab.setSelectedIndex(0);
 		return tab;
 	}
+
+	protected void fireHitEntiteitChanged(final HitEntiteit entityType,
+			final HitProject hitProject) {
+		firePropertyChange(entityType.name(), null, hitProject);
+	}
+
 }

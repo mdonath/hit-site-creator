@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputModule;
 import nl.scouting.hit.sitecreator.util.IOUtil;
@@ -29,7 +29,7 @@ public class ImagesOutputModule extends AbstractProgressOutputModule {
 	}
 
 	@Override
-	public void save(final Hit hit) throws IOException {
+	public void save(final HitProject hit) throws IOException {
 		final List<HitKamp> kampen = hit.getKampenGesorteerd();
 		int counter = 0;
 		for (final HitKamp kamp : kampen) {

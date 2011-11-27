@@ -4,8 +4,9 @@ import java.util.List;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitEntiteit;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
+import nl.scouting.hit.sitecreator.model.HitProject;
 
 public class CsvPlaatsInputModule extends
 		AbstractCsvFileImportInputModule<HitPlaats> {
@@ -15,8 +16,8 @@ public class CsvPlaatsInputModule extends
 	}
 
 	@Override
-	protected Hit maakStructuur(final List<HitPlaats> list) {
-		return new Hit(getJaar(), list);
+	protected HitProject maakStructuur(final List<HitPlaats> list) {
+		return new HitProject(getJaar(), list);
 	}
 
 	@Override
@@ -24,4 +25,8 @@ public class CsvPlaatsInputModule extends
 		return createCsvFilter("Bestand met alle kampplaatsgegevens");
 	}
 
+	@Override
+	public HitEntiteit getEntityType() {
+		return HitEntiteit.Plaats;
+	}
 }

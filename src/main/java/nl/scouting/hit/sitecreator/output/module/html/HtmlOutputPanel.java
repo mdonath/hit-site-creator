@@ -16,12 +16,12 @@ import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.components.JDirectoryInput;
 import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
-public class HtmlOutputPanel extends AbstractProgressOutputPanel<Hit> {
+public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 	private static final long serialVersionUID = 1L;
 
 	private HtmlOutputModule outputModule;
@@ -29,7 +29,7 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<Hit> {
 	public static final ConfigKey<File> CONF_OUTDIR = new ConfigKey.FileConfigKey(
 			"htmlout");
 
-	public HtmlOutputPanel(final Application<Hit> application) {
+	public HtmlOutputPanel(final Application<HitProject> application) {
 		super(application);
 		initComponents();
 	}

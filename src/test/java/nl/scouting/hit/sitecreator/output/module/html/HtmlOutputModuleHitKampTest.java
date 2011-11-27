@@ -2,7 +2,7 @@ package nl.scouting.hit.sitecreator.output.module.html;
 
 import java.util.Date;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 
@@ -14,16 +14,16 @@ import org.stringtemplate.v4.STGroupFile;
 public class HtmlOutputModuleHitKampTest {
 
 	private static final HitKamp STOOK = new HitKamp("Stook");
-	private static final Hit HIT = createHit();
+	private static final HitProject HIT = createHit();
 
-	private static Hit createHit() {
+	private static HitProject createHit() {
 		final HitKamp water = new HitKamp("Water");
 		final HitKamp theater = new HitKamp("Theater");
 		STOOK.setDeelnemersnummer(111111);
 		water.setDeelnemersnummer(222222);
 		theater.setDeelnemersnummer(333333);
 
-		final Hit hit = new Hit(2012, //
+		final HitProject hit = new HitProject(2012, //
 				new HitPlaats("Mook", STOOK, water, theater), new HitPlaats(
 						"Alphen"));
 		hit.linkKampenAanElkaar();

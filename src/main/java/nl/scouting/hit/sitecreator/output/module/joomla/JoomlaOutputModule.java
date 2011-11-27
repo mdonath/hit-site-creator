@@ -2,7 +2,7 @@ package nl.scouting.hit.sitecreator.output.module.joomla;
 
 import java.beans.PropertyChangeEvent;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.OutputModule;
 
 public class JoomlaOutputModule implements OutputModule {
@@ -24,7 +24,7 @@ public class JoomlaOutputModule implements OutputModule {
 	}
 
 	@Override
-	public void save(final Hit hit) {
+	public void save(final HitProject hit) {
 		System.out.println("Save de inhoud van " + hit.getJaar()
 				+ " naar Joomla op" + this.url + " met " + this.user + "@"
 				+ this.password);

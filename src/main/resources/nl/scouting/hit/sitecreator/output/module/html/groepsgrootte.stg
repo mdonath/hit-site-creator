@@ -1,0 +1,52 @@
+groepsgrootte(hit) ::= <<
+<html>
+	<head>
+		<title>Kies een activiteit</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="description" content="Informatie over de kampen van de HIT $hit.jaar$">
+		<link href="hit.css" rel="stylesheet" type="text/css">
+	</head>
+
+<body>
+<center>
+<div id="content">
+	<h1>Kies een activiteit</h1>
+
+	<table>
+	<tr>
+		<td class="data">
+			<table>
+			$hit.hitPlaatsen:hitkieskamp_plaats()$
+			</table>
+		</td>
+	</tr>
+	</table>
+</div>
+
+<br>Laatste update $hit.datumNu;format="dd MMMM yyyy (HH:mm)"$
+
+</body>
+</html>
+>>
+
+
+
+hitkieskamp_plaats(plaats) ::= <<
+	<tr>
+		<td><a name="$plaats.naam$"><h2>$plaats.naam$</h2></a></td>
+  		<td valign=bottom><b>Groeps-grootte nieuw</b></td>
+  		<td valign=bottom><b>Groeps-grootte oud</b></td>
+ 	</tr>
+
+	$plaats.hitKampen:hitkieskamp_kamp()$
+>>
+
+
+
+hitkieskamp_kamp(kamp) ::= <<
+	<tr>
+		<td><a href="$kamp.htmlFileNaam$">$kamp.naam$</a></td>
+  		<td>$kamp.subgroepsamenstellingMinimum$ - $kamp.subgroepsamenstellingMaximum$ pers.</td>
+		<td>$kamp.subgroepsamenstellingOud$</td>
+	</tr>
+>>

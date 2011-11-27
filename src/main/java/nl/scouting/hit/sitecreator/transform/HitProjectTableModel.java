@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 
@@ -17,7 +17,7 @@ public class HitProjectTableModel extends AbstractTableModel {
 
 	private final List<HitKamp> hitKampen;
 
-	public HitProjectTableModel(final Hit hit) {
+	public HitProjectTableModel(final HitProject hit) {
 		hitKampen = new ArrayList<HitKamp>();
 		for (final HitPlaats plaats : hit.getHitPlaatsen()) {
 			for (final HitKamp kamp : plaats.getHitKampen()) {

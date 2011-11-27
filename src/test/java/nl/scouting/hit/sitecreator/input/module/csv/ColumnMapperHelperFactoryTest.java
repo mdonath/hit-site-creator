@@ -1,9 +1,11 @@
 package nl.scouting.hit.sitecreator.input.module.csv;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory.FactoryException;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
+import nl.scouting.hit.sitecreator.model.HitProject;
 
 import org.junit.Test;
 
@@ -39,6 +41,14 @@ public class ColumnMapperHelperFactoryTest {
 		final ColumnMapperHelper helper = ColumnMapperHelperFactory
 				.getColumnMapperHelperForYear(2012, HitPlaats.class);
 		assertNotNull(helper);
+	}
+
+	@Test
+	public void generieke_method_met_class_voor_project() throws Exception {
+		final ColumnMapperHelper helper = ColumnMapperHelperFactory
+				.getColumnMapperHelperForYear(2012, HitProject.class);
+		assertNotNull(helper);
+		assertTrue(helper.getColumnMapping().containsKey("jaar"));
 	}
 
 	@Test(expected = FactoryException.class)

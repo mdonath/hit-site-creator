@@ -7,7 +7,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Test;
 
-public class HitKampTest {
+public class HitProjectKampTest {
 
 	@Test
 	public void constructie_van_startDatumTijd_eerst_datum_dan_tijd()

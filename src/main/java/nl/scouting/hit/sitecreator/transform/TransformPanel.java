@@ -16,7 +16,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
 import nl.scouting.hit.sitecreator.Application;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 import nl.scouting.hit.sitecreator.model.ModelUtil;
@@ -30,7 +30,7 @@ public final class TransformPanel extends JPanel implements
 	private JTable propertyTable;
 	private JTable detailTable;
 
-	public TransformPanel(final Application<Hit> application) {
+	public TransformPanel(final Application<HitProject> application) {
 		initComponents();
 	}
 
@@ -50,8 +50,8 @@ public final class TransformPanel extends JPanel implements
 			@Override
 			public void valueChanged(final TreeSelectionEvent e) {
 				final Object obj = tree.getLastSelectedPathComponent();
-				if (obj instanceof Hit) {
-					final Hit hit = (Hit) obj;
+				if (obj instanceof HitProject) {
+					final HitProject hit = (HitProject) obj;
 					setProjectModels(hit);
 				} else if (obj instanceof HitPlaats) {
 					final HitPlaats plaats = (HitPlaats) obj;
@@ -98,13 +98,13 @@ public final class TransformPanel extends JPanel implements
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("hit".equals(evt.getPropertyName())) {
-			final Hit hit = (Hit) evt.getNewValue();
+			final HitProject hit = (HitProject) evt.getNewValue();
 			tree.setModel(new HitTreeModel(hit));
 			setProjectModels(hit);
 		}
 	}
 
-	protected void setProjectModels(final Hit hit) {
+	protected void setProjectModels(final HitProject hit) {
 		detailTable.setModel(new HitProjectTableModel(hit));
 		propertyTable.setModel(new BeanPropertyTableModel(hit, "aantalKampen",
 				"beschikbareIconen", "gebruikteIconen", "hitPlaatsen",

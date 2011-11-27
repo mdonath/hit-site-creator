@@ -13,7 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import nl.scouting.hit.sitecreator.input.UberInputPanel;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.OutputPanel;
 import nl.scouting.hit.sitecreator.transform.TransformPanel;
 
@@ -22,12 +22,12 @@ import nl.scouting.hit.sitecreator.transform.TransformPanel;
  * 
  * @author Martijn Donath
  */
-public final class ApplicationImpl extends JFrame implements Application<Hit> {
+public final class ApplicationImpl extends JFrame implements Application<HitProject> {
 	private static final long serialVersionUID = 1L;
 
 	private final Map<String, String> configuration;
 
-	private Hit hit;
+	private HitProject hit;
 
 	public ApplicationImpl(final String[] arguments) {
 		super(ApplicationLabels.getLabel("app.name"));
@@ -94,13 +94,13 @@ public final class ApplicationImpl extends JFrame implements Application<Hit> {
 	}
 
 	@Override
-	public void setModel(final Hit model) {
+	public void setModel(final HitProject model) {
 		hit = model;
 
 	}
 
 	@Override
-	public Hit getModel() {
+	public HitProject getModel() {
 		return hit;
 	}
 }

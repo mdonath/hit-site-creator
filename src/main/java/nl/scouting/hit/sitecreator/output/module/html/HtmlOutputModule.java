@@ -12,7 +12,7 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.List;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputModule;
 
@@ -47,47 +47,64 @@ public class HtmlOutputModule extends AbstractProgressOutputModule {
 	}
 
 	@Override
-	public void save(final Hit hit) throws IOException {
-		genereerKampPaginas(hit);
-		genereerKiesActiviteit(hit);
+	public void save(final HitProject hit) throws IOException {
+		genereerGroepsgrootte(hit);
 		genereerHitCourant(hit);
+		genereerKiesActiviteit(hit);
+		genereerKampPaginas(hit);
+	}
+
+	private void genereerGroepsgrootte(final HitProject hit) throws IOException {
+		genereerEnkel(hit, "groepsgrootte.stg", "groepsgrootte",
+				"groepsgrootte.html");
 	}
 
 	// TODO: hit2011_menu.html
 
-	private void genereerHitCourant(final Hit hit)
-			throws FileNotFoundException, UnsupportedEncodingException,
-			IOException {
-		final STGroup group = getTemplate("hitcourant.stg");
-		final ST template = group.getInstanceOf("hitcourant");
-		template.add("hit", hit);
-		writeToFile(new File(outDir, "hitcourant.html"), template.render());
+	private void genereerHitCourant(final HitProject hit) throws IOException {
+		genereerEnkel(hit, "hitcourant.stg", "hitcourant", "hitcourant.html");
 	}
 
-	private void genereerKiesActiviteit(final Hit hit)
-			throws FileNotFoundException, UnsupportedEncodingException,
-			IOException {
-		final STGroup group = getTemplate("kieseenactiviteit.stg");
-		final ST template = group.getInstanceOf("hitkieskamp");
-		template.add("hit", hit);
-		writeToFile(new File(outDir, "hitkieskamp.html"), template.render());
+	private void genereerKiesActiviteit(final HitProject hit) throws IOException {
+		genereerEnkel(hit, "kieseenactiviteit.stg", "hitkieskamp",
+				"hitkieskamp.html");
 	}
 
-	private void genereerKampPaginas(final Hit hit) throws IOException {
-		final STGroup kampTemplate = getTemplate("kamponderdeel.stg");
+	private void genereerKampPaginas(final HitProject hit) throws IOException {
+		final String groupFile = "kamponderdeel.stg";
+		final String templateName = "hitkamp";
 		final List<HitKamp> kampen = hit.getKampenGesorteerd();
+
+		genereerPerKamp(hit, groupFile, templateName, kampen);
+	}
+
+	protected void genereerPerKamp(final HitProject hit, final String groupFile,
+			final String templateName, final List<HitKamp> kampen)
+			throws IOException {
+		final STGroup kampTemplate = getTemplate(groupFile);
 		int counter = 0;
 		for (final HitKamp kamp : kampen) {
-			final ST st = kampTemplate.getInstanceOf("hitkamp");
-			st.add("hit", hit);
-			st.add("kamp", kamp);
+			final ST template = kampTemplate.getInstanceOf(templateName);
+			template.add("hit", hit);
+			template.add("kamp", kamp);
 
-			writeToFile(kamp, st.render());
+			final String outputFile = kamp.getHtmlFileNaam();
+			writeToFile(outputFile, template);
 			fireProgressListenerEvent(++counter, kampen.size());
 		}
 	}
 
-	private STGroup getTemplate(final String file) {
+	protected void genereerEnkel(final HitProject hit, final String groupFile,
+			final String templateName, final String outputFile)
+			throws FileNotFoundException, UnsupportedEncodingException,
+			IOException {
+		final STGroup group = getTemplate(groupFile);
+		final ST template = group.getInstanceOf(templateName);
+		template.add("hit", hit);
+		writeToFile(outputFile, template);
+	}
+
+	private static STGroup getTemplate(final String file) {
 		final STGroup group;
 		if (new File(file).exists()) {
 			group = new STGroupFile(file, '$', '$');
@@ -103,18 +120,13 @@ public class HtmlOutputModule extends AbstractProgressOutputModule {
 		return group;
 	}
 
-	private void writeToFile(final HitKamp kamp, final String result)
-			throws IOException {
-		writeToFile(new File(outDir, kamp.getHtmlFileNaam()), result);
-	}
-
-	private void writeToFile(final File file, final String result)
+	private void writeToFile(final String outputFile, final ST template)
 			throws FileNotFoundException, UnsupportedEncodingException,
 			IOException {
+		final File file = new File(outDir, outputFile);
 		final OutputStream os = new FileOutputStream(file);
 		final Writer writer = new OutputStreamWriter(os, encoding);
-		System.out.println("Writing '" + file + "' using " + encoding);
-		writer.append(result);
+		writer.append(template.render());
 		writer.close();
 	}
 

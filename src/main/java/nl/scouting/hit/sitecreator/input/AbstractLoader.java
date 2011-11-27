@@ -3,10 +3,10 @@ package nl.scouting.hit.sitecreator.input;
 import javax.swing.SwingWorker;
 
 import nl.scouting.hit.sitecreator.input.module.InputModule;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.ModelUtil;
 
-public abstract class AbstractLoader extends SwingWorker<Hit, Void> {
+public abstract class AbstractLoader extends SwingWorker<HitProject, Void> {
 	private final InputModule inputModule;
 
 	public AbstractLoader(final InputModule inputModule) {
@@ -14,13 +14,13 @@ public abstract class AbstractLoader extends SwingWorker<Hit, Void> {
 	}
 
 	@Override
-	protected final Hit doInBackground() throws Exception {
+	protected final HitProject doInBackground() throws Exception {
 		return inputModule.load();
 	}
 
 	@Override
 	protected final void done() {
-		Hit hit;
+		HitProject hit;
 		try {
 			hit = get();
 		} catch (final Exception ignore) {
@@ -31,6 +31,6 @@ public abstract class AbstractLoader extends SwingWorker<Hit, Void> {
 		loadFinished(hit);
 	}
 
-	protected abstract void loadFinished(Hit hit);
+	protected abstract void loadFinished(HitProject hit);
 
 }

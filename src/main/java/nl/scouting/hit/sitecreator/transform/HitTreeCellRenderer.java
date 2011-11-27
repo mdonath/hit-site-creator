@@ -10,7 +10,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 
@@ -39,8 +39,8 @@ public final class HitTreeCellRenderer implements TreeCellRenderer {
 			final boolean leaf, final int row, final boolean hasFocus) {
 		Component returnValue = null;
 		if (value != null) {
-			if (value instanceof Hit) {
-				titleLabel.setText(printHit((Hit) value));
+			if (value instanceof HitProject) {
+				titleLabel.setText(printHit((HitProject) value));
 			} else if (value instanceof HitPlaats) {
 				titleLabel.setText(printHitPlaats((HitPlaats) value));
 			} else if (value instanceof HitKamp) {
@@ -61,7 +61,7 @@ public final class HitTreeCellRenderer implements TreeCellRenderer {
 		return returnValue;
 	}
 
-	private String printHit(final Hit hit) {
+	private String printHit(final HitProject hit) {
 		if (hit.getJaar() == null) {
 			return "";
 		}

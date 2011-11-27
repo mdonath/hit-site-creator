@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nl.scouting.hit.sitecreator.input.module.AbstractFileImportInputModule;
 import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory.FactoryException;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import au.com.bytecode.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
@@ -31,11 +31,11 @@ public abstract class AbstractCsvFileImportInputModule<T> extends
 	}
 
 	@Override
-	public final Hit load() throws InputModuleException {
+	public final HitProject load() throws InputModuleException {
 		return loadCsv();
 	}
 
-	private Hit loadCsv() throws InputModuleException {
+	private HitProject loadCsv() throws InputModuleException {
 		try {
 			final CSVReader reader = new CSVReader( //
 					new InputStreamReader(getInputStream(), getEncoding()));
@@ -73,5 +73,5 @@ public abstract class AbstractCsvFileImportInputModule<T> extends
 		return strat;
 	}
 
-	protected abstract Hit maakStructuur(final List<T> list);
+	protected abstract HitProject maakStructuur(final List<T> list);
 }

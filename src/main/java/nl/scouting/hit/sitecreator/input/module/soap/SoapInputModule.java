@@ -3,7 +3,8 @@ package nl.scouting.hit.sitecreator.input.module.soap;
 import java.beans.PropertyChangeEvent;
 
 import nl.scouting.hit.sitecreator.input.module.InputModule;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitEntiteit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.ModelUtil;
 
 /**
@@ -28,7 +29,7 @@ public class SoapInputModule implements InputModule {
 	}
 
 	@Override
-	public Hit load() {
+	public HitProject load() {
 		connect();
 		return ModelUtil.createTestStructure();
 	}
@@ -48,6 +49,12 @@ public class SoapInputModule implements InputModule {
 	@Override
 	public String getType() {
 		return "Soap";
+	}
+
+	@Override
+	public HitEntiteit getEntityType() {
+		// FIXME
+		return HitEntiteit.Kamp;
 	}
 
 }

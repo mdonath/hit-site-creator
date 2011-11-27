@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 
 import org.junit.Test;
 
@@ -24,8 +24,9 @@ public class CsvProjectInputModuleTest {
 		};
 		module.setJaar(2012);
 		module.setEncoding("UTF-8");
-		final Hit hit = module.load();
+		final HitProject hit = module.load();
 		assertNotNull(hit);
 		assertEquals(0, hit.getAantalKampen());
+		assertEquals("jaar", Integer.valueOf(2012), hit.getJaar());
 	}
 }

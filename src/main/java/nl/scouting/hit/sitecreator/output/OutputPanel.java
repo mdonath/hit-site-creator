@@ -16,7 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import nl.scouting.hit.sitecreator.Application;
-import nl.scouting.hit.sitecreator.model.Hit;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.module.html.HtmlOutputPanel;
 import nl.scouting.hit.sitecreator.output.module.images.ImagesOutputPanel;
 import nl.scouting.hit.sitecreator.output.module.joomla.JoomlaOutputPanel;
@@ -28,9 +28,9 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 		public class Saver extends SwingWorker<Void, Void> {
 
 			private final OutputModule outputModule;
-			private final Hit hit;
+			private final HitProject hit;
 
-			public Saver(final OutputModule outputModule, final Hit hit) {
+			public Saver(final OutputModule outputModule, final HitProject hit) {
 				this.outputModule = outputModule;
 				this.hit = hit;
 			}
@@ -70,10 +70,10 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 
 	private OutputModule currentOutputModule;
 
-	private Hit hit;
-	private final Application<Hit> application;
+	private HitProject hit;
+	private final Application<HitProject> application;
 
-	public OutputPanel(final Application<Hit> application) {
+	public OutputPanel(final Application<HitProject> application) {
 		this.application = application;
 		initComponents();
 	}
@@ -118,7 +118,7 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 	@Override
 	public void propertyChange(final PropertyChangeEvent evt) {
 		if ("hit".equals(evt.getPropertyName())) {
-			final Hit hit = (Hit) evt.getNewValue();
+			final HitProject hit = (HitProject) evt.getNewValue();
 			this.hit = hit;
 		}
 	}

@@ -49,6 +49,7 @@ public class HitKamp implements Comparable<HitKamp> {
 	private Integer maximumAantalUitEenGroep;
 	private Integer overschrijdingAantalDeelnemers;
 
+	private String subgroepsamenstellingOud;
 	private String subgroepsamenstellingMinimum;
 	private String subgroepsamenstellingMaximum;
 	private String maximumAantalSubgroepjes;
@@ -539,6 +540,14 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	public void setDeelnemers(final List<HitDeelnemer> deelnemers) {
 		this.deelnemers = deelnemers;
+	}
+
+	public String getSubgroepsamenstellingOud() {
+		return subgroepsamenstellingOud;
+	}
+
+	public void setSubgroepsamenstellingOud(String subgroepsamenstellingOud) {
+		this.subgroepsamenstellingOud = subgroepsamenstellingOud;
 	}
 
 }
