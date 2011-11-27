@@ -78,17 +78,18 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 		initComponents();
 	}
 
-	private Component createButtonPanel() {
-		final JPanel result = new JPanel();
-		result.add(new JButton(new SaveAction()));
-		return result;
+	private void initComponents() {
+		setLayout(new BorderLayout());
+		setBorder(new TitledBorder("Output"));
+		add(createTabPanel(), BorderLayout.CENTER);
+		add(createButtonPanel(), BorderLayout.SOUTH);
 	}
 
 	private JTabbedPane createTabPanel() {
 		final JTabbedPane tab = UIUtil.createTab( //
 				new HtmlOutputPanel(application) //
-				, new JoomlaOutputPanel(application) //
 				, new ImagesOutputPanel(application) //
+				, new JoomlaOutputPanel(application) //
 				);
 		tab.addChangeListener(new ChangeListener() {
 			@Override
@@ -108,11 +109,10 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 		return tab;
 	}
 
-	private void initComponents() {
-		setLayout(new BorderLayout());
-		setBorder(new TitledBorder("Output"));
-		add(createTabPanel(), BorderLayout.CENTER);
-		add(createButtonPanel(), BorderLayout.SOUTH);
+	private Component createButtonPanel() {
+		final JPanel result = new JPanel();
+		result.add(new JButton(new SaveAction()));
+		return result;
 	}
 
 	@Override

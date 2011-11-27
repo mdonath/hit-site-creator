@@ -1,5 +1,6 @@
 package nl.scouting.hit.sitecreator.output.module.html;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -10,6 +11,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
 import nl.scouting.hit.sitecreator.Application;
@@ -74,23 +76,31 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 					}
 				});
 
-		final GroupLayout layout = UIUtil.createGroupLayout(this);
+		final JPanel container = new JPanel(new BorderLayout());
+		final GroupLayout layout = UIUtil.createGroupLayout(container);
 
 		// horizontaal gezien heb ik van links naar rechts twee paralelle
 		// groepen. In de eerste groep zitten labels, in de tweede velden
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-		//
-				.addGroup(layout.createParallelGroup() //
-						.addGroup(layout.createSequentialGroup() //
-								.addComponent(outDirLabel) //
-								.addComponent(outDirField) //
-						) //
-						.addGroup(layout.createSequentialGroup() //
-								.addComponent(encodingLabel) //
-								.addComponent(encodingField) //
-						) //
+		layout.setHorizontalGroup(layout
+				.createParallelGroup()
+				//
+				.addGroup(
+						layout.createSequentialGroup()
+								.addGroup(
+										layout.createParallelGroup(
+												Alignment.LEADING) //
+												.addComponent(outDirLabel) //
+												.addComponent(encodingLabel) //
+								) //
+								.addGroup(
+										layout.createParallelGroup(
+												Alignment.LEADING) //
+												.addComponent(outDirField) //
+												.addComponent(encodingField) //
+								)) //
+				.addGroup(layout.createSequentialGroup() //
 						.addComponent(getProgress()) //
-				) //
+				)//
 		);
 
 		// Verticaal gezien heb ik van boven naar beneden gezien twee
@@ -105,8 +115,11 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 						.addComponent(encodingLabel) //
 						.addComponent(encodingField) //
 				) //
-				.addComponent(getProgress()) //
+				.addGroup(layout.createParallelGroup() //
+						.addComponent(getProgress()) //
+				)//
 		);
+		add(container, BorderLayout.NORTH);
 	}
 
 	/** {@inheritDoc	 */

@@ -3,6 +3,7 @@ package nl.scouting.hit.sitecreator.output.module.joomla;
 import java.awt.Color;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -92,15 +93,15 @@ public final class JoomlaOutputPanel extends AbstractOutputPanel {
 		// groepen. Die groepen zijn de regels met de label|field
 		// combinatie.
 		layout.setVerticalGroup(layout.createSequentialGroup() //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(urlLabel) //
 						.addComponent(urlField) //
 				) //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(userLabel) //
 						.addComponent(userField) //
 				) //
-				.addGroup(layout.createParallelGroup() //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(passwordLabel) //
 						.addComponent(passwordField) //
 				) //

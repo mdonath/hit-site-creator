@@ -1,5 +1,6 @@
 package nl.scouting.hit.sitecreator.output.module.images;
 
+import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.File;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
 import nl.scouting.hit.sitecreator.Application;
@@ -22,7 +24,8 @@ import nl.scouting.hit.sitecreator.util.UIUtil;
  * 
  * @author Martijn Donath
  */
-public final class ImagesOutputPanel extends AbstractProgressOutputPanel<HitProject> {
+public final class ImagesOutputPanel extends
+		AbstractProgressOutputPanel<HitProject> {
 	private static final long serialVersionUID = 1L;
 
 	private ImagesOutputModule outputModule;
@@ -65,7 +68,9 @@ public final class ImagesOutputPanel extends AbstractProgressOutputPanel<HitProj
 					CONF_OUTDIR));
 		}
 
-		final GroupLayout layout = UIUtil.createGroupLayout(this);
+		final JPanel container = new JPanel(new BorderLayout());
+		add(container, BorderLayout.NORTH);
+		final GroupLayout layout = UIUtil.createGroupLayout(container);
 
 		layout.setHorizontalGroup(layout.createSequentialGroup()
 		//

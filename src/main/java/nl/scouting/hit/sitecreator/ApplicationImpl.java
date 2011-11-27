@@ -6,6 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -16,13 +17,15 @@ import nl.scouting.hit.sitecreator.input.UberInputPanel;
 import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.OutputPanel;
 import nl.scouting.hit.sitecreator.transform.TransformPanel;
+import nl.scouting.hit.sitecreator.util.UIUtil;
 
 /**
  * Het hoofdscherm van de applicatie.
  * 
  * @author Martijn Donath
  */
-public final class ApplicationImpl extends JFrame implements Application<HitProject> {
+public final class ApplicationImpl extends JFrame implements
+		Application<HitProject> {
 	private static final long serialVersionUID = 1L;
 
 	private final Map<String, String> configuration;
@@ -39,14 +42,20 @@ public final class ApplicationImpl extends JFrame implements Application<HitProj
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		final Container content = getContentPane();
 		content.setLayout(new BorderLayout());
-		content.add(createInputPanel(), BorderLayout.NORTH);
+		content.add(createInputOutputTab(), BorderLayout.NORTH);
 		content.add(createTransformPanel(), BorderLayout.CENTER);
-		content.add(createOutputPanel(), BorderLayout.SOUTH);
 
 		setLookAndFeel();
 		pack();
 
 		setLocationByPlatform(true);
+	}
+
+	private JComponent createInputOutputTab() {
+		return UIUtil.createTab( //
+				UIUtil.wrapShiftToTop(createInputPanel()), //
+				UIUtil.wrapShiftToTop(createOutputPanel()) //
+				);
 	}
 
 	private void setLookAndFeel() {
@@ -60,6 +69,7 @@ public final class ApplicationImpl extends JFrame implements Application<HitProj
 
 	private JPanel createInputPanel() {
 		final UberInputPanel inputPanel = new UberInputPanel(this);
+		inputPanel.setName("Input");
 		inputPanel.addPropertyChangeListener("hit",
 				new PropertyChangeListener() {
 					@Override
@@ -79,6 +89,8 @@ public final class ApplicationImpl extends JFrame implements Application<HitProj
 
 	private JPanel createOutputPanel() {
 		final OutputPanel result = new OutputPanel(this);
+		result.setName("Output");
+
 		addPropertyChangeListener("hit", result);
 		return result;
 	}

@@ -1,5 +1,7 @@
 package nl.scouting.hit.sitecreator.util;
 
+import java.awt.BorderLayout;
+
 import javax.swing.GroupLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -21,4 +23,12 @@ public class UIUtil {
 		}
 		return tabPane;
 	}
+
+	public static JComponent wrapShiftToTop(final JComponent c) {
+		final JPanel result = new JPanel(new BorderLayout());
+		result.add(c, BorderLayout.NORTH);
+		result.setName(c.getName());
+		return result;
+	}
+
 }
