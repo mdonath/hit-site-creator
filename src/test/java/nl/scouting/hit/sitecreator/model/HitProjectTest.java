@@ -11,40 +11,49 @@ import org.junit.Test;
 public class HitProjectTest {
 
 	@Test(expected = MergeException.class)
-			public void mergePlaatsenProject_twee_hits_verschillend_jaar() throws Exception {
-				final HitProject hit1 = new HitProject(2012);
-				final HitProject hit2 = new HitProject(2013);
-				hit1.mergeProject(hit2);
-			}
+	public void mergeProject_twee_hits_verschillend_jaar() throws Exception {
+		final HitProject hit1 = new HitProject(2012);
+		final HitProject hit2 = new HitProject(2013);
+		hit1.mergeProject(hit2);
+	}
 
 	@Test
-			public void mergePlaatsenProject_twee_hits() throws Exception {
-				final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen"));
-				final HitProject hit2 = new HitProject(2012, new HitPlaats("mook"));
-				assertEquals(1, hit1.getHitPlaatsen().size());
-				hit1.mergeProject(hit2);
-				assertEquals(2, hit1.getHitPlaatsen().size());
-			}
+	public void mergeProject_twee_hits() throws Exception {
+		final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen"));
+		final HitProject hit2 = new HitProject(2012, new HitPlaats("mook"));
+		assertEquals(1, hit1.getHitPlaatsen().size());
+		hit1.mergeProject(hit2);
+		assertEquals(2, hit1.getHitPlaatsen().size());
+	}
 
 	@Test
-			public void mergePlaatsenProject_dezelfde_plaats() throws Exception {
-				final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen"));
-				final HitProject hit2 = new HitProject(2012, new HitPlaats("alphen"));
-				assertEquals(1, hit1.getHitPlaatsen().size());
-				hit1.mergeProject(hit2);
-				assertEquals(1, hit1.getHitPlaatsen().size());
-			}
+	public void mergePlaatsen_twee_hits() throws Exception {
+		final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen"));
+		final HitProject hit2 = new HitProject(2012, new HitPlaats("mook"));
+		assertEquals(1, hit1.getHitPlaatsen().size());
+		hit1.mergePlaatsen(hit2.getHitPlaatsen());
+		assertEquals(2, hit1.getHitPlaatsen().size());
+	}
 
 	@Test
-			public void mergePlaatsenProject_dezelfde_plaats_met_kampen() throws Exception {
-				final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen", new HitKamp(
-						"een")));
-				final HitProject hit2 = new HitProject(2012, new HitPlaats("alphen", new HitKamp(
-						"twee")));
-				hit1.mergeProject(hit2);
-				assertEquals(1, hit1.getHitPlaatsen().size());
-				assertEquals(2, hit1.getAantalKampen());
-			}
+	public void mergePlaatsen_dezelfde_plaats() throws Exception {
+		final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen"));
+		final HitProject hit2 = new HitProject(2012, new HitPlaats("alphen"));
+		assertEquals(1, hit1.getHitPlaatsen().size());
+		hit1.mergePlaatsen(hit2.getHitPlaatsen());
+		assertEquals(1, hit1.getHitPlaatsen().size());
+	}
+
+	@Test
+	public void mergeKampen_dezelfde_plaats_met_kampen() throws Exception {
+		final HitProject hit1 = new HitProject(2012, new HitPlaats("alphen",
+				new HitKamp("een")));
+		final HitProject hit2 = new HitProject(2012, new HitPlaats("alphen",
+				new HitKamp("twee")));
+		hit1.mergeKampen(hit2.getHitPlaatsen());
+		assertEquals(1, hit1.getHitPlaatsen().size());
+		assertEquals(2, hit1.getAantalKampen());
+	}
 
 	@Test
 	public void simpele_constructor() throws Exception {
@@ -137,7 +146,8 @@ public class HitProjectTest {
 		kamp2.setIcoontje("Staand kamp");
 		kamp2.setIcoontje("Totale afstand is 15 km");
 
-		final HitProject hit = new HitProject(2012, new HitPlaats("Mook", kamp1, kamp2));
+		final HitProject hit = new HitProject(2012, new HitPlaats("Mook",
+				kamp1, kamp2));
 
 		final Set<Icoon> gebruikteIconen = hit.getGebruikteIconen();
 		assertNotNull(gebruikteIconen);

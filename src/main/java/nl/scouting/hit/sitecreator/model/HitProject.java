@@ -57,7 +57,7 @@ public class HitProject {
 			inschrijvingKosteloosAnnulerenDatum = otherHit.inschrijvingKosteloosAnnulerenDatum;
 			inschrijvingWijzigenTotDatum = otherHit.inschrijvingWijzigenTotDatum;
 			inningsdatum = otherHit.inningsdatum;
-			// mergePlaatsen(otherHit.getHitPlaatsen());
+			mergePlaatsen(otherHit.getHitPlaatsen());
 		} else {
 			throw new MergeException("Verkeerd jaar om te mergen: " + jaar
 					+ " / " + otherHit.jaar);
@@ -73,6 +73,7 @@ public class HitProject {
 				addHitPlaats(plaats);
 			}
 		}
+		mergeKampen(hitPlaatsen);
 	}
 
 	public void mergeKampen(final Collection<HitPlaats> hitPlaatsen) {
