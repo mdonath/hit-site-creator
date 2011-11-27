@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
 import javax.swing.GroupLayout;
@@ -21,9 +19,10 @@ import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.FileConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.IntegerConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.StringConfigKey;
+import nl.scouting.hit.sitecreator.input.AbstractInputTabPanel.HitModelListener;
 import nl.scouting.hit.sitecreator.input.module.FileImportModel;
 import nl.scouting.hit.sitecreator.input.module.csv.CsvFileImportModel;
-import nl.scouting.hit.sitecreator.model.HitEntiteit;
+import nl.scouting.hit.sitecreator.model.HitPlaats;
 import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
@@ -46,10 +45,6 @@ public class UberInputPanel extends JPanel {
 
 		add(createTabPanel(), BorderLayout.CENTER);
 		add(createJaarPanel(), BorderLayout.NORTH);
-	}
-
-	protected void fireJaarChanged(final Object jaar) {
-		firePropertyChange("jaar", null, jaar);
 	}
 
 	private Component createJaarPanel() {
@@ -117,71 +112,105 @@ public class UberInputPanel extends JPanel {
 		return tab;
 	}
 
-	protected ProjectInputTabPanel createProjectPanel() {
+	protected AbstractInputTabPanel createProjectPanel() {
 		final FileImportModel model = createCsvFileImportModel("project");
 		addPropertyChangeListener("jaar", model);
 
 		final ProjectInputTabPanel result = new ProjectInputTabPanel(model);
-		result.addPropertyChangeListener(HitEntiteit.Project.name(),
-				new HitPropertyChangeListener() {
-					@Override
-					protected void merge(final HitProject oldHit,
-							final HitProject newHit) {
-						oldHit.mergeProject(newHit);
-					}
-				});
+		result.addHitModelListener(new HitModelChangeListener() {
+
+			@Override
+			public void resetModel(final ResetEvent event) {
+				final HitProject hit = new HitProject(getApplication()
+						.getConfigurationValue(CONFIG_JAAR));
+				getApplication().setModel(null);
+				fireHitChanged(null);
+			}
+
+			@Override
+			protected void merge(final HitProject oldHit,
+					final HitProject newHit) {
+				oldHit.mergeProject(newHit);
+			}
+		});
 		return result;
 	}
 
-	protected PlaatsenInputTabPanel createPlaatsPanel() {
+	protected AbstractInputTabPanel createPlaatsPanel() {
 		final FileImportModel model = createCsvFileImportModel("plaats");
 		addPropertyChangeListener("jaar", model);
 
 		final PlaatsenInputTabPanel result = new PlaatsenInputTabPanel(model);
 
-		result.addPropertyChangeListener(HitEntiteit.Plaats.name(),
-				new HitPropertyChangeListener() {
-					@Override
-					protected void merge(final HitProject oldHit,
-							final HitProject newHit) {
-						oldHit.mergePlaatsen(newHit.getHitPlaatsen());
-					}
-				});
+		result.addHitModelListener(new HitModelChangeListener() {
+
+			@Override
+			public void resetModel(final ResetEvent event) {
+				final HitProject hit = getApplication().getModel();
+				hit.getHitPlaatsen().clear();
+				fireHitChanged(hit);
+			}
+
+			@Override
+			protected void merge(final HitProject oldHit,
+					final HitProject newHit) {
+				oldHit.mergePlaatsen(newHit.getHitPlaatsen());
+			}
+
+		});
 		return result;
 	}
 
-	protected KampenInputTabPanel createKampPanel() {
+	protected AbstractInputTabPanel createKampPanel() {
 		final FileImportModel model = createCsvFileImportModel("kamp");
 		addPropertyChangeListener("jaar", model);
 
 		final KampenInputTabPanel result = new KampenInputTabPanel(model);
 
-		result.addPropertyChangeListener(HitEntiteit.Kamp.name(),
-				new HitPropertyChangeListener() {
-					@Override
-					protected void merge(final HitProject oldHit,
-							final HitProject newHit) {
-						oldHit.mergeKampen(newHit.getHitPlaatsen());
-					}
-				});
+		result.addHitModelListener(new HitModelChangeListener() {
+
+			@Override
+			public void resetModel(final ResetEvent event) {
+				final HitProject hit = getApplication().getModel();
+				for (final HitPlaats p : hit.getHitPlaatsen()) {
+					p.getHitKampen().clear();
+				}
+				fireHitChanged(hit);
+			}
+
+			@Override
+			protected void merge(final HitProject oldHit,
+					final HitProject newHit) {
+				oldHit.mergeKampen(newHit.getHitPlaatsen());
+			}
+
+		});
 		return result;
 	}
 
-	private DeelnemersInputTabPanel createDeelnemerPanel() {
+	private AbstractInputTabPanel createDeelnemerPanel() {
 
 		final FileImportModel model = createCsvFileImportModel("dln");
 		addPropertyChangeListener("jaar", model);
 		final DeelnemersInputTabPanel result = new DeelnemersInputTabPanel(
 				model);
+		result.addHitModelListener(new HitModelChangeListener() {
 
-		result.addPropertyChangeListener(HitEntiteit.Deelnemer.name(),
-				new HitPropertyChangeListener() {
-					@Override
-					protected void merge(final HitProject oldHit,
-							final HitProject newHit) {
-						oldHit.mergeDeelnemers(newHit.getHitPlaatsen());
-					}
-				});
+			@Override
+			public void resetModel(final ResetEvent event) {
+				final HitProject hit = getApplication().getModel();
+				hit.getHitPlaatsen().clear();
+				fireHitChanged(hit);
+			}
+
+			@Override
+			protected void merge(final HitProject oldHit,
+					final HitProject newHit) {
+				oldHit.mergeDeelnemers(newHit.getHitPlaatsen());
+			}
+
+		});
+
 		return result;
 	}
 
@@ -194,11 +223,11 @@ public class UberInputPanel extends JPanel {
 		);
 	}
 
-	abstract class HitPropertyChangeListener implements PropertyChangeListener {
+	abstract class HitModelChangeListener implements HitModelListener {
 
 		@Override
-		public final void propertyChange(final PropertyChangeEvent evt) {
-			final HitProject load = (HitProject) evt.getNewValue();
+		public final void updateModel(final UpdateEvent event) {
+			final HitProject load = event.getHit();
 			HitProject hit = getApplication().getModel();
 			if (hit == null) {
 				hit = load;
@@ -217,6 +246,10 @@ public class UberInputPanel extends JPanel {
 		 */
 		protected abstract void merge(HitProject oldHit, HitProject newHit);
 
+	}
+
+	protected void fireJaarChanged(final Object jaar) {
+		firePropertyChange("jaar", null, jaar);
 	}
 
 	protected void fireHitChanged(final HitProject hitProject) {

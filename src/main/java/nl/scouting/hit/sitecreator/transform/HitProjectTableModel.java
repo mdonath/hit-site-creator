@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
+import nl.scouting.hit.sitecreator.model.HitProject;
 
 public class HitProjectTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
@@ -19,10 +19,12 @@ public class HitProjectTableModel extends AbstractTableModel {
 
 	public HitProjectTableModel(final HitProject hit) {
 		hitKampen = new ArrayList<HitKamp>();
-		for (final HitPlaats plaats : hit.getHitPlaatsen()) {
-			for (final HitKamp kamp : plaats.getHitKampen()) {
-				kamp.setPlaats(plaats);
-				hitKampen.add(kamp);
+		if (hit != null) {
+			for (final HitPlaats plaats : hit.getHitPlaatsen()) {
+				for (final HitKamp kamp : plaats.getHitKampen()) {
+					kamp.setPlaats(plaats);
+					hitKampen.add(kamp);
+				}
 			}
 		}
 	}
