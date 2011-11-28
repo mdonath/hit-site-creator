@@ -18,7 +18,6 @@ import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.FileConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.IntegerConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.StringConfigKey;
-import nl.scouting.hit.sitecreator.input.AbstractInputTabPanel.HitModelListener;
 import nl.scouting.hit.sitecreator.input.module.FileImportModel;
 import nl.scouting.hit.sitecreator.input.module.csv.CsvFileImportModel;
 import nl.scouting.hit.sitecreator.model.HitPlaats;

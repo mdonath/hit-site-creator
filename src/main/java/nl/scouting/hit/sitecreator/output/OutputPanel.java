@@ -36,7 +36,12 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 
 			@Override
 			protected Void doInBackground() throws Exception {
-				outputModule.save(hit);
+				SaveAction.this.setEnabled(false);
+				try {
+					outputModule.save(hit);
+				} finally {
+					SaveAction.this.setEnabled(true);
+				}
 				return null;
 			}
 
@@ -61,7 +66,15 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			new Saver(currentOutputModule, hit).execute();
+			final JButton btn = (JButton) e.getSource();
+			btn.setEnabled(false);
+			try {
+				final Saver saver = new Saver(currentOutputModule, hit);
+				saver.execute();
+
+			} finally {
+				btn.setEnabled(true);
+			}
 		}
 	}
 

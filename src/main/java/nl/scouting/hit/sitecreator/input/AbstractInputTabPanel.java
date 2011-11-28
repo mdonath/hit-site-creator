@@ -3,20 +3,20 @@ package nl.scouting.hit.sitecreator.input;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.EventListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import nl.scouting.hit.sitecreator.input.module.InputModule;
-import nl.scouting.hit.sitecreator.model.HitEntiteit;
 import nl.scouting.hit.sitecreator.model.HitProject;
+import nl.scouting.hit.sitecreator.model.ModelUtil;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 public abstract class AbstractInputTabPanel extends JPanel {
@@ -37,71 +37,45 @@ public abstract class AbstractInputTabPanel extends JPanel {
 		event.notify(ell.getListeners(HitModelListener.class));
 	}
 
-	public static interface HitModelListener extends EventListener {
-
-		void resetModel(ResetEvent event);
-
-		void updateModel(UpdateEvent event);
-
-		class DefaultHitModelListener implements HitModelListener {
-			@Override
-			public void resetModel(final ResetEvent event) {
-				// empty
-			}
-
-			@Override
-			public void updateModel(final UpdateEvent event) {
-				// empty
-			}
-		}
-
-		public static interface HitModelEvent {
-			void notify(final HitModelListener[] ls);
-		}
-
-		public static class ResetEvent implements HitModelEvent {
-			private final HitEntiteit entityType;
-
-			public ResetEvent(final HitEntiteit entityType) {
-				this.entityType = entityType;
-			}
-
-			public HitEntiteit getEntityType() {
-				return entityType;
-			}
-
-			@Override
-			public void notify(final HitModelListener[] ls) {
-				for (final HitModelListener l : ls) {
-					l.resetModel(this);
-				}
-			}
-		}
-
-		public static class UpdateEvent extends ResetEvent {
-			private final HitProject hit;
-
-			public UpdateEvent(final HitEntiteit entityType,
-					final HitProject hit) {
-				super(entityType);
-				this.hit = hit;
-			}
-
-			public HitProject getHit() {
-				return hit;
-			}
-
-			@Override
-			public void notify(final HitModelListener[] ls) {
-				for (final HitModelListener l : ls) {
-					l.updateModel(this);
-				}
-			}
-		}
-	}
-
 	private final class LoadAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
+
+		private abstract class AbstractLoader extends
+				SwingWorker<HitProject, Void> {
+			private final InputModule inputModule;
+
+			public AbstractLoader(final InputModule inputModule) {
+				this.inputModule = inputModule;
+			}
+
+			@Override
+			protected final HitProject doInBackground() throws Exception {
+				LoadAction.this.setEnabled(false);
+				HitProject load;
+				try {
+					load = inputModule.load();
+				} finally {
+					LoadAction.this.setEnabled(true);
+				}
+				return load;
+			}
+
+			@Override
+			protected final void done() {
+				HitProject hit;
+				try {
+					hit = get();
+				} catch (final Exception ignore) {
+					ignore.printStackTrace();
+					hit = ModelUtil.createEmptyStructure();
+				}
+
+				loadFinished(hit);
+			}
+
+			protected abstract void loadFinished(HitProject hit);
+
+		}
 
 		public LoadAction() {
 			super("Laad gegevens");
@@ -128,8 +102,14 @@ public abstract class AbstractInputTabPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			notifyHitModelListeners(new HitModelListener.ResetEvent(
-					currentInputModule.getEntityType()));
+			setEnabled(false);
+			try {
+
+				notifyHitModelListeners(new HitModelListener.ResetEvent(
+						currentInputModule.getEntityType()));
+			} finally {
+				setEnabled(true);
+			}
 		}
 	}
 
