@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -76,14 +77,13 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 					}
 				});
 
-		final JPanel container = new JPanel(new BorderLayout());
-		final GroupLayout layout = UIUtil.createGroupLayout(container);
+		setLayout(new BorderLayout());
+		final JPanel container = new JPanel();
+		add(container, BorderLayout.CENTER);
 
-		// horizontaal gezien heb ik van links naar rechts twee paralelle
-		// groepen. In de eerste groep zitten labels, in de tweede velden
+		final GroupLayout layout = UIUtil.createGroupLayout(container);
 		layout.setHorizontalGroup(layout
 				.createParallelGroup()
-				//
 				.addGroup(
 						layout.createSequentialGroup()
 								.addGroup(
@@ -100,12 +100,8 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 								)) //
 				.addGroup(layout.createSequentialGroup() //
 						.addComponent(getProgress()) //
-				)//
-		);
+				));
 
-		// Verticaal gezien heb ik van boven naar beneden gezien twee
-		// paralelle groepen. Die groepen zijn de regels met de label|field
-		// combinatie.
 		layout.setVerticalGroup(layout.createSequentialGroup() //
 				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(outDirLabel) //
@@ -119,7 +115,6 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 						.addComponent(getProgress()) //
 				)//
 		);
-		add(container, BorderLayout.NORTH);
 	}
 
 	/** {@inheritDoc	 */

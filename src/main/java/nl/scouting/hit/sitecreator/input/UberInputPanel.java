@@ -12,7 +12,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.border.TitledBorder;
 
 import nl.scouting.hit.sitecreator.Application;
 import nl.scouting.hit.sitecreator.ConfigKey;
@@ -29,20 +28,19 @@ import nl.scouting.hit.sitecreator.util.UIUtil;
 public class UberInputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private final Application<HitProject> application;
-
 	public static final ConfigKey<Integer> CONFIG_JAAR = new IntegerConfigKey(
 			"jaar");
+
+	private final Application<HitProject> application;
 
 	public UberInputPanel(final Application<HitProject> application) {
 		super(new BorderLayout());
 		this.application = application;
+
 		initComponents();
 	}
 
 	private void initComponents() {
-		setBorder(new TitledBorder("Alle soorten input"));
-
 		add(createTabPanel(), BorderLayout.CENTER);
 		add(createJaarPanel(), BorderLayout.NORTH);
 	}
@@ -51,7 +49,7 @@ public class UberInputPanel extends JPanel {
 		final JPanel result = new JPanel();
 		final JLabel yearLabel = new JLabel("Jaar");
 
-		final int huidigeJaar = Calendar.getInstance().get(Calendar.YEAR);
+		int huidigeJaar = Calendar.getInstance().get(Calendar.YEAR);
 		final JComboBox yearField = new JComboBox(createJaarItems(huidigeJaar));
 		yearField.addItemListener(new ItemListener() {
 			@Override
@@ -63,12 +61,12 @@ public class UberInputPanel extends JPanel {
 				}
 			}
 		});
+
 		if (application.hasConfigurationValue(CONFIG_JAAR)) {
-			yearField.setSelectedItem(application
-					.getConfigurationValue(CONFIG_JAAR));
-		} else {
-			yearField.setSelectedItem(huidigeJaar);
+			huidigeJaar = application.getConfigurationValue(CONFIG_JAAR);
 		}
+		yearField.setSelectedItem(huidigeJaar);
+		fireJaarChanged(huidigeJaar);
 
 		final GroupLayout layout = UIUtil.createGroupLayout(result);
 		layout.setHorizontalGroup(layout.createSequentialGroup() //
@@ -90,7 +88,7 @@ public class UberInputPanel extends JPanel {
 	}
 
 	private static Integer[] createJaarItems(final int huidigeJaar) {
-		final int startJaar = 2010;
+		final int startJaar = 2012;
 		final int aantal = huidigeJaar - startJaar;
 		final Integer[] items = new Integer[aantal + 2];
 		for (int i = 0; i < items.length; i++) {

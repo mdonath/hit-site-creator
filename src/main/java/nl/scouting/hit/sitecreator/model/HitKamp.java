@@ -63,9 +63,9 @@ public class HitKamp implements Comparable<HitKamp> {
 	private String titelTekst;
 	private String courantTekst;
 	private String websiteTekst;
-	private URL webadresFoto1;
-	private URL webadresFoto2;
-	private URL webadresFoto3;
+	private ImageUrl webadresFoto1;
+	private ImageUrl webadresFoto2;
+	private ImageUrl webadresFoto3;
 
 	private String websiteContactpersoon;
 	private String websiteContactTelefoonnummer;
@@ -167,7 +167,7 @@ public class HitKamp implements Comparable<HitKamp> {
 	}
 
 	public boolean isHeeftEenYoutubeFilmpje() {
-		return webadresFoto3.getHost().toLowerCase().contains("youtube.com");
+		return webadresFoto3.isHeeftEenYoutubeFilmpje();
 	}
 
 	public boolean isBegintOpGoedeVrijdag() {
@@ -336,27 +336,33 @@ public class HitKamp implements Comparable<HitKamp> {
 		this.websiteTekst = websiteTekst;
 	}
 
-	public URL getWebadresFoto1() {
+	public ImageUrl getWebadresFoto1() {
 		return webadresFoto1;
 	}
 
-	public void setWebadresFoto1(final URL webadresFoto1) {
+	public void setWebadresFoto1(final ImageUrl webadresFoto1) {
+		webadresFoto1.setKamp(this);
+		webadresFoto1.setVolgnummer(1);
 		this.webadresFoto1 = webadresFoto1;
 	}
 
-	public URL getWebadresFoto2() {
+	public ImageUrl getWebadresFoto2() {
 		return webadresFoto2;
 	}
 
-	public void setWebadresFoto2(final URL webadresFoto2) {
+	public void setWebadresFoto2(final ImageUrl webadresFoto2) {
+		webadresFoto2.setKamp(this);
+		webadresFoto2.setVolgnummer(2);
 		this.webadresFoto2 = webadresFoto2;
 	}
 
-	public URL getWebadresFoto3() {
+	public ImageUrl getWebadresFoto3() {
 		return webadresFoto3;
 	}
 
-	public void setWebadresFoto3(final URL webadresFoto3) {
+	public void setWebadresFoto3(final ImageUrl webadresFoto3) {
+		webadresFoto3.setKamp(this);
+		webadresFoto3.setVolgnummer(3);
 		this.webadresFoto3 = webadresFoto3;
 	}
 
@@ -546,7 +552,8 @@ public class HitKamp implements Comparable<HitKamp> {
 		return subgroepsamenstellingOud;
 	}
 
-	public void setSubgroepsamenstellingOud(String subgroepsamenstellingOud) {
+	public void setSubgroepsamenstellingOud(
+			final String subgroepsamenstellingOud) {
 		this.subgroepsamenstellingOud = subgroepsamenstellingOud;
 	}
 

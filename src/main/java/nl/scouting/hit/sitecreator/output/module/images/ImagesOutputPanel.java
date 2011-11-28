@@ -68,7 +68,8 @@ public final class ImagesOutputPanel extends
 					CONF_OUTDIR));
 		}
 
-		final JPanel container = new JPanel(new BorderLayout());
+		setLayout(new BorderLayout());
+		final JPanel container = new JPanel();
 		add(container, BorderLayout.NORTH);
 		final GroupLayout layout = UIUtil.createGroupLayout(container);
 

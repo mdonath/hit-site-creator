@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -80,7 +79,6 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		setBorder(new TitledBorder("Output"));
 		add(createTabPanel(), BorderLayout.CENTER);
 		add(createButtonPanel(), BorderLayout.SOUTH);
 	}

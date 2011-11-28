@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+import nl.scouting.hit.sitecreator.model.ImageUrl;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
@@ -113,10 +115,47 @@ public interface ColumnMapperHelper {
 		}
 	}
 
+	public static class ImageUrlPropertyEditor extends PropertyEditorSupport {
+		public static void register() {
+			PropertyEditorManager.registerEditor(ImageUrl.class,
+					ImageUrlPropertyEditor.class);
+		}
+
+		public static void unregister() {
+			PropertyEditorManager.registerEditor(URL.class, null);
+		}
+
+		@Override
+		public String getAsText() {
+			final URL url = ((ImageUrl) getValue()).getUrl();
+			return url.toString();
+		}
+
+		@Override
+		public void setAsText(final String text)
+				throws IllegalArgumentException {
+			try {
+				String checked = text;
+				if ((checked != null) && !"".equals(checked)) {
+					if (!"http://".equals(checked)) {
+						if (!checked.startsWith("http")) {
+							checked = "http://" + checked;
+						}
+						final ImageUrl url = new ImageUrl(checked);
+						setValue(url);
+					}
+				}
+			} catch (final MalformedURLException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+	}
+
 	/**
 	 * Maakt een url van een String (en zet er desnoods een 'http://' voor).
 	 */
 	public static class UrlPropertyEditor extends PropertyEditorSupport {
+
 		public static void register() {
 			PropertyEditorManager.registerEditor(URL.class,
 					UrlPropertyEditor.class);

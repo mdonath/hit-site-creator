@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class ColumnMapperHelperByInputStream implements
-		ColumnMapperHelper {
+public class ColumnMapperHelperByInputStream implements ColumnMapperHelper {
 
 	private final InputStream resource;
 
@@ -27,6 +26,7 @@ public class ColumnMapperHelperByInputStream implements
 		BooleanNonEmptyStringPropertyEditor.register();
 		LocalDatePropertyEditor.register();
 		LocalTimePropertyEditor.register();
+		ImageUrlPropertyEditor.register();
 
 		final Map<String, String> columnMapping = new HashMap<String, String>();
 		fillWithPropertyFile(columnMapping);

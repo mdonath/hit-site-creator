@@ -10,12 +10,10 @@ $! ********************************** !$
 	</head>
 	
 	<body >
-	
- 		$hitcourant_eerstebladzijde(hit)$
+		$hitcourant_eerstebladzijde(hit)$
 		$hitcourant_krant(hit)$
 		$hitcourant_colofon(hit)$
-	
- 	</body>
+  	</body>
 </html>
 >>
 
@@ -23,18 +21,17 @@ $! ********************************** !$
 
 hitcourant_eerstebladzijde(hit) ::= <<	
  	<h1 style="text-align: center; font-family: Impact; color: #005eb0; margin-top: .75em; margin-bottom: 0em; font-weight: normal;">(hier thema $hit.jaar$)</h1>
-	<font style="font-family: Helvetica">
-	<h2>HIT $hit.jaar$ Jouw paasweekend vol Scoutinguitdaging!</h2>
-	<p><strong>Wat ga jij doen met Pasen $hit.jaar$? Naar de HIT natuurlijk! Want
+	<h2 style="font-family: Helvetica">HIT $hit.jaar$ Jouw paasweekend vol Scoutinguitdaging!</h2>
+	<p style="font-family: Helvetica"><strong>Wat ga jij doen met Pasen $hit.jaar$? Naar de HIT natuurlijk! Want
 	in $hit.jaar$ kun je bij de HIT kiezen uit meer dan 60 totaal verschillende, spannende en
 	uitdagende activiteiten op $length(hit.hitPlaatsen)$ plaatsen in Nederland, of zelfs in het
 	buitenland!</strong></p>
 	
-	<p>De HIT staat voor Hikes, Interessekampen en Trappersexpedities en wordt elk jaar gehouden
+	<p style="font-family: Helvetica">De HIT staat voor Hikes, Interessekampen en Trappersexpedities en wordt elk jaar gehouden
 	tijdens de paasdagen. Een paar duizend scouts tussen de 7 en de 88 jaar beleven een ultieme
 	Scoutingactiviteit waarin je alles kunt tegenkomen wat Scouting te bieden heeft.
 	
-	<p>In $hit.jaar$ vindt de HIT plaats tussen
+	<p style="font-family: Helvetica">In $hit.jaar$ vindt de HIT plaats tussen
 	$ if(hit.heeftBeginEnEindInVerschillendeMaanden)$ $hit.vrijdag;format="EEEE d MMMM"$
 	$ else $ $hit.vrijdag;format="EEEE d"$
 	$ endif $
@@ -43,9 +40,8 @@ hitcourant_eerstebladzijde(hit) ::= <<
 	courant of kijk op de website welke te gekke HIT voor jou en je
 	Scoutingvrienden er dit jaar weer bij zit! Schrijf je snel in want elke HIT heeft maar een beperkt aantal plaatsen.</p>
 	
-	<table style="border: .2em solid black; padding: 1em;">
-	<tr><td>
-		<h1  style="font-family: Impact; color: #005eb0; margin-top: .75em; margin-bottom: 0em; font-weight: normal; text-align: center; margin-top: 0em;">Hoe kan ik me inschrijven?</h1>
+	<div style="font-family: Helvetica; border: .2em solid black; padding: 1em;">
+ 		<h1  style="font-family: Impact; color: #005eb0; margin-top: .75em; margin-bottom: 0em; font-weight: normal; text-align: center; margin-top: 0em;">Hoe kan ik me inschrijven?</h1>
 		<p>Heb je je keuze gemaakt, of wil je eerst nog meer weten?
 		Ga dan naar de HIT website op <u>hit.scouting.nl</u> voor meer informatie over de door jou gekozen HIT.
 		Vanaf daar vind je onderaan ook meteen een link naar het inschrijfformulier.
@@ -57,7 +53,6 @@ hitcourant_eerstebladzijde(hit) ::= <<
 			De inschrijving sluit op <span style="color: red;">$hit.inschrijvingEinddatum; format="d MMMM yyyy"$</span>!
 		</div>
 	</div>
-	</td></tr></table>
 	</font>
 	
 	<h2 style="text-align: center; color: green; font-style: italic; font-family: Helvetica">Verklaring van de symbolen in deze HIT-courant</h2>
@@ -71,45 +66,27 @@ hitcourant_eerstebladzijde(hit) ::= <<
 
  
 hitcourant_krant(hit) ::= <<
-	<table style="width: 33%">
-		$hit.hitPlaatsen : hitcourant_plaats()$    
-	</table>
+	$hit.hitPlaatsen : hitcourant_plaats()$    
 >>
 
 
 hitcourant_plaats(plaats) ::= <<
-	<tr>
-		<td><img src="hit_logo_website_$plaats.naam;format="lower"$.png"></td>
- 	</tr>
-	<tr>
-		<td style="font-family: Helvetica;">Kijk op https://hit.scouting.nl/$plaats.naam;format="lower"$ voor meer info.</td>
-	</tr>
-	<tr>
-		<td style="font-family: Helvetica;">$plaats.hitCourantTekst;format="xml-encode"$</td>
-	</tr>
-
+	<p style="font-family: Helvetica">
+		<img src="hit_logo_website_$plaats.naam;format="lower"$.png"><br/>
+		Kijk op https://hit.scouting.nl/$plaats.naam;format="lower"$ voor meer info.<br/>
+		$plaats.hitCourantTekst;format="xml-encode"$
+	</p>
 	$plaats.hitKampen : hitcourant_kamp()$      
 >>
 
 
 
 hitcourant_kamp(kamp) ::= <<
-	<tr>
-		<td><h1 style="font-family: Impact; color: #005eb0; margin-top: .75em; margin-bottom: 0em; font-weight: normal;">$kamp.naam$</h1></td>
-	</tr>
-	$ if (!kamp.akkoordHitKamp) $
-	<tr><td style="background-color: red">Geen akkoord kamp</td></tr>
-	$ endif $
-	$ if (!kamp.akkoordHitPlaats) $
-	<tr><td style="background-color: red">Geen akkoord plaats</td></tr>
-	$ endif $
-	<tr>
-		<td style="text-align: right; margin-left: .1em">
+	<h1 style="font-family: Impact; color: #005eb0; margin-top: .75em; margin-bottom: 0em; font-weight: normal;">$kamp.naam$</h1>
+ 	<p style="text-align: right; margin-left: .1em">
 			$kamp.icoontjes : icoonGroot()$
-		</td>
-	</tr>
-	<tr>
-		<td style="text-align: right; font-weight: bold; font-family: Helvetica; font-weight: bold;">
+	</p>
+ 	<p style="text-align: right; font-weight: bold; font-family: Helvetica; font-weight: bold;">
 	$ if(kamp.heeftBeginEnEindInVerschillendeMaanden)$ 
 		$kamp.startDatumtijd;format="d MMMM"$
 		$ else $ 
@@ -119,11 +96,8 @@ hitcourant_kamp(kamp) ::= <<
 		 | $kamp.minimumLeeftijd$ - $kamp.maximumLeeftijd$ jaar
 		 | $kamp.subgroepsamenstellingMinimum$ - $kamp.subgroepsamenstellingMaximum$ pers. 
 		 | € $kamp.deelnamekosten$
-		 </td>
-	</tr>
-	<tr>
-		<td style="align: justify; font-family: Helvetica;">$kamp.courantTekst; format="xml-encode"$</td>
-	</tr>
+	</p>
+	<p style="align: justify; font-family: Helvetica;">$kamp.courantTekst; format="xml-encode"$</p>
 >>
 
 
@@ -162,6 +136,6 @@ icoonMiddelKolom(icoon) ::= <<
 icoonRechterKolom(icoon) ::= "$icoonMiddelKolom(icoon)$</tr>"
 
 icoonGroot(icoon) ::= <<
-<img src="iconengrootnieuw/$icoon.bestandsnaam$.png" alt="$icoon.tekst$" title="$icoon.tekst$" width="35px" height="35px" />
+<img src="iconengrootnieuw/$icoon.bestandsnaam$.png" alt="$icoon.tekst$" title="$icoon.tekst$" width="25px" height="25px" />
 >>
 
