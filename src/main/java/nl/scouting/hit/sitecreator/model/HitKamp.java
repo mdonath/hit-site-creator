@@ -60,6 +60,9 @@ public class HitKamp implements Comparable<HitKamp> {
 	private String icoontje;
 	private final Set<Icoon> icoontjes;
 
+	private String activiteitengebied;
+	private final Set<Activiteitengebied> activiteitengebieden;
+
 	private String titelTekst;
 	private String courantTekst;
 	private String websiteTekst;
@@ -92,6 +95,7 @@ public class HitKamp implements Comparable<HitKamp> {
 	public HitKamp(final String naam) {
 		this.naam = naam;
 		icoontjes = new TreeSet<Icoon>();
+		activiteitengebieden = new TreeSet<Activiteitengebied>();
 	}
 
 	public HitKamp(final String naam, final List<HitDeelnemer> deelnemers) {
@@ -135,6 +139,8 @@ public class HitKamp implements Comparable<HitKamp> {
 		//
 		icoontjes.clear();
 		icoontjes.addAll(kamp.icoontjes);
+		activiteitengebieden.clear();
+		activiteitengebieden.addAll(kamp.activiteitengebieden);
 
 		titelTekst = kamp.titelTekst;
 		courantTekst = kamp.courantTekst;
@@ -210,6 +216,17 @@ public class HitKamp implements Comparable<HitKamp> {
 		}
 	}
 
+	public void setActiviteitengebied(final String activiteitengebied) {
+		this.activiteitengebied = activiteitengebied;
+		if (!"".equals(activiteitengebied)) {
+			final Activiteitengebied forIdentifier = Activiteitengebied
+					.forIdentifier(activiteitengebied);
+			if (forIdentifier != null) {
+				activiteitengebieden.add(forIdentifier);
+			}
+		}
+	}
+
 	@Override
 	public String toString() {
 		return naam;
@@ -231,8 +248,16 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	// ----
 
+	public String getActiviteitengebied() {
+		return activiteitengebied;
+	}
+
 	public String getIcoontje() {
 		return icoontje;
+	}
+
+	public Set<Activiteitengebied> getActiviteitengebieden() {
+		return activiteitengebieden;
 	}
 
 	public Set<Icoon> getIcoontjes() {

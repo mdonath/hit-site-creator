@@ -1,0 +1,50 @@
+json(hit) ::= <<
+var hit = $project_json(hit)$;
+>>
+
+project_json(hit) ::= <<
+{
+	'jaar': $hit.jaar$,
+	'inschrijvingStartdatum': '$hit.inschrijvingStartdatum$',
+	'inschrijvingEinddatum': '$hit.inschrijvingEinddatum$',
+	'inschrijvingWijzigenTotDatum': '$hit.inschrijvingWijzigenTotDatum$',
+	'inschrijvingKosteloosAnnulerenDatum': '$hit.inschrijvingKosteloosAnnulerenDatum$',
+	'inschrijvingGeenRestitutieDatum': '$hit.inschrijvingGeenRestitutieDatum$',
+	'inningsdatum': '$hit.inningsdatum$',
+	'vrijdag': '$hit.vrijdag$',
+	'maandag': '$hit.maandag$',
+	'hitPlaatsen': [
+		$hit.hitPlaatsen : plaats_json(); separator=",\n"$
+	],
+	'gebruikteIconen': [
+		$hit.gebruikteIconen : icoon_json(); separator=",\n"$
+	]
+}
+>>
+
+plaats_json(plaats) ::= <<
+{
+	'deelnemersnummer': $plaats.deelnemersnummer$,
+	'naam': '$plaats.naam$',
+	'kampen': [
+		$plaats.hitKampen : kamp_json(); separator=",\n"$
+	]	
+}
+>>
+
+kamp_json(kamp) ::= <<
+{
+	'deelnemersnummer': $kamp.deelnemersnummer$,
+	'naam': '$kamp.naam$',
+	'minimumLeeftijd': $kamp.minimumLeeftijd$,
+	'maximumLeeftijd': $kamp.maximumLeeftijd$,
+	'deelnamekosten': $kamp.deelnamekosten$,
+	'iconen': [
+		$kamp.icoontjes : icoon_json(); separator=",\n"$
+	]	
+}
+>>
+
+icoon_json(icoon) ::= <<
+{ 'volgorde': $icoon.volgorde$ , 'tekst': '$icoon.tekst$', 'bestandsnaam': '$icoon.bestandsnaam$' }	
+>>

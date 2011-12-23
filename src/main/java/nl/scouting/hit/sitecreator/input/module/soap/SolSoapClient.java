@@ -33,7 +33,6 @@ public class SolSoapClient {
 	 */
 	public SolSoapClient(final String sui, final String privateKey,
 			final String wsdlUrl) {
-		// super(wsdlUrl, SOAP_1_2);
 		this.sui = sui;
 		this.privateKey = privateKey;
 		this.wsdlUrl = wsdlUrl;

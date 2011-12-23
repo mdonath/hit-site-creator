@@ -12,8 +12,8 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.List;
 
-import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.HitKamp;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputModule;
 
 import org.joda.time.LocalDate;
@@ -48,15 +48,14 @@ public class HtmlOutputModule extends AbstractProgressOutputModule {
 
 	@Override
 	public void save(final HitProject hit) throws IOException {
-		genereerGroepsgrootte(hit);
+		genereerJson(hit);
 		genereerHitCourant(hit);
 		genereerKiesActiviteit(hit);
 		genereerKampPaginas(hit);
 	}
 
-	private void genereerGroepsgrootte(final HitProject hit) throws IOException {
-		genereerEnkel(hit, "groepsgrootte.stg", "groepsgrootte",
-				"groepsgrootte.html");
+	private void genereerJson(final HitProject hit) throws IOException {
+		genereerEnkel(hit, "json.stg", "json", "hit-data-json.js");
 	}
 
 	// TODO: hit2011_menu.html
@@ -65,7 +64,8 @@ public class HtmlOutputModule extends AbstractProgressOutputModule {
 		genereerEnkel(hit, "hitcourant.stg", "hitcourant", "hitcourant.html");
 	}
 
-	private void genereerKiesActiviteit(final HitProject hit) throws IOException {
+	private void genereerKiesActiviteit(final HitProject hit)
+			throws IOException {
 		genereerEnkel(hit, "kieseenactiviteit.stg", "hitkieskamp",
 				"hitkieskamp.html");
 	}
@@ -78,9 +78,9 @@ public class HtmlOutputModule extends AbstractProgressOutputModule {
 		genereerPerKamp(hit, groupFile, templateName, kampen);
 	}
 
-	protected void genereerPerKamp(final HitProject hit, final String groupFile,
-			final String templateName, final List<HitKamp> kampen)
-			throws IOException {
+	protected void genereerPerKamp(final HitProject hit,
+			final String groupFile, final String templateName,
+			final List<HitKamp> kampen) throws IOException {
 		final STGroup kampTemplate = getTemplate(groupFile);
 		int counter = 0;
 		for (final HitKamp kamp : kampen) {

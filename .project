@@ -20,4 +20,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.maven.ide.eclipse.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>settings.xml</name>
+			<type>1</type>
+			<location>/home/martijn/.m2/settings.xml</location>
+		</link>
+	</linkedResources>
 </projectDescription>
