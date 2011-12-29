@@ -16,4 +16,12 @@ public class ActiviteitengebiedTest {
 	public void samenleving_is_vindbaar() throws Exception {
 		assertNotNull(Activiteitengebied.forIdentifier("Samenleving"));
 	}
+
+	@Test
+	public void heeft_andere_bestandsnaam() throws Exception {
+		assertEquals("sportenspel",
+				Activiteitengebied.forIdentifier("Sport en Spel")
+						.getBestandsnaam());
+	}
+
 }

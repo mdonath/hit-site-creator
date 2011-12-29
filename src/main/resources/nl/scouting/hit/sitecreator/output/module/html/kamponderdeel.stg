@@ -21,7 +21,6 @@ hitkamp(hit, kamp) ::= <<
 
 
 hitkamp_activiteitengebieden(hit, kamp) ::= <<
-	<p> </p>
 	<table border="0">
 	<tbody>
 	<tr>
@@ -54,7 +53,7 @@ hitkamp_titel(hit, kamp) ::= <<
 	$! *** De titel en deelnemerskosten, leeftijd, etc *** !$
 	$! *************************************************** !$
 	
-<table width="100%" border="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tbody>
 	<tr>
 		<td valign="top" rowspan="6">
@@ -62,29 +61,29 @@ hitkamp_titel(hit, kamp) ::= <<
 		</td>
 	</tr>
 	<tr>
-		<td valign="top"><strong><span style="font-size: small;">Plaats</span></strong></td>
-		<td valign="top"><span style="font-size: small;">:</span></td>
-		<td valign="top"><span style="font-size: small;">$kamp.plaats.naam$</span></td>
+		<td valign="top"><strong>Plaats</strong></td>
+		<td valign="top">:</td>
+		<td valign="top">$kamp.plaats.naam$</td>
 	</tr>
 	<tr>
-		<td valign="top"><strong><span style="font-size: small;">Datum</span></strong></td>
-		<td valign="top"><span style="font-size: small;">:</span></td>
-		<td valign="top"><span style="font-size: small;">$kamp.startDatumtijd;format="d MMMM"$ t/m $kamp.eindDatumtijd;format="d MMMM"$</span></td>
+		<td valign="top"><strong>Datum</strong></td>
+		<td valign="top">:</td>
+		<td valign="top">$kamp.startDatumtijd;format="d MMMM"$ t/m $kamp.eindDatumtijd;format="d MMMM"$</td>
 	</tr>
 	<tr>
-		<td valign="top"><strong><span style="font-size: small;">Leeftijd</span></strong></td>
-		<td valign="top"><span style="font-size: small;">:</span></td>
-		<td valign="top"><span style="font-size: small;">$kamp.minimumLeeftijd$ t/m $kamp.maximumLeeftijd$ jaar</span></td>
+		<td valign="top"><strong>Leeftijd</strong></td>
+		<td valign="top">:</td>
+		<td valign="top">$kamp.minimumLeeftijd$ t/m $kamp.maximumLeeftijd$ jaar</td>
 	</tr>
 	<tr>
-		<td valign="top"><strong><span style="font-size: small;">Groep</span></strong></td>
-		<td valign="top"><span style="font-size: small;">:</span></td>
-		<td valign="top"><span style="font-size: small;">$kamp.subgroepsamenstellingMinimum$ t/m $kamp.subgroepsamenstellingMaximum$ pers.</span></td>
+		<td valign="top"><strong>Groep</strong></td>
+		<td valign="top">:</td>
+		<td valign="top">$kamp.subgroepsamenstellingMinimum$ t/m $kamp.subgroepsamenstellingMaximum$ pers.</td>
 	</tr>
 	<tr>
-		<td valign="top"><strong><span style="font-size: small;">Prijs</span></strong></td>
-		<td valign="top"><span style="font-size: small;">:</span></td>
-		<td valign="top"><span style="font-size: small;">€ $kamp.deelnamekosten$</span></td>
+		<td valign="top"><strong>Prijs</strong></td>
+		<td valign="top">:</td>
+		<td valign="top">€ $kamp.deelnamekosten$</td>
 	</tr>
 </tbody>
 </table>
@@ -105,7 +104,7 @@ hitkamp_icoontjes(hit, kamp) ::= <<
 	
 	<tr>
 		<td>
-			<div style="text-align: right;>
+			<div style="text-align: right;">
 				$! *** loop over de kamp.icoontjes, roep voor elk icoon de template 'hitkamp_icoon' aan. *** !$
 				$kamp.icoontjes : hitkamp_icoon()$			
 			</div>
@@ -127,7 +126,7 @@ hitkamp_icoon(icoon) ::= <<
 $! ************************************ !$
 $! *** Genereert precies één icoon. *** !$
 $! ************************************ !$
-<img src="images/iconen40pix/$icoon.bestandsnaam$.gif" alt="$icoon.tekst$" title="$icoon.tekst$" />
+<img style="margin: 0pt;" src="images/iconen40pix/$icoon.bestandsnaam$.gif" alt="$icoon.tekst$" title="$icoon.tekst$" />
 >>
 
 
@@ -138,17 +137,17 @@ hitkamp_verhaal(hit, kamp) ::= <<
 <table border="0">
 <tbody>
 <tr>
-	<td width="480" valign="top"><span style="font-size: small;">$kamp.websiteTekst$</span></td>
+	<td width="480" valign="top"><p>$kamp.websiteTekst$</p></td>
 	<td width="190" valign="top">
 		$if(!kamp.webadresFoto1.empty)$
-			<img src="$kamp.webadresFoto1$" width="180" alt="Foto 1"><br><br>
+			<img src="images/stories/hitkampenfotos/$kamp.webadresFoto1.scaledOutputFileName$" width="180" alt="Foto 1"><br><br>
 		$endif$
 		$if(!kamp.webadresFoto2.empty)$
-			<img src="$kamp.webadresFoto2$" width="180" alt="Foto 2"><br><br>
+			<img src="images/stories/hitkampenfotos/$kamp.webadresFoto2.scaledOutputFileName$" width="180" alt="Foto 2"><br><br>
  		$endif$
  		$if(!kamp.webadresFoto3.empty)$
  			$if(!kamp.heeftEenYoutubeFilmpje)$
-				<img src="$kamp.webadresFoto3$" width="180" alt="Foto 3">
+				<img src="images/stories/hitkampenfotos/$kamp.webadresFoto3.scaledOutputFileName$" width="180" alt="Foto 3">
 			$endif$
 		$endif$
 	</td>
@@ -177,14 +176,14 @@ hitkamp_contact(hit, kamp) ::= <<
 <tbody>
  	<tr>
 		<td><img border="0" src="images/iconen40pix/info.gif" alt="Meer informatie? Mail of bel naar de contactpersoon van deze HIT"></td>
-		<td><span style="font-size: small;">$if(!kamp.websiteContactTelefoonnummer.empty)$Bel bij vragen $kamp.websiteContactpersoon$: $kamp.websiteContactTelefoonnummer$<br>$endif$
+		<td><p>$if(!kamp.websiteContactTelefoonnummer.empty)$Bel bij vragen $kamp.websiteContactpersoon$: $kamp.websiteContactTelefoonnummer$<br>$endif$
 			$if(!kamp.websiteContactEmailadres.empty)$<a href="mailto:$kamp.websiteContactEmailadres$">Mail naar $kamp.websiteContactEmailadres$</a><br>$endif$
-			</span>
+			</p>
     	</td>
     </tr>
     <tr>
     	<td><img border="0" src="images/iconen40pix/web.gif" alt="Link naar een website over dit HIT onderdeel"></td>
-    	<td><span style="font-size: small;"><a target="hitkamp" href="$kamp.websiteAdres$">$kamp.websiteAdres$</a></span></td>
+    	<td><p><a target="hitkamp" href="$kamp.websiteAdres$">$kamp.websiteAdres$</a></p></td>
     </tr>
 </tbody>
 </table>

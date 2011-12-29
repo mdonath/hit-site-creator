@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.input.module.AbstractFileImportInputModule;
 import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory.FactoryException;
 import nl.scouting.hit.sitecreator.model.HitProject;
@@ -27,7 +28,7 @@ public abstract class AbstractCsvFileImportInputModule<T> extends
 
 	@Override
 	public String getType() {
-		return "Csv";
+		return ApplicationLabels.getLabel("panel.input.csv");
 	}
 
 	@Override

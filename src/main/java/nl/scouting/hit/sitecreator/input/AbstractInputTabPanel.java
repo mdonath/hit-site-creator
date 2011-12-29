@@ -14,6 +14,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.input.module.InputModule;
 import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.ModelUtil;
@@ -78,7 +79,7 @@ public abstract class AbstractInputTabPanel extends JPanel {
 		}
 
 		public LoadAction() {
-			super("Laad gegevens");
+			super(ApplicationLabels.getLabel("panel.input.button.laad"));
 		}
 
 		@Override
@@ -97,7 +98,7 @@ public abstract class AbstractInputTabPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 
 		public ResetAction() {
-			super("Verwijder gegevens");
+			super(ApplicationLabels.getLabel("panel.input.button.verwijder"));
 		}
 
 		@Override

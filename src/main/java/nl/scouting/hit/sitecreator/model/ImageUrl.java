@@ -41,7 +41,7 @@ public class ImageUrl {
 		return new File(outDir, getOutputFileName());
 	}
 
-	protected String getOutputFileName() {
+	public String getOutputFileName() {
 		return String.format("img-%d-%d.%s", kamp.getDeelnemersnummer(),
 				volgnummer, getExtension());
 	}
@@ -50,7 +50,7 @@ public class ImageUrl {
 		return new File(outDir, getScaledOutputFileName());
 	}
 
-	protected String getScaledOutputFileName() {
+	public String getScaledOutputFileName() {
 		return String.format("img-%d-%d-b.%s", kamp.getDeelnemersnummer(),
 				volgnummer, getExtension());
 	}

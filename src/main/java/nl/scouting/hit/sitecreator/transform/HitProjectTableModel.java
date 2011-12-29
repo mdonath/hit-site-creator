@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
 import nl.scouting.hit.sitecreator.model.HitProject;
@@ -12,8 +13,13 @@ import nl.scouting.hit.sitecreator.model.HitProject;
 public class HitProjectTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] KOLOM_KOPPEN = { "Plaats", "Kamp",
-			"AkkoordKamp", "AkkoordPlaats", "Prijs" };
+	private static final String[] KOLOM_KOPPEN = {
+			ApplicationLabels.getLabel("panel.transform.project.plaats"), //
+			ApplicationLabels.getLabel("panel.transform.project.kamp"), //
+			ApplicationLabels.getLabel("panel.transform.project.akoordKamp"), //
+			ApplicationLabels.getLabel("panel.transform.project.akkoordPlaats"), //
+			ApplicationLabels.getLabel("panel.transform.project.prijs"), //
+	};
 
 	private final List<HitKamp> hitKampen;
 

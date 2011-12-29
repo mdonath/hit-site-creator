@@ -2,6 +2,7 @@ package nl.scouting.hit.sitecreator.input;
 
 import java.awt.BorderLayout;
 
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.input.module.FileImportModel;
 import nl.scouting.hit.sitecreator.input.module.csv.CsvProjectInputModule;
 
@@ -10,7 +11,7 @@ public class ProjectInputTabPanel extends AbstractInputTabPanel {
 	private static final long serialVersionUID = 1L;
 
 	public ProjectInputTabPanel(final FileImportModel csvModel) {
-		super("Project");
+		super(ApplicationLabels.getLabel("panel.input.project"));
 		initComponents(csvModel);
 	}
 

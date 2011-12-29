@@ -9,13 +9,13 @@ import java.io.File;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
 import nl.scouting.hit.sitecreator.Application;
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.components.JDirectoryInput;
 import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
@@ -38,9 +38,10 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 	}
 
 	private void initComponents() {
-		setName("Html");
+		setName(ApplicationLabels.getLabel("panel.output.html"));
 
-		final JLabel outDirLabel = new JLabel("Output directory");
+		final JLabel outDirLabel = new JLabel(
+				ApplicationLabels.getLabel("panel.output.html.outdir"));
 		final JDirectoryInput outDirField = new JDirectoryInput(50,
 				new FileFilter() {
 
@@ -67,7 +68,8 @@ public class HtmlOutputPanel extends AbstractProgressOutputPanel<HitProject> {
 					CONF_OUTDIR));
 		}
 
-		final JLabel encodingLabel = new JLabel("Encoding");
+		final JLabel encodingLabel = new JLabel(
+				ApplicationLabels.getLabel("panel.output.html.encoding"));
 		final JComboBox encodingField = new JEncodingComboBox(
 				new ActionListener() {
 					@Override

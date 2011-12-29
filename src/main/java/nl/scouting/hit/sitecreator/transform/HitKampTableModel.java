@@ -5,13 +5,16 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.Icoon;
 
 public class HitKampTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] KOLOM_KOPPEN = { "Icoon" };
+	private static final String[] KOLOM_KOPPEN = { //
+	ApplicationLabels.getLabel("panel.transform.kamp.icoon"), //
+	};
 
 	private final List<Icoon> data;
 

@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.components.JEncodingComboBox;
 import nl.scouting.hit.sitecreator.components.JFileInput;
 import nl.scouting.hit.sitecreator.input.module.FileImportModel;
@@ -47,7 +48,8 @@ public class FileImportPanel extends JPanel implements InputModuleUI {
 				getProcessor().propertyChange(event);
 			}
 		});
-		final JLabel locLabel = new JLabel("Locatie bestand");
+		final JLabel locLabel = new JLabel(
+				ApplicationLabels.getLabel("panel.input.import.outdir"));
 		final JFileInput locField = new JFileInput(20, inputModule.getFilter());
 		locField.addPropertyChangeListener("file",
 				new PropertyChangeListener() {
@@ -61,7 +63,8 @@ public class FileImportPanel extends JPanel implements InputModuleUI {
 			locField.setFile(model.getFile());
 		}
 
-		final JLabel encodingLabel = new JLabel("Encoding");
+		final JLabel encodingLabel = new JLabel(
+				ApplicationLabels.getLabel("panel.input.import.encoding"));
 		final JComboBox encodingField = new JEncodingComboBox(
 				new ActionListener() {
 					@Override

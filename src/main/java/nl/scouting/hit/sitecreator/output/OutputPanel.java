@@ -15,6 +15,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import nl.scouting.hit.sitecreator.Application;
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.output.module.html.HtmlOutputPanel;
 import nl.scouting.hit.sitecreator.output.module.images.ImagesOutputPanel;
@@ -61,7 +62,7 @@ public final class OutputPanel extends JPanel implements PropertyChangeListener 
 		private static final long serialVersionUID = 1L;
 
 		public SaveAction() {
-			super("Maak bestanden");
+			super(ApplicationLabels.getLabel("panel.output.button.maak"));
 		}
 
 		@Override

@@ -9,9 +9,13 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import nl.scouting.hit.sitecreator.Application;
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.components.JDirectoryInput;
 import nl.scouting.hit.sitecreator.model.HitProject;
@@ -20,7 +24,8 @@ import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputPanel;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
 /**
- * Panel voor output naar Joomla.
+ * Panel om alle plaatjes te downloaden en te schalen naar een kleinere
+ * afmeting.
  * 
  * @author Martijn Donath
  */
@@ -39,9 +44,10 @@ public final class ImagesOutputPanel extends
 	}
 
 	private void initComponents() {
-		setName("Plaatjes");
+		setName(ApplicationLabels.getLabel("panel.output.plaatjes"));
 
-		final JLabel outDirLabel = new JLabel("Output directory");
+		final JLabel outDirLabel = new JLabel(
+				ApplicationLabels.getLabel("panel.output.plaatjes.outdir"));
 		final JDirectoryInput outDirField = new JDirectoryInput(50,
 				new FileFilter() {
 
@@ -68,41 +74,73 @@ public final class ImagesOutputPanel extends
 					CONF_OUTDIR));
 		}
 
+		final JLabel horizontalSizeLabel = new JLabel(
+				ApplicationLabels.getLabel("panel.output.plaatjes.horizontaal"));
+		final JSlider horizontalSizeField = new JSlider(10, 480);
+		horizontalSizeField.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(final ChangeEvent evt) {
+				final int size = horizontalSizeField.getValue();
+				firePropertyChange("horizontalSize", null,
+						Integer.valueOf(size));
+			}
+		});
+		horizontalSizeField.setValue(180);
+
 		setLayout(new BorderLayout());
 		final JPanel container = new JPanel();
 		add(container, BorderLayout.NORTH);
-		final GroupLayout layout = UIUtil.createGroupLayout(container);
 
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-		//
+		final GroupLayout layout = UIUtil.createGroupLayout(container);
+		layout.setHorizontalGroup(layout //
+				.createParallelGroup() //
 				.addGroup(
-						layout.createParallelGroup()
+						layout.createSequentialGroup()
 								.addGroup(
-										layout.createSequentialGroup()
-												.addComponent(outDirLabel) //
-												.addComponent(outDirField) //
+										layout.createParallelGroup(
+												Alignment.LEADING) //
+												.addComponent(outDirLabel)
+												//
+												.addComponent(
+														horizontalSizeLabel) //
 								) //
-								.addComponent(getProgress()) //
-				) //
-		//
-		);
+								.addGroup(
+										layout.createParallelGroup(
+												Alignment.LEADING) //
+												.addComponent(outDirField)
+												//
+												.addComponent(
+														horizontalSizeField) //
+								)) //
+				.addGroup(layout.createSequentialGroup() //
+						.addComponent(getProgress()) //
+				));
+
 		layout.setVerticalGroup(layout.createSequentialGroup()
 		//
 				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
 						.addComponent(outDirLabel) //
 						.addComponent(outDirField) //
 				) //
-				.addComponent(getProgress()) //
+				.addGroup(layout.createParallelGroup(Alignment.CENTER) //
+						.addComponent(horizontalSizeLabel) //
+						.addComponent(horizontalSizeField) //
+				) //
+				.addGroup(layout.createParallelGroup() //
+						.addComponent(getProgress()) //
+				) //
 		);
 	}
 
-	/** {@inheritDoc	 */
+	/** {@inheritDoc} */
 	@Override
 	public OutputModule getProcessor() {
 		if (outputModule == null) {
 			outputModule = new ImagesOutputModule();
 			addPropertyChangeListener("save", outputModule);
 			addPropertyChangeListener("outDir", outputModule);
+			addPropertyChangeListener("horizontalSize", outputModule);
 			outputModule.addProgressListener(this);
 		}
 		return outputModule;

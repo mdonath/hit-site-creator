@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import nl.scouting.hit.sitecreator.Application;
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.ConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.FileConfigKey;
 import nl.scouting.hit.sitecreator.ConfigKey.IntegerConfigKey;
@@ -46,7 +47,8 @@ public class UberInputPanel extends JPanel {
 
 	private Component createJaarPanel() {
 		final JPanel result = new JPanel();
-		final JLabel yearLabel = new JLabel("Jaar");
+		final JLabel yearLabel = new JLabel(
+				ApplicationLabels.getLabel("panel.input.jaar"));
 
 		int huidigeJaar = Calendar.getInstance().get(Calendar.YEAR);
 		final JComboBox yearField = new JComboBox(createJaarItems(huidigeJaar));

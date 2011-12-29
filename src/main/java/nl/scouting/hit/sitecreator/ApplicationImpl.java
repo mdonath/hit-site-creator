@@ -69,7 +69,7 @@ public final class ApplicationImpl extends JFrame implements
 
 	private JPanel createInputPanel() {
 		final UberInputPanel inputPanel = new UberInputPanel(this);
-		inputPanel.setName("Input");
+		inputPanel.setName(ApplicationLabels.getLabel("panel.input"));
 		inputPanel.addPropertyChangeListener("hit",
 				new PropertyChangeListener() {
 					@Override
@@ -89,7 +89,7 @@ public final class ApplicationImpl extends JFrame implements
 
 	private JPanel createOutputPanel() {
 		final OutputPanel result = new OutputPanel(this);
-		result.setName("Output");
+		result.setName(ApplicationLabels.getLabel("panel.output"));
 
 		addPropertyChangeListener("hit", result);
 		return result;

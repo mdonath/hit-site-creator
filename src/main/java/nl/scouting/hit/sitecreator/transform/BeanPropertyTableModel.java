@@ -6,10 +6,15 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import nl.scouting.hit.sitecreator.ApplicationLabels;
+
 public class BeanPropertyTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] KOLOMMEN = { "Veld", "Waarde" };
+	private static final String[] KOLOM_KOPPEN = { //
+	ApplicationLabels.getLabel("panel.transform.bean.veld"), //
+			ApplicationLabels.getLabel("panel.transform.bean.waarde"), //
+	};
 
 	private final LinkedHashMap<String, Object> values;
 	private final List<String> keys;
@@ -21,12 +26,12 @@ public class BeanPropertyTableModel extends AbstractTableModel {
 
 	@Override
 	public final int getColumnCount() {
-		return KOLOMMEN.length;
+		return KOLOM_KOPPEN.length;
 	}
 
 	@Override
 	public final String getColumnName(final int column) {
-		return KOLOMMEN[column];
+		return KOLOM_KOPPEN[column];
 	}
 
 	@Override

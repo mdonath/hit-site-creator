@@ -16,9 +16,10 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
 import nl.scouting.hit.sitecreator.Application;
-import nl.scouting.hit.sitecreator.model.HitProject;
+import nl.scouting.hit.sitecreator.ApplicationLabels;
 import nl.scouting.hit.sitecreator.model.HitKamp;
 import nl.scouting.hit.sitecreator.model.HitPlaats;
+import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.ModelUtil;
 import nl.scouting.hit.sitecreator.util.UIUtil;
 
@@ -36,7 +37,8 @@ public final class TransformPanel extends JPanel implements
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		setBorder(new TitledBorder("Model"));
+		setBorder(new TitledBorder(
+				ApplicationLabels.getLabel("panel.transform.model")));
 
 		final JSplitPane split = new JSplitPane( //
 				JSplitPane.HORIZONTAL_SPLIT, //
@@ -74,12 +76,15 @@ public final class TransformPanel extends JPanel implements
 	}
 
 	private JComponent createPropertyTable() {
-		return createScrollTable("Eigenschappen",
+		return createScrollTable(
+				ApplicationLabels.getLabel("panel.transform.eigenschappen"),
 				propertyTable = new JHitTable());
 	}
 
 	private JComponent createDetailTable() {
-		return createScrollTable("Detail", detailTable = new JHitTable());
+		return createScrollTable(
+				ApplicationLabels.getLabel("panel.transform.detail"),
+				detailTable = new JHitTable());
 	}
 
 	protected JComponent createScrollTable(final String name, final JTable table) {
@@ -119,7 +124,8 @@ public final class TransformPanel extends JPanel implements
 
 	protected void setKampModels(final HitKamp kamp) {
 		detailTable.setModel(new HitKampTableModel(kamp));
-		propertyTable.setModel(new BeanPropertyTableModel(kamp, "icoontje",
+		propertyTable.setModel(new BeanPropertyTableModel(kamp,
+				"activiteitengebied", "activiteitengebieden", "icoontje",
 				"icoontjes", "plaats", "plaatsNaam", "previous", "next"));
 	}
 

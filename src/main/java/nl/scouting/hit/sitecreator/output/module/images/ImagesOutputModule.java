@@ -10,11 +10,22 @@ import nl.scouting.hit.sitecreator.model.HitProject;
 import nl.scouting.hit.sitecreator.model.ImageUrl;
 import nl.scouting.hit.sitecreator.output.module.AbstractProgressOutputModule;
 
-public class ImagesOutputModule extends AbstractProgressOutputModule {
+/**
+ * Module die afbeeldingen kan downloaden en deze schaalt naar een absolute
+ * horizontale afmeting. De verticale afmeting blijft proportioneel.
+ * 
+ * @author martijn
+ */
+public final class ImagesOutputModule extends AbstractProgressOutputModule {
 	private File outDir;
+	private Integer horizontalSize = Integer.valueOf(180);
 
 	public void setOutDir(final File outDir) {
 		this.outDir = outDir;
+	}
+
+	public void setHorizontalSize(final Integer horizontalSize) {
+		this.horizontalSize = horizontalSize;
 	}
 
 	@Override
@@ -22,6 +33,8 @@ public class ImagesOutputModule extends AbstractProgressOutputModule {
 		final String propertyName = evt.getPropertyName();
 		if ("outDir".equals(propertyName)) {
 			outDir = (File) evt.getNewValue();
+		} else if ("horizontalSize".equals(propertyName)) {
+			horizontalSize = (Integer) evt.getNewValue();
 		}
 	}
 
@@ -35,28 +48,28 @@ public class ImagesOutputModule extends AbstractProgressOutputModule {
 		}
 	}
 
-	private void downloadImages(final HitKamp kamp) throws IOException {
-		download(kamp.getDeelnemersnummer(), 1, kamp.getWebadresFoto1());
-		download(kamp.getDeelnemersnummer(), 2, kamp.getWebadresFoto2());
-		download(kamp.getDeelnemersnummer(), 3, kamp.getWebadresFoto3());
+	private void downloadImages(final HitKamp kamp) {
+		download(kamp.getWebadresFoto1());
+		download(kamp.getWebadresFoto2());
+		download(kamp.getWebadresFoto3());
 	}
 
-	private void download(final Integer deelnemersnummer, final int nr,
-			final ImageUrl image) throws IOException {
-		if (isDownloadable(image)) {
+	private void download(final ImageUrl imageUrl) {
+		if (isDownloadable(imageUrl)) {
 			try {
-				image.download(outDir);
-				image.scale(outDir, 180, -1);
-				System.out.println(image + " - " + image.getOutputFile(outDir));
+				imageUrl.download(outDir);
+				imageUrl.scale(outDir, horizontalSize, -1);
+				System.out.println(imageUrl + " - "
+						+ imageUrl.getOutputFile(outDir));
 			} catch (final Exception e) {
 				final String msg = e.getClass() + ": " + e.getMessage();
-				System.out.println(image + " - " + msg);
+				System.out.println(imageUrl + " - " + msg);
 			}
 		}
 	}
 
-	protected static boolean isDownloadable(final ImageUrl url) {
-		return (url != null) && url.isDownloadable();
+	protected static boolean isDownloadable(final ImageUrl imageUrl) {
+		return (imageUrl != null) && imageUrl.isDownloadable();
 	}
 
 }
