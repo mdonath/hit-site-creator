@@ -4,7 +4,6 @@ hitkieskamp(hit) ::= <<
 		<title>Kies een activiteit</title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="description" content="Informatie over de kampen van de HIT $hit.jaar$">
-		<link href="hit.css" rel="stylesheet" type="text/css">
 	</head>
 
 <body id="kies" style="width:650px;">
@@ -53,20 +52,18 @@ hitkieskamp_plaats(plaats) ::= <<
 
 hitkieskamp_kamp(kamp) ::= <<
 	<tr>
-		<td><a href="$kamp.htmlFileNaam$">$kamp.naam$</a></td>
+		<td><a href="hits-in-$kamp.plaats.naam; format="lower"$/$kamp.urlifiedNaam$">$kamp.naam$</a></td>
 		<td></td>
 		<td>$kamp.minimumLeeftijd$ - $kamp.maximumLeeftijd$</td>
 		<td></td>
 		<td>$kamp.subgroepsamenstellingMinimum$ - $kamp.subgroepsamenstellingMaximum$ pers.</td>
 		<td></td>
 		<td>$kamp.icoontjes:hitkamp_icoon()$</td>
-		<td>$if(kamp.akkoordHitKamp)$Kamp Akkoord$endif$</td>
-		<td>$if(kamp.akkoordHitPlaats)$Plaats Akkoord$endif$</td>
 	</tr>
 >>
 
 
 
 hitkamp_icoon(icoon) ::= <<
-<img src="./iconennieuwgifm25pix/$icoon.bestandsnaam$.gif" alt="$icoon.tekst$" title="$icoon.tekst$" />
+<img style="margin: 0pt;" src="images/iconen25pix/$icoon.bestandsnaam$.gif" alt="$icoon.tekst$" title="$icoon.tekst$" />
 >>

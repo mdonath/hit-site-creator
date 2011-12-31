@@ -7,7 +7,44 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Test;
 
-public class HitProjectKampTest {
+public class HitKampTest {
+
+	@Test
+	public void urlified_naam_degrees() throws Exception {
+		assertEquals("eifel-50d-noord",
+				new HitKamp("Eifel 50° Noord").getUrlifiedNaam());
+	}
+
+	@Test
+	public void urlified_naam_oh() throws Exception {
+		assertEquals("eifel-50o-noord",
+				new HitKamp("Eifel 50º Noord").getUrlifiedNaam());
+	}
+
+	@Test
+	public void urlified_naam_minus() throws Exception {
+		assertEquals("aaa-bbb", new HitKamp("aaa-bbb").getUrlifiedNaam());
+	}
+
+	@Test
+	public void urlified_naam_spatie_minus_spatie() throws Exception {
+		assertEquals("aaa-bbb", new HitKamp("aaa - bbb").getUrlifiedNaam());
+	}
+
+	@Test
+	public void urlified_naam_lowercase() throws Exception {
+		assertEquals("abcdef", new HitKamp("ABCDEF").getUrlifiedNaam());
+	}
+
+	@Test
+	public void urlified_naam_ampersand() throws Exception {
+		assertEquals("3xaaa", new HitKamp("3xa&a").getUrlifiedNaam());
+	}
+
+	@Test
+	public void urlified_naam_dubbele_minus_na_vervangen() throws Exception {
+		assertEquals("a-b", new HitKamp("a - ( - ) - b").getUrlifiedNaam());
+	}
 
 	@Test
 	public void constructie_van_startDatumTijd_eerst_datum_dan_tijd()

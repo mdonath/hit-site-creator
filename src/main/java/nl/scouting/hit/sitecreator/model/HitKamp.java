@@ -160,7 +160,6 @@ public class HitKamp implements Comparable<HitKamp> {
 	public boolean isHeeftBeginEnEindInVerschillendeMaanden() {
 		return getStartDatumtijd().getMonthOfYear() != getEindDatumtijd()
 				.getMonthOfYear();
-
 	}
 
 	public boolean isHeeftMaximumUitEenGroep() {
@@ -178,6 +177,19 @@ public class HitKamp implements Comparable<HitKamp> {
 
 	public boolean isBegintOpGoedeVrijdag() {
 		return DateTimeConstants.FRIDAY == startDatumtijd.getDayOfWeek();
+	}
+
+	public String getUrlifiedNaam() {
+		return naam //
+				.replaceAll(" - ", "-") //
+				.replaceAll(" ", "-") //
+				.replaceAll("°", "d") //
+				.replaceAll("º", "o") //
+				.replaceAll("&", "a") //
+				.toLowerCase() //
+				.replaceAll("[^a-z0-9\\-]", "") //
+				.replaceAll("-+", "-") //
+		;
 	}
 
 	public String getHtmlFileNaam() {
