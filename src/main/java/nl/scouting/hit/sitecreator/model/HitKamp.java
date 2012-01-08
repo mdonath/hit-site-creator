@@ -14,11 +14,14 @@ import org.joda.time.LocalTime;
 
 public class HitKamp implements Comparable<HitKamp> {
 
+	// Inschrijvingen
+	private HitInschrijving inschrijving;
+
 	//
 	// Kamp onderdeel gegevens
 	//
 	private Integer deelnemersnummer;
-	private String shantiformuliernummer;
+	private Integer shantiformuliernummer;
 	private String hitwrapperpagina;
 
 	private String naam;
@@ -85,22 +88,27 @@ public class HitKamp implements Comparable<HitKamp> {
 	/** Ingeschreven deelnemers. */
 	private List<HitDeelnemer> deelnemers;
 
-	/**
-	 * Constructor.
-	 */
 	public HitKamp() {
-		this(null);
+		this((String) null);
+	}
+
+	public HitKamp(final HitInschrijving inschrijving) {
+		this(inschrijving.getFormulierNaam()); // lijkt het meest op de naam
+		shantiformuliernummer = inschrijving.getFormulierNummer();
+		this.inschrijving = inschrijving;
+		this.inschrijving.cleanUp();
+	}
+
+	public HitKamp(final String naam, final List<HitDeelnemer> deelnemers) {
+		this(naam);
+		this.deelnemers = deelnemers;
 	}
 
 	public HitKamp(final String naam) {
 		this.naam = naam;
 		icoontjes = new TreeSet<Icoon>();
 		activiteitengebieden = new TreeSet<Activiteitengebied>();
-	}
-
-	public HitKamp(final String naam, final List<HitDeelnemer> deelnemers) {
-		this(naam);
-		this.deelnemers = deelnemers;
+		inschrijving = new HitInschrijving();
 	}
 
 	public void merge(final HitKamp kamp) {
@@ -155,6 +163,15 @@ public class HitKamp implements Comparable<HitKamp> {
 
 		websiteAdres = kamp.websiteAdres;
 		afgelegdeKilometers = kamp.afgelegdeKilometers;
+	}
+
+	public boolean isHeeftSubgroepsamenstelling() {
+		return !"n.v.t.".equals(subgroepsamenstellingMinimum);
+	}
+
+	public boolean isHeeftSubgroepsamenstellingGelijkeMinMax() {
+		return subgroepsamenstellingMinimum
+				.equals(subgroepsamenstellingMaximum);
 	}
 
 	public boolean isHeeftBeginEnEindInVerschillendeMaanden() {
@@ -256,6 +273,11 @@ public class HitKamp implements Comparable<HitKamp> {
 	@Override
 	public boolean equals(final Object obj) {
 		return naam.equals(((HitKamp) obj).naam);
+	}
+
+	@Override
+	public int hashCode() {
+		return naam.hashCode();
 	}
 
 	// ----
@@ -523,7 +545,8 @@ public class HitKamp implements Comparable<HitKamp> {
 		eindDatumtijd = updateTime(eindDatum, this.eindTijd);
 	}
 
-	private LocalDateTime updateDate(final LocalDate date, final LocalTime time) {
+	private static LocalDateTime updateDate(final LocalDate date,
+			final LocalTime time) {
 		LocalDateTime result;
 		if (time == null) {
 			result = date.toLocalDateTime(LocalTime.MIDNIGHT);
@@ -533,7 +556,8 @@ public class HitKamp implements Comparable<HitKamp> {
 		return result;
 	}
 
-	private LocalDateTime updateTime(final LocalDate date, final LocalTime time) {
+	private static LocalDateTime updateTime(final LocalDate date,
+			final LocalTime time) {
 		LocalDateTime result;
 		if (date == null) {
 			result = new LocalDate().toLocalDateTime(time);
@@ -561,11 +585,11 @@ public class HitKamp implements Comparable<HitKamp> {
 		this.subgroepsamenstellingMaximum = subgroepsamenstellingMaximum;
 	}
 
-	public String getShantiformuliernummer() {
+	public Integer getShantiformuliernummer() {
 		return shantiformuliernummer;
 	}
 
-	public void setShantiformuliernummer(final String shantiformuliernummer) {
+	public void setShantiformuliernummer(final Integer shantiformuliernummer) {
 		this.shantiformuliernummer = shantiformuliernummer;
 	}
 
@@ -592,6 +616,14 @@ public class HitKamp implements Comparable<HitKamp> {
 	public void setSubgroepsamenstellingOud(
 			final String subgroepsamenstellingOud) {
 		this.subgroepsamenstellingOud = subgroepsamenstellingOud;
+	}
+
+	public HitInschrijving getInschrijving() {
+		return inschrijving;
+	}
+
+	public void setInschrijving(final HitInschrijving inschrijving) {
+		this.inschrijving = inschrijving;
 	}
 
 }

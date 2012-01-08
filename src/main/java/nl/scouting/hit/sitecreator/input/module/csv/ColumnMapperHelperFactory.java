@@ -2,9 +2,6 @@ package nl.scouting.hit.sitecreator.input.module.csv;
 
 import java.io.InputStream;
 
-import nl.scouting.hit.sitecreator.model.HitKamp;
-import nl.scouting.hit.sitecreator.model.HitPlaats;
-
 /**
  * Maakt ColumnMapperHelpers op basis van jaartal.
  * 
@@ -18,16 +15,6 @@ public final class ColumnMapperHelperFactory {
 		public FactoryException(final Exception e) {
 			super(e);
 		}
-	}
-
-	public static final ColumnMapperHelper getKampColumnMapperHelperForYear(
-			final int jaar) throws FactoryException {
-		return getColumnMapperHelperForYear(jaar, HitKamp.class);
-	}
-
-	public static final ColumnMapperHelper getPlaatsColumnMapperHelperForYear(
-			final int jaar) throws FactoryException {
-		return getColumnMapperHelperForYear(jaar, HitPlaats.class);
 	}
 
 	public static final ColumnMapperHelper getColumnMapperHelperForYear(

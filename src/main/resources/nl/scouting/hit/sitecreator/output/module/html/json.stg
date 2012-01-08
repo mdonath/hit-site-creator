@@ -36,13 +36,20 @@ kamp_json(kamp) ::= <<
 {
 	'deelnemersnummer': $kamp.deelnemersnummer$,
 	'naam': '$kamp.naam$',
+	'shantiformuliernummer': $kamp.shantiformuliernummer$,
 	'minimumLeeftijd': $kamp.minimumLeeftijd$,
 	'maximumLeeftijd': $kamp.maximumLeeftijd$,
 	'deelnamekosten': $kamp.deelnamekosten$,
+	'maximumAantalDeelnemers': $kamp.maximumAantalDeelnemers$,
+	'gereserveerd': $kamp.inschrijving.gereserveerd$,
+	'groep': '$kamp_json_subgroep(kamp)$',
 	'iconen': [
 		$kamp.icoontjes : icoon_json(); separator=",\n"$
 	]	
 }
+>>
+
+kamp_json_subgroep(kamp) ::= <<$if(kamp.heeftSubgroepsamenstelling)$$kamp.subgroepsamenstellingMinimum$$if(!kamp.heeftSubgroepsamenstellingGelijkeMinMax)$ - $kamp.subgroepsamenstellingMaximum$$endif$ pers.$else$$kamp.subgroepsamenstellingMinimum$$endif$
 >>
 
 icoon_json(icoon) ::= <<

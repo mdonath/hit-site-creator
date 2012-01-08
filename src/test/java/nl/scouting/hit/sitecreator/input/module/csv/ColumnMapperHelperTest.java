@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Map;
 
 import nl.scouting.hit.sitecreator.input.module.csv.ColumnMapperHelperFactory.FactoryException;
+import nl.scouting.hit.sitecreator.model.HitKamp;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,14 +17,14 @@ public class ColumnMapperHelperTest {
 	@Before
 	public final void setUp() throws Exception {
 		final ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getKampColumnMapperHelperForYear(2012);
+				.getColumnMapperHelperForYear(2012, HitKamp.class);
 		mapping = helper.getColumnMapping();
 	}
 
 	@Test(expected = FactoryException.class)
 	public void verkeerd_jaar() throws Exception {
 		final ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getKampColumnMapperHelperForYear(2000);
+				.getColumnMapperHelperForYear(2000, HitKamp.class);
 		helper.getColumnMapping();
 	}
 

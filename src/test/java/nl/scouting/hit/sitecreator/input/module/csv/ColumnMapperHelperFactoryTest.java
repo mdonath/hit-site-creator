@@ -15,19 +15,6 @@ import org.junit.Test;
  * @author Martijn Donath
  */
 public class ColumnMapperHelperFactoryTest {
-	@Test
-	public void load_2012_moet_goed_gaan_voor_kamp() throws Exception {
-		final ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getKampColumnMapperHelperForYear(2012);
-		assertNotNull(helper);
-	}
-
-	@Test
-	public void load_2012_moet_goed_gaan_voor_plaats() throws Exception {
-		final ColumnMapperHelper helper = ColumnMapperHelperFactory
-				.getPlaatsColumnMapperHelperForYear(2012);
-		assertNotNull(helper);
-	}
 
 	@Test
 	public void generieke_method_met_class_voor_kamp() throws Exception {

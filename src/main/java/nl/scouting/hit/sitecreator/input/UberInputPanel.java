@@ -104,14 +104,14 @@ public class UberInputPanel extends JPanel {
 				createProjectPanel() //
 				, createPlaatsPanel() //
 				, createKampPanel() //
-				, createDeelnemerPanel());
+				, createInschrijvingPanel());
 
 		tab.setSelectedIndex(-1);
 		tab.setSelectedIndex(0);
 		return tab;
 	}
 
-	protected AbstractInputTabPanel createProjectPanel() {
+	private AbstractInputTabPanel createProjectPanel() {
 		final FileImportModel model = createCsvFileImportModel("project");
 		addPropertyChangeListener("jaar", model);
 
@@ -135,7 +135,7 @@ public class UberInputPanel extends JPanel {
 		return result;
 	}
 
-	protected AbstractInputTabPanel createPlaatsPanel() {
+	private AbstractInputTabPanel createPlaatsPanel() {
 		final FileImportModel model = createCsvFileImportModel("plaats");
 		addPropertyChangeListener("jaar", model);
 
@@ -160,7 +160,7 @@ public class UberInputPanel extends JPanel {
 		return result;
 	}
 
-	protected AbstractInputTabPanel createKampPanel() {
+	private AbstractInputTabPanel createKampPanel() {
 		final FileImportModel model = createCsvFileImportModel("kamp");
 		addPropertyChangeListener("jaar", model);
 
@@ -181,6 +181,34 @@ public class UberInputPanel extends JPanel {
 			protected void merge(final HitProject oldHit,
 					final HitProject newHit) {
 				oldHit.mergeKampen(newHit.getHitPlaatsen());
+			}
+
+		});
+		return result;
+	}
+
+	private AbstractInputTabPanel createInschrijvingPanel() {
+		final FileImportModel model = createCsvFileImportModel("inschrijving");
+		addPropertyChangeListener("jaar", model);
+
+		final InschrijvingenInputTabPanel result = new InschrijvingenInputTabPanel(
+				model);
+
+		result.addHitModelListener(new HitModelChangeListener() {
+
+			@Override
+			public void resetModel(final ResetEvent event) {
+				final HitProject hit = getApplication().getModel();
+				for (final HitPlaats p : hit.getHitPlaatsen()) {
+					p.getHitKampen().clear();
+				}
+				fireHitChanged(hit);
+			}
+
+			@Override
+			protected void merge(final HitProject oldHit,
+					final HitProject newHit) {
+				oldHit.mergeInschrijvingen(newHit.getHitPlaatsen());
 			}
 
 		});

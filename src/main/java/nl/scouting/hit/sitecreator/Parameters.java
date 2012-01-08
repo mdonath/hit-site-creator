@@ -39,7 +39,7 @@ public class Parameters {
 		options.addOption("jaar", true, "Jaar (nodig voor mapping)");
 
 		for (final String soort : new String[] { "kamp", "plaats", "project",
-				"dln" }) {
+				"inschrijving", "dln" }) {
 			options.addOption(soort + "csv", true,
 					"Naam van het CSV bestand met " + soort + "gegevens");
 			options.addOption(soort + "enc", true, "Encoding van bestand met "

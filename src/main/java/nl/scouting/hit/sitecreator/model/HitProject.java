@@ -87,6 +87,18 @@ public class HitProject {
 		}
 	}
 
+	public void mergeInschrijvingen(final List<HitPlaats> hitPlaatsen) {
+		for (final HitPlaats plaats : hitPlaatsen) {
+			if (this.hitPlaatsen.contains(plaats)) {
+				final int index = this.hitPlaatsen.indexOf(plaats);
+				this.hitPlaatsen.get(index).mergeInschrijvingen(
+						plaats.getHitKampen());
+			} else {
+				addHitPlaats(plaats);
+			}
+		}
+	}
+
 	public void mergeDeelnemers(final Collection<HitPlaats> hitPlaatsen) {
 		// pseudo kampen met hitplaats.shantiformuliernummer
 	}

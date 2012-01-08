@@ -62,6 +62,29 @@ public class HitPlaats implements Comparable<HitPlaats> {
 		}
 	}
 
+	public void mergeInschrijvingen(final Collection<HitKamp> kampen) {
+		for (final HitKamp kamp : kampen) {
+			final int index = getKampIndexByShantiformuliernummer(kamp
+					.getShantiformuliernummer());
+			if (index != -1) {
+				hitKampen.get(index).setInschrijving(kamp.getInschrijving());
+			}
+		}
+	}
+
+	private int getKampIndexByShantiformuliernummer(
+			final Integer shantiformuliernummer) {
+		int index = -1;
+		for (int k = 0; k < hitKampen.size(); k++) {
+			if (hitKampen.get(k).getShantiformuliernummer()
+					.equals(shantiformuliernummer)) {
+				index = k;
+				break;
+			}
+		}
+		return index;
+	}
+
 	@Override
 	public boolean equals(final Object obj) {
 		return naam.equals(((HitPlaats) obj).getNaam());

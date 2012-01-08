@@ -202,7 +202,7 @@ Er mogen maximaal $kamp.maximumAantalUitEenGroep$ leden uit dezelfde Scoutinggro
 $endif$
 Er kunnen maximaal $kamp.maximumAantalDeelnemers$ deelnemers meedoen aan deze activiteit.
 $if(kamp.heeftAfgelegdeKilometers)$
-Totale afstand die tijdens deze HIT gelopen wordt is maximaal $kamp.afgelegdeKilometers$ kilometer.
+Totale afstand die tijdens deze HIT afgelegd wordt is maximaal $kamp.afgelegdeKilometers$ kilometer.
 $endif$
 Dit HIT-Kamp start op $kamp.startDatumtijd;format="d MMMM"$ om $kamp.startDatumtijd;format="HH:mm"$ uur en duurt tot en met $kamp.eindDatumtijd;format="d MMMM"$ $kamp.eindDatumtijd;format="HH:mm"$ uur. 
 $if(kamp.begintOpGoedeVrijdag)$

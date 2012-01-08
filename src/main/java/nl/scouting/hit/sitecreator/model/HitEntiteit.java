@@ -11,6 +11,9 @@ public enum HitEntiteit {
 	/** Een van de vele HIT Kampen. */
 	Kamp(HitKamp.class),
 
+	/** De gegevens over de inschrijvingen bij een kamp. */
+	Inschrijving(HitInschrijving.class),
+
 	/** De inschrijvende deelnemers. */
 	Deelnemer(HitDeelnemer.class);
 
