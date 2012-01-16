@@ -55,7 +55,8 @@ public class HtmlOutputModule extends AbstractProgressOutputModule {
 	}
 
 	private void genereerJson(final HitProject hit) throws IOException {
-		genereerEnkel(hit, "json.stg", "json", "hit-data-json.js");
+		genereerEnkel(hit, "json.stg", "json", "hit-data-" + hit.getJaar()
+				+ "-json.js");
 	}
 
 	// TODO: hit2011_menu.html

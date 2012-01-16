@@ -73,7 +73,7 @@ public class Icoon implements Comparable<Icoon> {
 		register(icoonCache, new Icoon("rolstoel",
 				"Geschikt voor minder validen (rolstoel)"));
 		register(icoonCache, new Icoon("vraagt",
-				"Vraagteken Mysterie elemeneten"));
+				"Vraagteken Mysterie elementen"));
 		register(icoonCache, new Icoon("buitenland",
 				"Buitenland - ID kaart of paspoort verplicht"));
 	}

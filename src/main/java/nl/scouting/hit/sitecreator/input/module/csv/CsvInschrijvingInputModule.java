@@ -32,7 +32,7 @@ public class CsvInschrijvingInputModule extends
 
 		for (final HitInschrijving inschrijving : inschrijvingen) {
 			final String locatie = inschrijving.getLocatie();
-			if ((locatie != null) && !locatie.isEmpty()) {
+			if (isLocatieEenHitPlaats(locatie)) {
 				final HitPlaats plaats = plaatsCache.get(locatie);
 				plaats.addHitKamp(new HitKamp(inschrijving));
 			}
@@ -58,11 +58,16 @@ public class CsvInschrijvingInputModule extends
 		final Set<String> result = new TreeSet<String>();
 		for (final HitInschrijving inschrijving : inschrijvingen) {
 			final String locatie = inschrijving.getLocatie();
-			if ((locatie != null) && !locatie.isEmpty()) {
+			if (isLocatieEenHitPlaats(locatie)) {
 				result.add(locatie);
 			}
 		}
 		return result;
+	}
+
+	private static boolean isLocatieEenHitPlaats(final String locatie) {
+		return (locatie != null) && !locatie.isEmpty()
+				&& !locatie.startsWith("Algemeen");
 	}
 
 	@Override

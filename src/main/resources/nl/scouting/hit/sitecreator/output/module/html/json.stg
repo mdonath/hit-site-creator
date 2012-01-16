@@ -4,19 +4,19 @@ var hit = $project_json(hit)$;
 
 project_json(hit) ::= <<
 {
-	'jaar': $hit.jaar$,
-	'inschrijvingStartdatum': '$hit.inschrijvingStartdatum$',
-	'inschrijvingEinddatum': '$hit.inschrijvingEinddatum$',
-	'inschrijvingWijzigenTotDatum': '$hit.inschrijvingWijzigenTotDatum$',
-	'inschrijvingKosteloosAnnulerenDatum': '$hit.inschrijvingKosteloosAnnulerenDatum$',
-	'inschrijvingGeenRestitutieDatum': '$hit.inschrijvingGeenRestitutieDatum$',
-	'inningsdatum': '$hit.inningsdatum$',
-	'vrijdag': '$hit.vrijdag$',
-	'maandag': '$hit.maandag$',
-	'hitPlaatsen': [
+	"jaar": $hit.jaar$,
+	"inschrijvingStartdatum": "$hit.inschrijvingStartdatum$",
+	"inschrijvingEinddatum": "$hit.inschrijvingEinddatum$",
+	"inschrijvingWijzigenTotDatum": "$hit.inschrijvingWijzigenTotDatum$",
+	"inschrijvingKosteloosAnnulerenDatum": "$hit.inschrijvingKosteloosAnnulerenDatum$",
+	"inschrijvingGeenRestitutieDatum": "$hit.inschrijvingGeenRestitutieDatum$",
+	"inningsdatum": "$hit.inningsdatum$",
+	"vrijdag": "$hit.vrijdag$",
+	"maandag": "$hit.maandag$",
+	"hitPlaatsen": [
 		$hit.hitPlaatsen : plaats_json(); separator=",\n"$
 	],
-	'gebruikteIconen': [
+	"gebruikteIconen": [
 		$hit.gebruikteIconen : icoon_json(); separator=",\n"$
 	]
 }
@@ -24,9 +24,9 @@ project_json(hit) ::= <<
 
 plaats_json(plaats) ::= <<
 {
-	'deelnemersnummer': $plaats.deelnemersnummer$,
-	'naam': '$plaats.naam$',
-	'kampen': [
+	"deelnemersnummer": $plaats.deelnemersnummer$,
+	"naam": "$plaats.naam$",
+	"kampen": [
 		$plaats.hitKampen : kamp_json(); separator=",\n"$
 	]	
 }
@@ -34,16 +34,19 @@ plaats_json(plaats) ::= <<
 
 kamp_json(kamp) ::= <<
 {
-	'deelnemersnummer': $kamp.deelnemersnummer$,
-	'naam': '$kamp.naam$',
-	'shantiformuliernummer': $kamp.shantiformuliernummer$,
-	'minimumLeeftijd': $kamp.minimumLeeftijd$,
-	'maximumLeeftijd': $kamp.maximumLeeftijd$,
-	'deelnamekosten': $kamp.deelnamekosten$,
-	'maximumAantalDeelnemers': $kamp.maximumAantalDeelnemers$,
-	'gereserveerd': $kamp.inschrijving.gereserveerd$,
-	'groep': '$kamp_json_subgroep(kamp)$',
-	'iconen': [
+	"deelnemersnummer": $kamp.deelnemersnummer$,
+	"naam": "$kamp.naam$",
+	"shantiformuliernummer": $kamp.shantiformuliernummer$,
+	"minimumLeeftijd": $kamp.minimumLeeftijd$,
+	"maximumLeeftijd": $kamp.maximumLeeftijd$,
+	"deelnamekosten": $kamp.deelnamekosten$,
+	"minimumAantalDeelnemers": $kamp.minimumAantalDeelnemers$,
+	"maximumAantalDeelnemers": $kamp.maximumAantalDeelnemers$,
+	"aantalDeelnemers": $kamp.inschrijving.aantalDeelnemers$,
+	"gereserveerd": $kamp.inschrijving.gereserveerd$,
+	"subgroepsamenstellingMinimum": $kamp_json_subgroep_minimum(kamp)$,
+	"groep": "$kamp_json_subgroep(kamp)$",
+	"iconen": [
 		$kamp.icoontjes : icoon_json(); separator=",\n"$
 	]	
 }
@@ -52,6 +55,9 @@ kamp_json(kamp) ::= <<
 kamp_json_subgroep(kamp) ::= <<$if(kamp.heeftSubgroepsamenstelling)$$kamp.subgroepsamenstellingMinimum$$if(!kamp.heeftSubgroepsamenstellingGelijkeMinMax)$ - $kamp.subgroepsamenstellingMaximum$$endif$ pers.$else$$kamp.subgroepsamenstellingMinimum$$endif$
 >>
 
+kamp_json_subgroep_minimum(kamp) ::= <<$if(kamp.heeftSubgroepsamenstelling)$$kamp.subgroepsamenstellingMinimum$$else$1$endif$
+>>
+
 icoon_json(icoon) ::= <<
-{ 'volgorde': $icoon.volgorde$ , 'tekst': '$icoon.tekst$', 'bestandsnaam': '$icoon.bestandsnaam$' }	
+{ "volgorde": $icoon.volgorde$ , "tekst": "$icoon.tekst$", "bestandsnaam": "$icoon.bestandsnaam$" }	
 >>
