@@ -136,6 +136,6 @@ icoonMiddelKolom(icoon) ::= <<
 icoonRechterKolom(icoon) ::= "$icoonMiddelKolom(icoon)$</tr>"
 
 icoonGroot(icoon) ::= <<
-<img src="iconengrootnieuw/$icoon.bestandsnaam$.png" alt="$icoon.tekst$" title="$icoon.tekst$" width="25px" height="25px" />
+<img src="iconen40pix/$icoon.bestandsnaam$.gif" alt="$icoon.tekst$" title="$icoon.tekst$" width="25px" height="25px" />
 >>
 
